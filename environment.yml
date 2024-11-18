@@ -1,0 +1,60 @@
+name: craft-my-cv
+channels:
+  - conda-forge
+  - defaults
+  - pytorch
+  - huggingface
+
+dependencies:
+  # Core Python
+  - python=3.11
+  - pip
+  
+  # Data Processing
+  - numpy
+  - pandas
+  
+  # AI/ML & LLM Frameworks
+  - transformers
+  - sentence-transformers
+  - pytorch::pytorch
+  - pytorch::torchvision
+
+  # PDF Parser
+  - pypdf2
+  - pdf2image
+  - pdfminer.six
+  - tesseract
+  - pytesseract
+  - pillow
+  
+  # Text Processing
+  - beautifulsoup4
+  - regex
+  - spacy
+  
+  # API Integration
+  - requests
+  - aiohttp
+  - httpx
+  
+  # Utilities
+  - python-dotenv
+  - pyyaml
+  - tqdm
+  
+  - pip:
+    # Core LLM Libraries
+    - langchain
+    - openai
+    - anthropic
+    - llama-index
+    # DOCX Parser
+    - python-docx
+    - olefile
+    # Embeddings & Models
+    - huggingface-hub
+    
+    # Agent Frameworks
+    - crewai>=0.11.0
+    - crewai-tools

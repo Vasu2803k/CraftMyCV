@@ -1,0 +1,31 @@
+About the job
+***Data Scientist - India - Remote - Contract***
+
+ 
+
+One of our international clients is looking for Data Scientist in India.
+
+ 
+
+Job Requirement :
+
+ 
+
+Job Title : Data Scientist.
+Contract : 12 months contract 
+Start Date : ASAP
+Language : English
+Location : Remote
+Capacity : 5 days per week
+ 
+
+Skills Require :
+
+ 
+
+Data Scientist with experience in AI and GCP cloud
+Work with cloud platforms (GCP, AWS, Azure) to deploy AI models and ensure scalable AI architecture.
+Proficiency in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.). Experience with cloud computing platforms like AWS, Azure, or GCP. Strong analytical and problem-solving skills with experience handling large datasets
+ 
+
+For further details, please apply on the job post with your most update CV or email me on mvora@redglobal.com
