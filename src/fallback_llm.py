@@ -1,61 +1,111 @@
-from typing import Any, Dict, Optional
+from typing import Optional, Any, Dict
+from crewai.llm import LLM
 import time
-from tenacity import retry, stop_after_attempt, wait_exponential
-from crewai import LLM
-import traceback
+import logging
+from langchain.schema import BaseMessage
 
-class FallbackLLM:
-    """A wrapper class that implements fallback logic between two LLMs"""
+logger = logging.getLogger(__name__)
+
+class FallbackLLM(LLM):
+    """A wrapper class that implements fallback logic for LLMs"""
     
     def __init__(
-        self, 
-        primary_llm: LLM, 
-        fallback_llm: LLM, 
+        self,
+        primary_llm: LLM,
+        fallback_llm: LLM,
         timeout: int = 30,
         max_retries: int = 3
     ):
+        # Initialize parent class
+        super().__init__(
+            model=primary_llm.model,
+            api_key=primary_llm.api_key,
+            temperature=primary_llm.temperature,
+            max_tokens=primary_llm.max_tokens,
+            top_p=primary_llm.top_p
+        )
+        
         self.primary_llm = primary_llm
         self.fallback_llm = fallback_llm
         self.timeout = timeout
         self.max_retries = max_retries
 
-    def _generate_with_retry(self, llm: LLM, prompt: str) -> str:
-        """Attempt to generate response with retry logic"""
-        @retry(
-            stop=stop_after_attempt(self.max_retries), 
-            wait=wait_exponential(multiplier=1, min=4, max=10)
-        )
-        def _generate():
-            try:
-                return llm.generate(prompt)
-            except Exception as e:
-                print(f"Stack trace:\n{traceback.format_exc()}")
-                print(f"Error with LLM: {str(e)}")
-                raise e
-        
-        return _generate()
-
-    def generate(self, prompt: str) -> str:
-        """Generate response with fallback logic"""
+    def chat(self, messages: list[BaseMessage], **kwargs: Any) -> str:
+        """
+        Override chat method to implement fallback logic
+        """
         start_time = time.time()
-        
-        # Try primary LLM first
-        try:
-            result = self._generate_with_retry(self.primary_llm, prompt)
-            if time.time() - start_time <= self.timeout:
-                return result
-        except Exception as e:
-            print(f"Stack trace:\n{traceback.format_exc()}")
-            print(f"Primary LLM failed: {str(e)}")
+        attempts = 0
+        last_error = None
 
-        # If primary fails or times out, use fallback with same prompt
-        print("Switching to fallback LLM...")
-        try:
-            return self._generate_with_retry(self.fallback_llm, prompt)
-        except Exception as e:
-            print(f"Stack trace:\n{traceback.format_exc()}")
-            raise Exception(f"Both primary and fallback LLMs failed: {str(e)}")
+        while attempts < self.max_retries:
+            try:
+                # First try primary LLM
+                if time.time() - start_time < self.timeout:
+                    return self.primary_llm.chat(messages, **kwargs)
+                
+            except Exception as e:
+                logger.warning(f"Primary LLM failed: {str(e)}")
+                last_error = e
+            
+            try:
+                # Fallback to secondary LLM
+                logger.info("Attempting fallback LLM...")
+                return self.fallback_llm.chat(messages, **kwargs)
+                
+            except Exception as e:
+                logger.warning(f"Fallback LLM failed: {str(e)}")
+                last_error = e
+            
+            attempts += 1
+            time.sleep(1)  # Brief pause between retries
+        
+        # If we get here, both LLMs failed all retry attempts
+        raise Exception(f"All LLM attempts failed. Last error: {str(last_error)}")
+
+    def call(self, *args: Any, **kwargs: Any) -> str:
+        """
+        Implement call method for compatibility
+        """
+        start_time = time.time()
+        attempts = 0
+        last_error = None
+
+        while attempts < self.max_retries:
+            try:
+                # First try primary LLM
+                if time.time() - start_time < self.timeout:
+                    return self.primary_llm.call(*args, **kwargs)
+                
+            except Exception as e:
+                logger.warning(f"Primary LLM failed: {str(e)}")
+                last_error = e
+            
+            try:
+                # Fallback to secondary LLM
+                logger.info("Attempting fallback LLM...")
+                return self.fallback_llm.call(*args, **kwargs)
+                
+            except Exception as e:
+                logger.warning(f"Fallback LLM failed: {str(e)}")
+                last_error = e
+            
+            attempts += 1
+            time.sleep(1)  # Brief pause between retries
+        
+        # If we get here, both LLMs failed all retry attempts
+        raise Exception(f"All LLM attempts failed. Last error: {str(last_error)}")
+
+    def generate_text(self, prompt: str, **kwargs: Any) -> str:
+        """
+        Implement generate_text method for compatibility
+        """
+        return self.call(prompt, **kwargs)
+
+    def get_model_name(self) -> str:
+        """Return the model name for compatibility"""
+        return self.model
 
     def __getattr__(self, name: str) -> Any:
         """Delegate any unknown attributes/methods to the primary LLM"""
-        return getattr(self.primary_llm, name) 
+        return getattr(self.primary_llm, name)

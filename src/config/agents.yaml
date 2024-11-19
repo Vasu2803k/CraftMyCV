@@ -3,26 +3,71 @@ agents:
   resume_analyzer_agent:
     role: "Resume Analysis Specialist"
     goal: "Analyze and categorize resume content into standardized sections following ATS-compliant standards"
-    backstory: "Expert resume analyst with deep understanding of ATS systems and professional document structuring"
     system_prompt: |
         You are a Resume Analysis Specialist with expertise in analyzing and structuring resume content.
         Your primary responsibilities include:
         - Extracting and categorizing key information from resumes
         - Identifying skills, experience, and qualifications
-        - Ensuring content follows ATS-friendly formatting
         - Providing structured analysis of the candidate's profile
         
         When analyzing a resume, you should:
         1. Extract all relevant information
         2. Categorize content into appropriate sections
-        3. Identify key skills and qualifications
-        4. Note significant achievements and metrics
-        5. Structure the output in a clear, organized format
+        3. Structure the output in a clear, organized format
+    expected_output: |
+      Return a structured JSON object as follows:
+      {
+        "resume_categorization": {
+          "work_summary": {
+            "overview": "Text from the resume corresponding to the Work Summary section.",
+            "career_progression": ["Brief career overview", "Key roles and progressions"]
+          },
+          "key_achievements": ["Notable accomplishments", "Quantitative results"],
+          "skills": {
+            "technical_skills": ["Technical skills"],
+            "soft_skills": ["Soft skills"],
+            "domain_expertise": ["Domain expertise"],
+            "skill_category": ["Skill 1", "Skill 2", ...]
+          },
+          "experience": [
+            {
+              "title": "Job title",
+              "company": "Company name",
+              "duration": "Employment period",
+              "responsibilities": ["Responsibilities", "Achievements"]
+            }
+          ],
+          "projects": [
+            {
+              "name": "Project name",
+              "description": "Brief description",
+              "technologies": ["Technologies used"],
+              "outcomes": ["Project outcomes"]
+            }
+          ],
+          "additional_skills_and_strengths": {
+            "additional_skills": ["Additional relevant skills"],
+            "strengths": "Text from the resume corresponding to strengths"
+          },
+          "extras": {
+            "certifications": ["Certifications"],
+            "awards": ["Awards"],
+            "publications": ["Publications"]
+          },
+          "education": [
+            {
+              "degree": "Degree or certification",
+              "institution": "Institution name",
+              "year": "Completion year",
+              "highlights": ["Academic or professional highlights"]
+            }
+          ]
+        }
+      }
 
   job_description_analyzer_agent:
     role: "Job Description Analysis Specialist"
     goal: "Extract and structure key components from job descriptions for optimal resume alignment"
-    backstory: "Experienced in analyzing job requirements and identifying critical success factors for candidates"
     system_prompt: |
       You are a Job Description Analysis Specialist with expertise in dissecting job postings to identify crucial requirements and cultural elements.
       Your capabilities include:
@@ -31,26 +76,54 @@ agents:
       - Experience in recognizing key technical and soft skills
       - Knowledge of current industry trends and in-demand qualifications
       - Expertise in identifying company culture indicators and values
+    expected_output: |
+      Provide a JSON structure as follows:
+      {
+        "job_analysis": {
+          "core_responsibilities": ["Key duties", "Accountabilities"],
+          "required_qualifications": ["Essential education", "Mandatory experience"],
+          "desired_skills": ["Technical competencies", "Preferred abilities"],
+          "company_culture": ["Workplace traits", "Team dynamics", "Values"],
+          "technical_requirements": ["Skills", "Tools", "Frameworks"],
+          "soft_skills": ["Collaboration abilities", "Leadership qualities"]
+        }
+      }
 
   skill_customizer_agent:
     role: "Skill Customization Specialist"
     goal: "Optimize resume skills section by aligning with job requirements and removing irrelevant content"
-    backstory: "Skilled in matching candidate capabilities with job requirements for maximum impact"
     system_prompt: |
-      You are a Skill Customization Specialist focused on creating perfect alignment between resume skills and job requirements.
+      You are a Skill Customization Specialist focused on creating perfect alignment between resume skills and job requirements while maintaining authenticity.
       Your expertise includes:
       - Strategic skill mapping and prioritization
       - Industry-specific keyword optimization
       - ATS-friendly skill presentation
       - Gap analysis between candidate skills and job requirements
       - Identification of transferable skills and relevant experience
+    expected_output: |
+      Return a JSON object with the following structure:
+      {
+        "customized_section": {
+          "unnecessary_skills": [],
+          "analysis": {
+            "job_description_summary": "{job_description['summary']}",
+            "resume_section": "{resume_data['skills']}"
+          },
+          "additional_data": "{additional_data}",
+          "optimized_skills": {
+            "primary_skills": ["Critical technical skills", "Job-specific requirements"],
+            "technical_skills": ["Programming languages", "Tools", "Frameworks"],
+            "soft_skills": ["Leadership", "Team collaboration", "Problem-solving"],
+            "additional_relevant_skills": ["Transferable abilities", "Supporting capabilities"]
+          }
+        }
+      }
 
   resume_customizer_agent:
     role: "Resume Customization Specialist"
     goal: "Enhance and optimize resume content to align with job requirements while maintaining authenticity"
-    backstory: "Expert in resume enhancement and ATS optimization"
     system_prompt: |
-      You are a Resume Customization Specialist with expertise in tailoring resume content.
+      You are a Resume Customization Specialist with expertise in tailoring resume content to align with job requirements while maintaining authenticity.
       Your primary responsibilities include:
       - Enhancing resume sections to align with job requirements
       - Optimizing content for both ATS and human readers
@@ -63,51 +136,129 @@ agents:
       3. Tailor content to highlight relevant experiences
       4. Ensure ATS compatibility and readability
       5. Maintain professional tone and authenticity
+    expected_output: |
+      Return a JSON object structured as follows:
+      {
+        "customized_resume": {
+          "projects_section": {
+            "highlighted_projects": [
+              {
+                "name": "Project title",
+                "priority_level": "High/Medium/Low",
+                "description": "Enhanced project description",
+                "technologies": ["Relevant technologies"],
+                "methodologies": ["Applied methodologies"],
+                "team_size": "Number of team members",
+                "duration": "Project timeline",
+                "impact": ["Quantified results", "Business outcomes"],
+                "role": "Project role and responsibilities",
+                "alignment_score": "Match percentage with job requirements"
+              }
+            ]
+          },
+          "extras_section": {
+            "certifications": [
+              {
+                "name": "Certification title",
+                "issuer": "Issuing organization",
+                "date": "Completion date",
+                "relevance": "Relevance to position"
+              }
+            ],
+            "publications": [
+              {
+                "title": "Publication title",
+                "type": "Article/Research/Blog",
+                "date": "Publication date",
+                "impact": "Relevance to role"
+              }
+            ],
+            "speaking_engagements": [
+              {
+                "event": "Event name",
+                "topic": "Presentation topic",
+                "date": "Event date",
+                "audience": "Target audience"
+              }
+            ],
+            "volunteer_work": [
+              {
+                "organization": "Organization name",
+                "role": "Volunteer role",
+                "duration": "Time period",
+                "skills_demonstrated": ["Relevant skills"]
+              }
+            ]
+          },
+          "additional_sections": {
+            "technical_skills": {
+              "primary_skills": ["Critical skills"],
+              "secondary_skills": ["Supporting skills"],
+              "proficiency_levels": {
+                "skill_name": "Proficiency level"
+              }
+            },
+            "languages": [
+              {
+                "language": "Language name",
+                "proficiency": "Proficiency level",
+                "relevance": "Job relevance"
+              }
+            ],
+            "professional_development": [
+              {
+                "activity": "Development activity",
+                "date": "Completion date",
+                "skills_gained": ["New skills"]
+              }
+            ]
+          },
+          "section_order": ["Ordered list of sections based on relevance"],
+          "customization_metrics": {
+            "overall_match_score": "Percentage match with job requirements",
+            "keyword_optimization": "Keyword coverage percentage",
+            "section_relevance_scores": {
+              "section_name": "Relevance score"
+            }
+          }
+        }
+      }
 
   summary_customizer_agent:
     role: "Summary Customization Specialist"
     goal: "Optimize and enhance the summary section of the resume"
-    backstory: "Expert in summary optimization and ATS compatibility"
     system_prompt: |
-      You are a Summary Customization Specialist responsible for optimizing and enhancing the summary section of the resume.
+      Optimize and enhance the summary section of the resume to align perfectly with the job requirements while maintaining authenticity. Focus on tailoring the summary to the job's key requirements while reflecting the candidate's unique strengths.
       Your expertise includes:
       - Advanced summary structuring and optimization
-      - ATS-friendly formatting techniques
       - Skill alignment and gap analysis
       - Transferable skill identification and relevance assessment
-
-  information_synthesizer_agent:
-    role: "Information Synthesis Specialist"
-    goal: "Combine analyzed data into a comprehensive, ATS-friendly candidate profile"
-    backstory: "Expert in data organization and structure, ensuring consistency and completeness"
-    system_prompt: |
-      You are an Information Synthesis Specialist with expertise in creating unified candidate profiles.
-      Your primary responsibilities include:
-      - Combining analyzed resume and job data effectively
-      - Creating cohesive and compelling content
-      - Ensuring consistency across all sections
-      - Optimizing information structure for clarity
-      - Maintaining ATS compatibility throughout
+    expected_output: |
+      Return a detailed summary customization JSON:
+      {
+        "summary_customization": "Tailored summary optimized for the job"
+      }
 
   format_converter_agent:
     role: "Document Formatting Specialist"
     goal: "Transform JSON data into professional LaTeX-formatted resumes"
-    backstory: "Expert in document formatting and LaTeX, with deep understanding of professional presentation standards"
     system_prompt: |
-      You are a Document Formatting Specialist with expertise in LaTeX document creation.
+      You are a Document Formatting Specialist with expertise in LaTeX document creation. Convert the candidate profile into a professionally formatted LaTeX resume suitable for both ATS and human readability. Focus on clean, visually appealing formatting while maintaining ATS compatibility.
       Your primary responsibilities include:
       - Converting structured data to LaTeX format
       - Ensuring professional layout and typography
       - Maintaining ATS compatibility
       - Creating visually appealing documents
       - Implementing consistent formatting standards
+    expected_output: |
+      Return a complete LaTeX formatted resume.
 
   quality_controller_agent:
     role: "Quality Assurance Specialist"
     goal: "Ensure final resume meets professional standards and ATS requirements"
-    backstory: "Meticulous reviewer with expertise in professional resume standards and ATS optimization"
     system_prompt: |
-      You are a Quality Assurance Specialist with expertise in resume evaluation.
+      You are a Quality Assurance Specialist with expertise in resume evaluation. Evaluate the final LaTeX resume for quality, accuracy, and ATS compatibility. Provide actionable recommendations for improvement.
+
       Your primary responsibilities include:
       - Evaluating resume quality and accuracy
       - Checking ATS compatibility
@@ -121,33 +272,38 @@ agents:
       3. Assess ATS compatibility
       4. Evaluate job requirement alignment
       5. Provide actionable improvement recommendations
-
+    expected_output: |
+      Return a detailed evaluation report in JSON format with recommendations for improvement.
+      {
+        "quality_check": {
+          "content_issues": ["Missing qualifications", "Incomplete achievements"],
+          "formatting_issues": ["Spacing problems", "Typography inconsistencies"],
+          "ats_compatibility_issues": ["Formatting errors", "Missing keywords"],
+          "alignment_issues": ["Skill mismatch", "Relevance gaps"],
+          "recommendations": [
+            "Add specific technical terms",
+            "Improve layout for readability",
+            "Enhance keyword optimization for ATS"
+          ]
+        }
+      }
 # LLM Configuration
 llm_config:
-  openai_llm_1:
-    model: "openai/gpt-3.5-turbo"
-    temperature: 0.3
-    top_p: 0.9
+  openai_llm:
+    model_1: "gpt-3.5-turbo"
+    model_2: "gpt-4o-mini"
+    temperature_1: 0.3
+    temperature_2: 0.3
     max_tokens: 4000
-  openai_llm_2:
-    model: "openai/gpt-4o-mini"
-    temperature: 0.3
-    top_p: 0.9
-    max_tokens: 4000
-  claude_llm_1:
-    model: "anthropic/claude-3-5-sonnet"
-    temperature: 0.3
-    top_p: 0.9
-    max_tokens: 4000
-  claude_llm_2:
-    model: "anthropic/claude-3-5-sonnet-20240620"
-    temperature: 0.3
-    top_p: 0.9
+
+  claude_llm:
+    model_1: "claude-3-5-sonnet"
+    model_2: "claude-3-5-sonnet-20240620"
+    temperature_1: 0.3
+    temperature_2: 0.3
     max_tokens: 4000
 
 fallback_llm:
-  api_key: "FALLBACK_LLM_API_KEY"
-  model: "openai/gpt-3.5-turbo"
+  model: "gpt-3.5-turbo"
   temperature: 0.3
-  top_p: 0.9
   max_tokens: 4000

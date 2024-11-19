@@ -54,7 +54,3 @@ dependencies:
     - olefile
     # Embeddings & Models
     - huggingface-hub
-    
-    # Agent Frameworks
-    - crewai>=0.11.0
-    - crewai-tools
