@@ -20,46 +20,79 @@ agents:
         "resume_categorization": {
           "work_summary": {
             "overview": "Text from the resume corresponding to the Work Summary section.",
-            "career_progression": ["Brief career overview", "Key roles and progressions"]
+            "career_progression": [
+              "Brief career overview",
+              "Key roles and progressions"
+            ]
           },
-          "key_achievements": ["Notable accomplishments", "Quantitative results"],
+          "key_achievements": [
+            "Notable accomplishments",
+            "Quantitative results"
+          ],
           "skills": {
-            "technical_skills": ["Technical skills"],
-            "soft_skills": ["Soft skills"],
-            "domain_expertise": ["Domain expertise"],
-            "skill_category": ["Skill 1", "Skill 2", ...]
+            "technical_skills": [
+              "Technical skills"
+            ],
+            "soft_skills": [
+              "Soft skills"
+            ],
+            "domain_expertise": [
+              "Domain expertise"
+            ],
+            "skill_category": [
+              "Skill 1",
+              "Skill 2",
+              "..."
+            ]
           },
           "experience": [
             {
               "title": "Job title",
               "company": "Company name",
               "duration": "Employment period",
-              "responsibilities": ["Responsibilities", "Achievements"]
+              "responsibilities": [
+                "Responsibilities",
+                "Achievements"
+              ]
             }
           ],
           "projects": [
             {
               "name": "Project name",
               "description": "Brief description",
-              "technologies": ["Technologies used"],
-              "outcomes": ["Project outcomes"]
+              "technologies": [
+                "Technologies used"
+              ],
+              "outcomes": [
+                "Project outcomes"
+              ]
             }
           ],
           "additional_skills_and_strengths": {
-            "additional_skills": ["Additional relevant skills"],
+            "additional_skills": [
+              "Additional relevant skills"
+            ],
             "strengths": "Text from the resume corresponding to strengths"
           },
           "extras": {
-            "certifications": ["Certifications"],
-            "awards": ["Awards"],
-            "publications": ["Publications"]
+            "certifications": [
+              "Certifications"
+            ],
+            "awards": [
+              "Awards"
+            ],
+            "publications": [
+              "Publications"
+            ]
           },
           "education": [
             {
               "degree": "Degree or certification",
               "institution": "Institution name",
               "year": "Completion year",
-              "highlights": ["Academic or professional highlights"]
+              "highlights": [
+                "Academic or professional highlights"
+              ]
             }
           ]
         }
@@ -80,12 +113,32 @@ agents:
       Provide a JSON structure as follows:
       {
         "job_analysis": {
-          "core_responsibilities": ["Key duties", "Accountabilities"],
-          "required_qualifications": ["Essential education", "Mandatory experience"],
-          "desired_skills": ["Technical competencies", "Preferred abilities"],
-          "company_culture": ["Workplace traits", "Team dynamics", "Values"],
-          "technical_requirements": ["Skills", "Tools", "Frameworks"],
-          "soft_skills": ["Collaboration abilities", "Leadership qualities"]
+          "core_responsibilities": [
+            "Key duties",
+            "Accountabilities"
+          ],
+          "required_qualifications": [
+            "Essential education",
+            "Mandatory experience"
+          ],
+          "desired_skills": [
+            "Technical competencies",
+            "Preferred abilities"
+          ],
+          "company_culture": [
+            "Workplace traits",
+            "Team dynamics",
+            "Values"
+          ],
+          "technical_requirements": [
+            "Skills",
+            "Tools",
+            "Frameworks"
+          ],
+          "soft_skills": [
+            "Collaboration abilities",
+            "Leadership qualities"
+          ]
         }
       }
 
@@ -111,10 +164,24 @@ agents:
           },
           "additional_data": "{additional_data}",
           "optimized_skills": {
-            "primary_skills": ["Critical technical skills", "Job-specific requirements"],
-            "technical_skills": ["Programming languages", "Tools", "Frameworks"],
-            "soft_skills": ["Leadership", "Team collaboration", "Problem-solving"],
-            "additional_relevant_skills": ["Transferable abilities", "Supporting capabilities"]
+            "primary_skills": [
+              "Critical technical skills",
+              "Job-specific requirements"
+            ],
+            "technical_skills": [
+              "Programming languages",
+              "Tools",
+              "Frameworks"
+            ],
+            "soft_skills": [
+              "Leadership",
+              "Team collaboration",
+              "Problem-solving"
+            ],
+            "additional_relevant_skills": [
+              "Transferable abilities",
+              "Supporting capabilities"
+            ]
           }
         }
       }
@@ -236,7 +303,13 @@ agents:
     expected_output: |
       Return a detailed summary customization JSON:
       {
-        "summary_customization": "Tailored summary optimized for the job"
+        "summary_customization": {
+          "tailored_summary": "Tailored summary optimized for the job",
+          "optimization_metrics": {
+            "keyword_match": "Percentage of job keywords covered",
+            "relevance_score": "Overall relevance to position"
+          }
+        }
       }
 
   format_converter_agent:

@@ -14,7 +14,7 @@ class FallbackLLM(LLM):
         primary_llm: LLM,
         fallback_llm: LLM,
         timeout: int = 30,
-        max_retries: int = 3
+        max_retries: int = 5
     ):
         # Initialize parent class
         super().__init__(
