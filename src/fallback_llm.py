@@ -19,10 +19,8 @@ class FallbackLLM(LLM):
         # Initialize parent class
         super().__init__(
             model=primary_llm.model,
-            api_key=primary_llm.api_key,
             temperature=primary_llm.temperature,
-            max_tokens=primary_llm.max_tokens,
-            top_p=primary_llm.top_p
+            max_tokens=primary_llm.max_tokens
         )
         
         self.primary_llm = primary_llm

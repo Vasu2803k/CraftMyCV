@@ -3,7 +3,12 @@ import traceback
 import os
 import json
 import dotenv
-from llama_index.core.workflow import Workflow, step, StartEvent, StopEvent, Context
+from llama_index.core.workflow import (
+    Workflow, 
+    step, 
+    Event,
+    Context
+)
 from llama_index.llms.openai import OpenAI
 from llama_index.llms.anthropic import Anthropic
 from llama_index.core.llms import LLM
@@ -13,12 +18,13 @@ from pathlib import Path
 import logging
 import argparse
 from tools.text_extractor_tool import TextExtractionTool
+import asyncio
+
 # Ignore warnings
 warnings.filterwarnings("ignore")
 # Load environment variables
 dotenv.load_dotenv()
 
-from tools.text_extractor_tool import TextExtractionTool
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -36,7 +42,7 @@ async def validate_file_path(file_path: str) -> Path:
     return path
 
 async def save_output(output: dict, output_path: str):
-    """Save the crew's output to a file"""
+    """Save the output to a file"""
     try:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
@@ -46,19 +52,25 @@ async def save_output(output: dict, output_path: str):
         logger.error(f"Stack trace:\n{traceback.format_exc()}")
         raise
 
-# CraftMyCVWorkflow class
 class CraftMyCVWorkflow(Workflow):
     def __init__(self):
         super().__init__()
+        self.steps = [
+            self.initialize_workflow,
+            self.analyze_resume,
+            self.analyze_job_description,
+            self.customize_skills,
+            self.customize_resume,
+            self.customize_summary,
+            self.convert_format,
+            self.quality_check
+        ]
         try:
-            # Load configurations using correct paths relative to src directory
+            # Load configurations
             with open('src/config/agents.yaml', 'r') as f:
                 agent_config_yaml = yaml.safe_load(f)
-            # Load agents configuration
             self.agent_config = agent_config_yaml['agents']
-            # Load LLM configuration
             llm_config = agent_config_yaml['llm_config']
-            # Load fallback LLM configuration
             fallback_config = agent_config_yaml['fallback_llm']
             
             # Validate environment variables
@@ -66,52 +78,42 @@ class CraftMyCVWorkflow(Workflow):
             claude_api_key = os.getenv('CLAUDE_API_KEY')
             fallback_api_key = os.getenv('FALLBACK_LLM_API_KEY')
             
-            if not openai_api_key:
-                raise ValueError("OPENAI_API_KEY environment variable is not set")
-            if not claude_api_key:
-                raise ValueError("CLAUDE_API_KEY environment variable is not set")
-            if not fallback_api_key:
-                raise ValueError("FALLBACK_LLM_API_KEY environment variable is not set")
+            if not all([openai_api_key, claude_api_key, fallback_api_key]):
+                raise ValueError("Missing required API keys in environment variables")
             
-            # Create primary OpenAI LLMs
+            # Initialize LLMs
             self.openai_llm1 = OpenAI(
                 model=llm_config['openai_llm']['model_1'],
                 api_key=openai_api_key,
-                temperature=llm_config['openai_llm']['temperature_1'],
-                max_tokens=llm_config['openai_llm']['max_tokens']
+                temperature=llm_config['openai_llm']['temperature_1']
             )
             
             self.openai_llm2 = OpenAI(
                 model=llm_config['openai_llm']['model_2'],
                 api_key=openai_api_key,
-                temperature=llm_config['openai_llm']['temperature_2'],
-                max_tokens=llm_config['openai_llm']['max_tokens']
+                temperature=llm_config['openai_llm']['temperature_2']
             )
             
-            # Create primary Claude LLMs
             self.claude_llm1 = Anthropic(
                 model=llm_config['claude_llm']['model_1'],
                 api_key=claude_api_key,
-                temperature=llm_config['claude_llm']['temperature_1'],
-                max_tokens=llm_config['claude_llm']['max_tokens']
+                temperature=llm_config['claude_llm']['temperature_1']
             )
             
             self.claude_llm2 = Anthropic(
                 model=llm_config['claude_llm']['model_2'],
                 api_key=claude_api_key,
-                temperature=llm_config['claude_llm']['temperature_2'],
-                max_tokens=llm_config['claude_llm']['max_tokens']
+                temperature=llm_config['claude_llm']['temperature_2']
             )
             
-            # Create fallback LLM (using OpenAI as fallback)
+            # Initialize fallback LLM
             self.fallback_llm = OpenAI(
                 model=fallback_config['model'],
                 api_key=fallback_api_key,
-                temperature=fallback_config['temperature'],
-                max_tokens=fallback_config['max_tokens']
+                temperature=fallback_config['temperature']
             )
             
-            # Create FallbackLLM instances for each primary LLM
+            # Create FallbackLLM instances
             self.openai_llm1_with_fallback = FallbackLLM(
                 primary_llm=self.openai_llm1,
                 fallback_llm=self.fallback_llm,
@@ -136,15 +138,10 @@ class CraftMyCVWorkflow(Workflow):
                 timeout=30
             )
 
-        except FileNotFoundError as e:
-            print(f"Stack trace:\n{traceback.format_exc()}")
-            raise ValueError(f"Configuration file not found: {str(e)}")
-        except yaml.YAMLError as e:
-            print(f"Stack trace:\n{traceback.format_exc()}")
-            raise ValueError(f"Invalid YAML configuration: {str(e)}")
         except Exception as e:
-            print(f"Stack trace:\n{traceback.format_exc()}")
-            raise ValueError(f"Failed to load configuration: {str(e)}")
+            logger.error(f"Failed to initialize workflow: {str(e)}")
+            logger.error(f"Stack trace:\n{traceback.format_exc()}")
+            raise
 
     def _build_agent_prompt(self, agent_config, **inputs):
         """Helper method to build prompts for agents"""
@@ -159,185 +156,238 @@ class CraftMyCVWorkflow(Workflow):
 
         Input Data:
         """
-        # Add any input data to the prompt
         for key, value in inputs.items():
             prompt += f"\n{key}: {value}"
             
         return prompt
 
-    @step()
-    async def analyze_resume(self, ev: StartEvent, ctx: Context) -> StopEvent:
+    @step
+    async def initialize_workflow(self, event: Event) -> Event:
+        """Initialize workflow context with all necessary attributes"""
+        ctx = Context(workflow=self)
+        
+        # Initialize metrics and state
+        ctx.steps_completed = 0
+        ctx.tokens_used = 0
+        ctx.total_steps = 7
+        ctx.workflow_state = "initialized"
+        ctx.errors = []
+        
+        # Initialize workflow data containers
+        ctx.resume_text = event.data.get("resume_text")
+        ctx.job_description = event.data.get("job_description")
+        
+        # Initialize result containers
+        ctx.resume_analysis = None
+        ctx.job_analysis = None
+        ctx.skill_customization = None
+        ctx.resume_customization = None
+        ctx.summary_customization = None
+        ctx.latex_resume = None
+        ctx.quality_check_result = None
+        
+        return Event(data={"context": ctx})
+
+    @step
+    async def analyze_resume(self, event: Event) -> Event:
         """Resume analysis step using the resume analyzer agent"""
         try:
-            resume_text = ev.data.get("resume_text")
+            ctx = event.data["context"]
+            ctx.workflow_state = "analyzing_resume"
             agent_config = self.agent_config['resume_analyzer_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                resume_text=resume_text
+                resume_text=ctx.resume_text
             )
             
             response = await self.openai_llm1_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.resume_analysis = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Resume analysis failed: {str(e)}")
+            ctx.errors.append(f"Resume analysis failed: {str(e)}")
             raise
 
-    @step()
-    async def analyze_job_description(self, ev: StartEvent, ctx: Context) -> StopEvent:
+    @step
+    async def analyze_job_description(self, event: Event) -> Event:
         """Job description analysis step"""
         try:
-            job_description = ev.data.get("job_description")
+            ctx = event.data["context"]
+            ctx.workflow_state = "analyzing_job_description"
             agent_config = self.agent_config['job_description_analyzer_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                job_description=job_description
+                job_description=ctx.job_description
             )
             
             response = await self.claude_llm1_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.job_analysis = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Job description analysis failed: {str(e)}")
+            ctx.errors.append(f"Job description analysis failed: {str(e)}")
             raise
 
-    @step()
-    async def customize_skills(self, ev: StopEvent, ctx: Context) -> StopEvent:
+    @step
+    async def customize_skills(self, event: Event) -> Event:
         """Skill customization step"""
         try:
-            # Get data from previous steps' results
-            resume_analysis = ev.data.get("resume_analysis").result
-            job_analysis = ev.data.get("job_analysis").result
+            ctx = event.data["context"]
+            ctx.workflow_state = "customizing_skills"
             agent_config = self.agent_config['skill_customizer_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                resume_skills=json.dumps(resume_analysis.get('resume_categorization', {}).get('skills', {})),
-                job_requirements=json.dumps(job_analysis.get('job_analysis', {}))
+                resume_skills=json.dumps(ctx.resume_analysis.get('resume_categorization', {}).get('skills', {})),
+                job_requirements=json.dumps(ctx.job_analysis.get('job_analysis', {}))
             )
             
             response = await self.openai_llm2_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.skill_customization = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Skill customization failed: {str(e)}")
+            ctx.errors.append(f"Skill customization failed: {str(e)}")
             raise
 
-    @step()
-    async def customize_resume(self, ev: StopEvent, ctx: Context) -> StopEvent:
+    @step
+    async def customize_resume(self, event: Event) -> Event:
         """Resume customization step"""
         try:
-            # Get data from previous steps' results
-            resume_analysis = ev.data.get("resume_analysis").result
-            job_analysis = ev.data.get("job_analysis").result
-            skill_customization = ev.data.get("skill_customization").result
+            ctx = event.data["context"]
+            ctx.workflow_state = "customizing_resume"
             agent_config = self.agent_config['resume_customizer_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                resume_analysis=json.dumps(resume_analysis),
-                job_analysis=json.dumps(job_analysis),
-                skill_customization=json.dumps(skill_customization)
+                resume_analysis=json.dumps(ctx.resume_analysis),
+                job_analysis=json.dumps(ctx.job_analysis),
+                skill_customization=json.dumps(ctx.skill_customization)
             )
             
             response = await self.claude_llm2_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.resume_customization = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Resume customization failed: {str(e)}")
+            ctx.errors.append(f"Resume customization failed: {str(e)}")
             raise
 
-    @step()
-    async def customize_summary(self, ev: StopEvent, ctx: Context) -> StopEvent:
+    @step
+    async def customize_summary(self, event: Event) -> Event:
         """Summary customization step"""
         try:
-            # Get data from previous steps' results
-            resume_customization = ev.data.get("resume_customization").result
-            job_analysis = ev.data.get("job_analysis").result
+            ctx = event.data["context"]
+            ctx.workflow_state = "customizing_summary"
             agent_config = self.agent_config['summary_customizer_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                resume_customization=json.dumps(resume_customization),
-                job_analysis=json.dumps(job_analysis)
+                resume_customization=json.dumps(ctx.resume_customization),
+                job_analysis=json.dumps(ctx.job_analysis)
             )
             
             response = await self.openai_llm1_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.summary_customization = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Summary customization failed: {str(e)}")
+            ctx.errors.append(f"Summary customization failed: {str(e)}")
             raise
 
-    @step()
-    async def convert_format(self, ev: StopEvent, ctx: Context) -> StopEvent:
+    @step
+    async def convert_format(self, event: Event) -> Event:
         """Format conversion step"""
         try:
-            # Get data from previous steps' results
-            customized_resume = ev.data.get("customized_resume").result
+            ctx = event.data["context"]
+            ctx.workflow_state = "converting_format"
             agent_config = self.agent_config['format_converter_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                customized_resume=json.dumps(customized_resume)
+                customized_resume=json.dumps(ctx.resume_customization)
             )
             
             response = await self.claude_llm1_with_fallback.acomplete(prompt)
-            ctx.metrics["steps_completed"] += 1
+            ctx.latex_resume = response.text
             
-            return StopEvent(result=response.text)  # Return LaTeX formatted string
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            return Event(data={"context": ctx})
         except Exception as e:
-            print(f"Format conversion failed: {str(e)}")
+            ctx.errors.append(f"Format conversion failed: {str(e)}")
             raise
 
-    @step()
-    async def quality_check(self, ev: StopEvent, ctx: Context) -> StopEvent:
+    @step
+    async def quality_check(self, event: Event) -> Event:
         """Quality control step"""
         try:
-            # Get data from previous steps' results
-            latex_resume = ev.data.get("latex_resume").result
-            job_analysis = ev.data.get("job_analysis").result
+            ctx = event.data["context"]
+            ctx.workflow_state = "quality_check"
             agent_config = self.agent_config['quality_controller_agent']
             
             prompt = self._build_agent_prompt(
                 agent_config,
-                latex_resume=latex_resume,
-                job_analysis=json.dumps(job_analysis)
+                latex_resume=ctx.latex_resume,
+                job_analysis=json.dumps(ctx.job_analysis)
             )
             
             response = await self.claude_llm2_with_fallback.acomplete(prompt)
-            result = json.loads(response.text)
-            ctx.metrics["steps_completed"] += 1
+            ctx.quality_check_result = json.loads(response.text)
             
-            return StopEvent(result=result)
+            ctx.steps_completed += 1
+            if hasattr(response, 'usage'):
+                ctx.tokens_used += response.usage.total_tokens
+            
+            # Prepare final output
+            final_output = {
+                "resume_analysis": ctx.resume_analysis,
+                "job_analysis": ctx.job_analysis,
+                "skill_customization": ctx.skill_customization,
+                "resume_customization": ctx.resume_customization,
+                "summary_customization": ctx.summary_customization,
+                "latex_resume": ctx.latex_resume,
+                "quality_check": ctx.quality_check_result,
+                "workflow_metrics": {
+                    "steps_completed": ctx.steps_completed,
+                    "total_steps": ctx.total_steps,
+                    "tokens_used": ctx.tokens_used,
+                    "final_state": ctx.workflow_state,
+                    "errors": ctx.errors
+                }
+            }
+            
+            ctx.workflow_state = "completed"
+            return Event(data=final_output)
         except Exception as e:
-            print(f"Quality check failed: {str(e)}")
+            ctx.errors.append(f"Quality check failed: {str(e)}")
             raise
 
-    @step()
-    async def initialize_workflow(self, ev: StartEvent) -> Context:
-        # Initialize metrics in Context
-        return Context(
-            metrics={
-                "steps_completed": 0,
-                "tokens_used": 0
-            }
-        )
-
 async def main():
-    # Set up argument parser
     parser = argparse.ArgumentParser(description='Create a customized CV using AI agents')
     parser.add_argument(
         '--resume',
@@ -364,7 +414,7 @@ async def main():
         # Validate resume file path
         resume_path = await validate_file_path(args.resume)
         
-        # Handle job description (either file or direct text)
+        # Handle job description
         job_description = ""
         if Path(args.job_description).exists():
             with open(args.job_description, 'r', encoding='utf-8') as f:
@@ -372,46 +422,55 @@ async def main():
         else:
             job_description = args.job_description
 
-        # Initialize text extractor and get resume text
+        # Extract resume text
         logger.info("Extracting text from resume...")
         text_extractor = TextExtractionTool()
-        resume_text = await text_extractor._run(str(resume_path))
+        resume_text = text_extractor._run(str(resume_path))
 
-        # Initialize workflow and context
+        # Initialize workflow
         logger.info("Initializing CV creation workflow...")
         workflow = CraftMyCVWorkflow()
-    
-        # Initialize workflow with input data
-        start_event = StartEvent(data={
+        
+        # Create event with input data
+        event = Event(data={
             "resume_text": resume_text,
             "job_description": job_description
         })
-        ctx = await workflow.initialize_workflow(start_event)
         
-        # Execute workflow steps
-        final_result = await workflow.run(start_event, ctx)
+        # Run each step in sequence
+        current_event = event
+        for step in workflow.steps:
+            logger.info(f"Executing step: {step.__name__}")
+            try:
+                current_event = await step(current_event)
+            except Exception as e:
+                logger.error(f"Step {step.__name__} failed: {str(e)}")
+                raise
+        
+        final_result = current_event
+        
         # Save the output
         logger.info("CV creation completed. Saving results...")
-        await save_output(final_result.result, args.output)
+        await save_output(final_result.data, args.output)
 
         # Log completion metrics
-        logger.info(f"Total steps completed: {ctx.metrics['steps_completed']}")
-        logger.info(f"Total tokens used: {ctx.metrics['tokens_used']}")
+        logger.info(f"Workflow completed successfully")
+        if 'workflow_metrics' in final_result.data:
+            metrics = final_result.data['workflow_metrics']
+            logger.info(f"Total steps completed: {metrics['steps_completed']}")
+            logger.info(f"Total tokens used: {metrics['tokens_used']}")
+            
+            if metrics['errors']:
+                logger.warning("Errors occurred during processing:")
+                for error in metrics['errors']:
+                    logger.warning(f"- {error}")
+        
         logger.info("Process completed successfully!")
 
-    except FileNotFoundError as e:
-        logger.error(f"File error: {str(e)}")
-        logger.error(f"Stack trace:\n{traceback.format_exc()}")
-        raise SystemExit(1)
-    except ValueError as e:
-        logger.error(f"Validation error: {str(e)}")
-        logger.error(f"Stack trace:\n{traceback.format_exc()}")
-        raise SystemExit(1)
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         logger.error(f"Stack trace:\n{traceback.format_exc()}")
         raise SystemExit(1)
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
