@@ -979,7 +979,8 @@ class CraftMyCVWorkflow(Workflow):
             resume_data = ctx.resume_analysis.get('resume_analysis', {})
             personal_info = resume_data.get('personal_info', {})
             full_name = personal_info.get('name', 'unnamed').lower().replace(' ', '_')
-            role = ctx.job_analysis.get('job_analysis', {}).get('job_title', 'role').lower().replace(' ', '_')
+            position_overview = ctx.job_analysis.get('job_analysis', {}).get('position_overview', {})
+            role = position_overview.get('title', 'role').lower().replace(' ', '_')
             
             # Create output directory if it doesn't exist
             output_dir = Path('data/output')
