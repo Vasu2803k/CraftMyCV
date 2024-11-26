@@ -1,438 +1,463 @@
 {
   "resume_analysis": {
-    "resume_categorization": {
-      "work_summary": {
-        "overview": "Dynamic and innovative Data Scientist with over 3 years of experience at NTT, ranked 55th among the Global 500 companies, specializing in leveraging advanced analytics, machine learning, and AI-driven solutions to drive actionable insights and develop scalable, impactful solutions. With a robust background in statistical analysis, NLP, machine learning model development, and I excel in extracting valuable insights from complex datasets and addressing business challenges through web scraping, data-driven strategies. My expertise encompasses a broad spectrum of technologies, including Python, machine learning frameworks (e.g., scikit-learn, TensorFlow, PyTorch), and data manipulation libraries (Pandas, NumPy), enabling me to effectively analyze data and implement sophisticated models.",
-        "career_progression": [
-          "Brief career overview",
-          "Key roles and progressions"
-        ]
-      },
-      "key_achievements": [
-        "Collaborated with the Ministry of Internal Affairs and Communication, Japan, a government agency to develop a machine learning-based cybersecurity system, achieving an 87% accuracy rate in identifying threats, thereby significantly enhancing national cybersecurity infrastructure impacting over 40% of Japan's population.",
-        "Excelled in applying NLP and XGBoost to enhance malicious IP detection by 4%. Led the creation of 3 machine learning-based malicious databases, achieving a remarkable 99.97% accuracy rate.",
-        "Led a project that leveraged satellite imagery and machine learning to identify landslides, improving the accuracy of landslide detection by 10%.",
-        "Expert in dissecting financial data to reveal key patterns and trends using advanced techniques like PCA and probabilistic autoencoders. Enhanced market trend predictability and risk assessment while fortifying data infrastructure through sophisticated SQL queries and robust ETL processes.",
-        "Diverse project portfolio covers classification, time series analysis, NLP, computer vision, and web development, with a keen focus on interdisciplinary applications. Notable projects include utilizing AI for landslide identification and integrating fluid dynamics with structural analysis for designing earthquake-resistant buildings."
-      ],
-      "skills": {
-        "technical_skills": [
-          "Python",
-          "SQL",
-          "Matlab",
-          "SSH",
-          "Matlab Engine",
-          "Dask",
-          "PySpark",
-          "Databricks",
-          "Cuda"
-        ],
-        "soft_skills": [
-          "Strategic Communication",
-          "Complex Problem-solving",
-          "Analytical Thinking",
-          "Project Management"
-        ],
-        "domain_expertise": [
-          "Cybersecurity",
-          "Data Science",
-          "Machine Learning",
-          "AI",
-          "Big Data Analytics"
-        ],
-        "skill_category": [
-          "Machine Learning",
-          "DL & NLP",
-          "DevOps",
-          "Data Analysis & Visualization",
-          "Big Data Technologies"
-        ]
-      },
-      "experience": [
-        {
-          "title": "Data Scientist and Software Engineer",
-          "company": "NTT Advanced Technology, Kawasaki, Japan",
-          "duration": "2021 – Present",
-          "responsibilities": [
-            "Developed and implemented a machine learning-based system for analyzing and visualizing network traffic data, resulting in the detection of abnormal and malicious communications with an accuracy of 87% using Pyspark.",
-            "Developed a 3 cutting-edge malicious database utilizing machine learning techniques to improve algorithmic performance, achieving an accuracy rate of 99.97%.",
-            "Enhanced system efficiency by 2% through innovative feature development in Python, SQL, PowerBI, and Tableau.",
-            "Optimized software multiprocessing capabilities by upgrading and streamlining existing modules, resulting in increased efficiency and performance and reducing time of operations on average by 8%."
-          ]
-        },
-        {
-          "title": "Software Development Analyst",
-          "company": "NTT Data, Pune India",
-          "duration": "2020 - 2021",
-          "responsibilities": [
-            "Developed and implemented a full-stack web application, serving as a Q&A forum for a product, featuring user authentication, question asking, liking, and answering functionality.",
-            "Worked closely with business users and business analysts to understand functionality and propose creative solutions to meet business needs.",
-            "Utilized Agile Software Development methodologies and honed skills in accurately estimating work time for user stories.",
-            "Completed software development lifecycle from requirement analysis to test planning, test case development and test execution."
-          ]
-        }
-      ],
-      "projects": [
-        {
-          "name": "Identification of Critical Slopes using Satellite Imagery, GIS and Machine Learning",
-          "description": "Developed a Landslide Susceptibility Map (LSM) using AI and Geographic Information System (GIS) technologies to minimize the impact of landslides on infrastructure and human life. This project has the potential to save lives and reduce damage to property.",
-          "technologies": [
-            "AI",
-            "GIS",
-            "Machine Learning"
-          ],
-          "outcomes": [
-            "Minimized impact of landslides on infrastructure and human life"
-          ]
-        },
-        {
-          "name": "Elevating E-commerce Performance through Data Science and Strategic Marketing",
-          "description": "Elevated an emerging e-commerce fashion platform's performance through data-driven strategies. Achieved remarkable results including a 300% surge in site visitors, 2.3x sales growth, and a 20-22% reduction in churn rate, showcasing expertise in data science and strategic marketing.",
-          "technologies": [
-            "Data Science",
-            "Strategic Marketing"
-          ],
-          "outcomes": [
-            "300% surge in site visitors",
-            "2.3x sales growth",
-            "20-22% reduction in churn rate"
-          ]
-        },
-        {
-          "name": "Classification and Recognition Projects",
-          "description": "Executed various projects across diverse domains, including: Image Classification, Image Recognition, Object Localization, Facial Expression Recognition, Face Detection, Cascade Classifier",
-          "technologies": [
-            "Image Processing",
-            "Machine Learning"
-          ],
-          "outcomes": [
-            "Successful execution of diverse projects"
-          ]
-        },
-        {
-          "name": "NLP based Data-Driven Text Classification",
-          "description": "Crafted an end-to-end NLP and machine learning project, utilizing movie genre data to showcase expertise in Natural Language Processing and enhance text-based classification.",
-          "technologies": [
-            "NLP",
-            "Machine Learning"
-          ],
-          "outcomes": [
-            "Enhanced text-based classification"
-          ]
-        },
-        {
-          "name": "Time Series Analysis",
-          "description": "Developed and deployed a time series analysis model for website traffic and stock price forecasting on cloud platforms (GCP), utilizing LSTM models and deep learning autoencoders. This involved leveraging cloud computing resources for handling large-scale data and complex computations.",
-          "technologies": [
-            "Time Series Analysis",
-            "Deep Learning",
-            "LSTM Models",
-            "Cloud Computing"
-          ],
-          "outcomes": [
-            "Accurate forecasting of website traffic and stock prices"
-          ]
-        }
-      ],
-      "additional_skills_and_strengths": {
-        "additional_skills": [
-          "Cross-Functional Collaboration",
-          "Strategic Problem Solver",
-          "User Experience and Engagement",
-          "Data Visualization",
-          "Advanced Neural Network Techniques",
-          "Recommendation Systems"
-        ],
-        "strengths": "Passionate about staying up to date with the latest advancements in the field and continuously improving skills. Engages in independent projects, showcasing proactive commitment to ongoing skill development and practical application of knowledge."
-      },
-      "extras": {
-        "certifications": [
-          "Certified ML Expert: 8+ credentials in DL incl. regression, classification, & CNNs. See full list on LinkedIn: Licenses & certifications | Kartik Pardeshi | LinkedIn"
-        ],
-        "awards": [],
-        "publications": []
-      },
-      "education": [
-        {
-          "degree": "Post-Graduation (Masters)",
-          "institution": "Indian Institute of Technology Hyd (IITH)",
-          "year": "2018 - 2020",
-          "highlights": [
-            "Demonstrated expertise in big data handling",
-            "Skilled in the complete machine learning lifecycle",
-            "Profound knowledge in big data technologies"
-          ]
-        },
-        {
-          "degree": "Graduation",
-          "institution": "Pune University",
-          "year": "2014 -2018",
-          "highlights": []
-        }
+    "work_summary": {
+      "overview": "Dynamic and innovative Data Scientist with over 3 years of experience at NTT, ranked 55th among the Global 500 companies, specializing in leveraging advanced analytics, machine learning, and AI-driven solutions to drive actionable insights and develop scalable, impactful solutions. With a robust background in statistical analysis, NLP, machine learning model development, and I excel in extracting valuable insights from complex datasets and addressing business challenges through web scraping, data-driven strategies. My expertise encompasses a broad spectrum of technologies, including Python, machine learning frameworks (e.g., scikit-learn, TensorFlow, PyTorch), and data manipulation libraries (Pandas, NumPy), enabling me to effectively analyze data and implement sophisticated models.",
+      "career_progression": [
+        "Brief career overview",
+        "Key roles and progressions"
       ]
-    }
-  },
-  "job_analysis": {
-    "job_analysis": {
-      "core_responsibilities": [
-        "Work with cloud platforms (GCP, AWS, Azure) to deploy AI models and ensure scalable AI architecture",
-        "Proficiency in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
-        "Strong analytical and problem-solving skills with experience handling large datasets"
-      ],
-      "required_qualifications": [
-        "Data Scientist with experience in AI and GCP cloud",
-        "Experience with cloud computing platforms like AWS, Azure, or GCP"
-      ],
-      "desired_skills": [],
-      "company_culture": [],
-      "technical_requirements": [
+    },
+    "key_achievements": [
+      "Collaborated with the Ministry of Internal Affairs and Communication, Japan, a government agency to develop a machine learning-based cybersecurity system, achieving an 87% accuracy rate in identifying threats, thereby significantly enhancing national cybersecurity infrastructure impacting over 40% of Japan's population.",
+      "Excelled in applying NLP and XGBoost to enhance malicious IP detection by 4%. Led the creation of 3 machine learning-based malicious databases, achieving a remarkable 99.97% accuracy rate.",
+      "Led a project that leveraged satellite imagery and machine learning to identify landslides, improving the accuracy of landslide detection by 10%.",
+      "Expert in dissecting financial data to reveal key patterns and trends using advanced techniques like PCA and probabilistic autoencoders. Enhanced market trend predictability and risk assessment while fortifying data infrastructure through sophisticated SQL queries and robust ETL processes.",
+      "Diverse project portfolio covers classification, time series analysis, NLP, computer vision, and web development, with a keen focus on interdisciplinary applications. Notable projects include utilizing AI for landslide identification and integrating fluid dynamics with structural analysis for designing earthquake-resistant buildings."
+    ],
+    "skills": {
+      "technical_skills": [
         "Python",
-        "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn)",
-        "Cloud platforms (GCP, AWS, Azure)"
-      ],
-      "soft_skills": [
-        "Analytical skills",
-        "Problem-solving skills"
-      ]
-    }
-  },
-  "skill_customization": {
-    "customized_section": {
-      "unnecessary_skills": [
+        "SQL",
         "Matlab",
         "SSH",
         "Matlab Engine",
         "Dask",
+        "PySpark",
         "Databricks",
         "Cuda"
       ],
-      "analysis": {
-        "job_description_summary": "Work with cloud platforms (GCP, AWS, Azure) to deploy AI models and ensure scalable AI architecture. Proficiency in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.). Strong analytical and problem-solving skills with experience handling large datasets.",
-        "resume_section": [
-          "Python",
-          "SQL",
-          "Matlab",
-          "SSH",
-          "Matlab Engine",
-          "Dask",
-          "PySpark",
-          "Databricks",
-          "Cuda",
-          "Strategic Communication",
-          "Complex Problem-solving",
-          "Analytical Thinking",
-          "Project Management",
-          "Cybersecurity",
-          "Data Science",
-          "Machine Learning",
-          "AI",
-          "Big Data Analytics",
-          "Machine Learning",
-          "DL & NLP",
-          "DevOps",
-          "Data Analysis & Visualization",
-          "Big Data Technologies"
+      "soft_skills": [
+        "Strategic Communication",
+        "Complex Problem-solving",
+        "Analytical Thinking",
+        "Project Management"
+      ],
+      "domain_expertise": [
+        "Cybersecurity",
+        "Financial Data Analytics",
+        "Big Data Technologies"
+      ],
+      "skill_category": [
+        "Machine Learning",
+        "DL & NLP",
+        "DevOps",
+        "Data Analysis & Visualization",
+        "Big Data Technologies"
+      ]
+    },
+    "experience": [
+      {
+        "title": "Data Scientist and Software Engineer",
+        "company": "NTT Advanced Technology, Kawasaki, Japan",
+        "duration": "2021 – Present",
+        "responsibilities": [
+          "Developed and implemented a machine learning-based system for analyzing and visualizing network traffic data, resulting in the detection of abnormal and malicious communications with an accuracy of 87% using Pyspark.",
+          "Developed a 3 cutting-edge malicious database utilizing machine learning techniques to improve algorithmic performance, achieving an accuracy rate of 99.97%.",
+          "Enhanced system efficiency by 2% through innovative feature development in Python, SQL, PowerBI, and Tableau.",
+          "Optimized software multiprocessing capabilities by upgrading and streamlining existing modules, resulting in increased efficiency and performance and reducing time of operations on average by 8%."
         ]
       },
-      "additional_data": "Candidate has strong experience in data science and machine learning, with a focus on Python and relevant libraries.",
-      "optimized_skills": {
+      {
+        "title": "Software Development Analyst",
+        "company": "NTT Data, Pune India",
+        "duration": "2020 - 2021",
+        "responsibilities": [
+          "Developed and implemented a full-stack web application, serving as a Q&A forum for a product, featuring user authentication, question asking, liking, and answering functionality.",
+          "Worked closely with business users and business analysts to understand functionality and propose creative solutions to meet business needs.",
+          "Utilized Agile Software Development methodologies and honed skills in accurately estimating work time for user stories.",
+          "Completed software development lifecycle from requirement analysis to test planning, test case development and test execution."
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "name": "Identification of Critical Slopes using Satellite Imagery, GIS and Machine Learning",
+        "description": "Developed a Landslide Susceptibility Map (LSM) using AI and Geographic Information System (GIS) technologies to minimize the impact of landslides on infrastructure and human life. This project has the potential to save lives and reduce damage to property.",
+        "technologies": [
+          "AI",
+          "GIS"
+        ],
+        "outcomes": [
+          "Minimize impact of landslides",
+          "Save lives and reduce damage to property"
+        ]
+      },
+      {
+        "name": "Elevating E-commerce Performance through Data Science and Strategic Marketing",
+        "description": "Elevated an emerging e-commerce fashion platform's performance through data-driven strategies. Achieved remarkable results including a 300% surge in site visitors, 2.3x sales growth, and a 20-22% reduction in churn rate, showcasing expertise in data science and strategic marketing. Models Used: Churn and Segmentation Model.",
+        "technologies": [
+          "Data Science",
+          "Strategic Marketing"
+        ],
+        "outcomes": [
+          "300% surge in site visitors",
+          "2.3x sales growth",
+          "20-22% reduction in churn rate"
+        ]
+      },
+      {
+        "name": "Classification and Recognition Projects",
+        "description": "Executed various projects across diverse domains, including: Image Classification, Image Recognition, Object Localization, Facial Expression Recognition, Face Detection, Cascade Classifier",
+        "technologies": [
+          "Image Processing",
+          "Machine Learning"
+        ],
+        "outcomes": [
+          "Successful execution of diverse projects"
+        ]
+      },
+      {
+        "name": "NLP based Data-Driven Text Classification",
+        "description": "Crafted an end-to-end NLP and machine learning project, utilizing movie genre data to showcase expertise in Natural Language Processing and enhance text-based classification. Skills Used: Natural Language Processing, Machine Learning, Text Pre-processing, Feature Extraction, Linear Support Vector Machines.",
+        "technologies": [
+          "NLP",
+          "Machine Learning"
+        ],
+        "outcomes": [
+          "Enhanced text-based classification",
+          "Showcased expertise in NLP"
+        ]
+      },
+      {
+        "name": "Time Series Analysis",
+        "description": "TSA of Website Traffic. Developed and deployed a time series analysis model for website traffic and stock price forecasting on cloud platforms (GCP), utilizing LSTM models and deep learning autoencoders. This involved leveraging cloud computing resources for handling large-scale data and complex computations. Skills Used: Knowledge of statistical concepts such as probability, distributions, and hypothesis testing, Familiarity with time series models and concepts such as ARIMA, ACF, PACF, SARIMA, and SARIMAX.",
+        "technologies": [
+          "Time Series Analysis",
+          "Deep Learning"
+        ],
+        "outcomes": [
+          "Developed time series analysis model",
+          "Utilized LSTM models"
+        ]
+      }
+    ],
+    "additional_skills_and_strengths": {
+      "additional_skills": [
+        "Cross-Functional Collaboration",
+        "Strategic Problem Solver",
+        "User Experience and Engagement",
+        "Data Visualization",
+        "Advanced Neural Network Techniques",
+        "Recommendation Systems"
+      ],
+      "strengths": "Passionate about staying up to date with the latest advancements in the field and continuously improving skills. Engages in independent projects, showcasing proactive commitment to ongoing skill development and practical application of knowledge."
+    },
+    "extras": {
+      "certifications": [
+        "Certiﬁed ML Expert: 8+ credentials in DL incl. regression, classiﬁcation, & CNNs. See full list on LinkedIn: Licenses & certiﬁcations | Kartik Pardeshi | LinkedIn"
+      ],
+      "awards": [],
+      "publications": []
+    },
+    "education": [
+      {
+        "degree": "Post-Graduation (Masters)",
+        "institution": "Indian Institute of Technology Hyd (IITH)",
+        "year": "2018 - 2020",
+        "highlights": [
+          "Demonstrated expertise in big data handling",
+          "Skilled in complete machine learning lifecycle"
+        ]
+      },
+      {
+        "degree": "Graduation",
+        "institution": "Pune University",
+        "year": "2014 -2018",
+        "highlights": []
+      }
+    ]
+  },
+  "job_analysis": {
+    "core_responsibilities": [
+      "Work with cloud platforms (GCP, AWS, Azure) to deploy AI models and ensure scalable AI architecture.",
+      "Proficiency in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.). Experience with cloud computing platforms like AWS, Azure, or GCP. Strong analytical and problem-solving skills with experience handling large datasets"
+    ],
+    "required_qualifications": [
+      "Data Scientist with experience in AI and GCP cloud"
+    ],
+    "desired_skills": [
+      "Experience in AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
+      "Proficiency in Python"
+    ],
+    "company_culture": [
+      "Remote work location",
+      "12 months contract",
+      "5 days per week capacity"
+    ],
+    "technical_requirements": [
+      "Python",
+      "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
+      "Cloud platforms (GCP, AWS, Azure)"
+    ],
+    "soft_skills": [
+      "Strong analytical and problem-solving skills",
+      "Experience handling large datasets"
+    ]
+  },
+  "customized_skills": {
+    "unnecessary_skills": [
+      "Matlab",
+      "SSH",
+      "Matlab Engine",
+      "Dask",
+      "Databricks",
+      "Cuda"
+    ],
+    "analysis": {
+      "job_description_summary": "Data Scientist with experience in AI and GCP cloud, working with cloud platforms to deploy AI models and handle large datasets.",
+      "resume_skills": [
+        "Python",
+        "SQL",
+        "Matlab",
+        "SSH",
+        "Matlab Engine",
+        "Dask",
+        "PySpark",
+        "Databricks",
+        "Cuda",
+        "Strategic Communication",
+        "Complex Problem-solving",
+        "Analytical Thinking",
+        "Project Management",
+        "Cybersecurity",
+        "Financial Data Analytics",
+        "Big Data Technologies",
+        "Machine Learning",
+        "DL & NLP",
+        "DevOps",
+        "Data Analysis & Visualization",
+        "Big Data Technologies"
+      ]
+    },
+    "additional_data": "Focus on AI/ML and cloud technologies.",
+    "optimized_skills": {
+      "primary_skills": [
+        "Python",
+        "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
+        "Cloud platforms (GCP, AWS, Azure)"
+      ],
+      "technical_skills": [
+        "Python",
+        "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
+        "Cloud platforms (GCP, AWS, Azure)"
+      ],
+      "soft_skills": [
+        "Strong analytical and problem-solving skills",
+        "Complex Problem-solving",
+        "Analytical Thinking"
+      ],
+      "additional_relevant_skills": [
+        "Experience handling large datasets",
+        "Project Management"
+      ]
+    }
+  },
+  "customized_resume": {
+    "projects_section": {
+      "highlighted_projects": [
+        {
+          "name": "Identification of Critical Slopes using Satellite Imagery, GIS and Machine Learning",
+          "priority_level": "High",
+          "description": "Developed a Landslide Susceptibility Map (LSM) using AI and Geographic Information System (GIS) technologies to minimize the impact of landslides on infrastructure and human life.",
+          "technologies": [
+            "AI",
+            "GIS"
+          ],
+          "methodologies": [],
+          "team_size": "N/A",
+          "duration": "N/A",
+          "impact": [
+            "Minimize impact of landslides",
+            "Save lives and reduce damage to property"
+          ],
+          "role": "Lead Developer",
+          "alignment_score": "85%"
+        },
+        {
+          "name": "Elevating E-commerce Performance through Data Science and Strategic Marketing",
+          "priority_level": "High",
+          "description": "Elevated an emerging e-commerce fashion platform's performance through data-driven strategies, achieving a 300% surge in site visitors and 2.3x sales growth.",
+          "technologies": [
+            "Data Science",
+            "Strategic Marketing"
+          ],
+          "methodologies": [],
+          "team_size": "N/A",
+          "duration": "N/A",
+          "impact": [
+            "300% surge in site visitors",
+            "2.3x sales growth",
+            "20-22% reduction in churn rate"
+          ],
+          "role": "Data Scientist",
+          "alignment_score": "80%"
+        },
+        {
+          "name": "NLP based Data-Driven Text Classification",
+          "priority_level": "Medium",
+          "description": "Crafted an end-to-end NLP and machine learning project, utilizing movie genre data to enhance text-based classification.",
+          "technologies": [
+            "NLP",
+            "Machine Learning"
+          ],
+          "methodologies": [],
+          "team_size": "N/A",
+          "duration": "N/A",
+          "impact": [
+            "Enhanced text-based classification",
+            "Showcased expertise in NLP"
+          ],
+          "role": "Data Scientist",
+          "alignment_score": "75%"
+        }
+      ]
+    },
+    "extras_section": {
+      "certifications": [
+        {
+          "name": "Certified ML Expert",
+          "issuer": "LinkedIn",
+          "date": "2023",
+          "relevance": "Demonstrates expertise in machine learning and AI technologies."
+        }
+      ],
+      "publications": [],
+      "speaking_engagements": [],
+      "volunteer_work": []
+    },
+    "additional_sections": {
+      "technical_skills": {
         "primary_skills": [
           "Python",
-          "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn)",
+          "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.)",
           "Cloud platforms (GCP, AWS, Azure)"
         ],
-        "technical_skills": [
-          "Python",
-          "TensorFlow",
-          "PyTorch",
-          "Scikit-learn",
-          "GCP",
-          "AWS",
-          "Azure"
+        "secondary_skills": [
+          "SQL",
+          "PySpark",
+          "Data Visualization"
         ],
-        "soft_skills": [
-          "Analytical skills",
-          "Problem-solving skills"
-        ],
-        "additional_relevant_skills": [
-          "Data Science",
-          "Machine Learning",
-          "Big Data Analytics"
-        ]
-      }
-    }
-  },
-  "resume_customization": {
-    "customized_resume": {
-      "projects_section": {
-        "highlighted_projects": [
-          {
-            "name": "Identification of Critical Slopes using Satellite Imagery, GIS and Machine Learning",
-            "priority_level": "High",
-            "description": "Developed a Landslide Susceptibility Map (LSM) using AI and Geographic Information System (GIS) technologies to minimize the impact of landslides on infrastructure and human life. This project has the potential to save lives and reduce damage to property.",
-            "technologies": [
-              "AI",
-              "GIS",
-              "Machine Learning"
-            ],
-            "methodologies": [],
-            "team_size": "",
-            "duration": "",
-            "impact": [
-              "Minimized impact of landslides on infrastructure and human life"
-            ],
-            "role": "Lead Data Scientist",
-            "alignment_score": "90%"
-          },
-          {
-            "name": "Elevating E-commerce Performance through Data Science and Strategic Marketing",
-            "priority_level": "High",
-            "description": "Elevated an emerging e-commerce fashion platform's performance through data-driven strategies. Achieved remarkable results including a 300% surge in site visitors, 2.3x sales growth, and a 20-22% reduction in churn rate, showcasing expertise in data science and strategic marketing.",
-            "technologies": [
-              "Data Science",
-              "Strategic Marketing"
-            ],
-            "methodologies": [],
-            "team_size": "",
-            "duration": "",
-            "impact": [
-              "300% surge in site visitors",
-              "2.3x sales growth",
-              "20-22% reduction in churn rate"
-            ],
-            "role": "Data Analyst",
-            "alignment_score": "85%"
-          },
-          {
-            "name": "NLP based Data-Driven Text Classification",
-            "priority_level": "Medium",
-            "description": "Crafted an end-to-end NLP and machine learning project, utilizing movie genre data to showcase expertise in Natural Language Processing and enhance text-based classification.",
-            "technologies": [
-              "NLP",
-              "Machine Learning"
-            ],
-            "methodologies": [],
-            "team_size": "",
-            "duration": "",
-            "impact": [
-              "Enhanced text-based classification"
-            ],
-            "role": "NLP Specialist",
-            "alignment_score": "80%"
-          }
-        ]
-      },
-      "extras_section": {
-        "certifications": [
-          {
-            "name": "Certified ML Expert",
-            "issuer": "LinkedIn",
-            "date": "2023",
-            "relevance": "Demonstrates expertise in machine learning and AI technologies."
-          }
-        ],
-        "publications": [],
-        "speaking_engagements": [],
-        "volunteer_work": []
-      },
-      "additional_sections": {
-        "technical_skills": {
-          "primary_skills": [
-            "Python",
-            "AI/ML libraries (TensorFlow, PyTorch, Scikit-learn)",
-            "Cloud platforms (GCP, AWS, Azure)"
-          ],
-          "secondary_skills": [
-            "Data Science",
-            "Machine Learning",
-            "Big Data Analytics"
-          ],
-          "proficiency_levels": {
-            "Python": "Advanced",
-            "TensorFlow": "Intermediate",
-            "PyTorch": "Intermediate",
-            "Scikit-learn": "Advanced",
-            "GCP": "Intermediate",
-            "AWS": "Intermediate",
-            "Azure": "Beginner"
-          }
-        },
-        "languages": [],
-        "professional_development": []
-      },
-      "section_order": [
-        "work_summary",
-        "key_achievements",
-        "experience",
-        "projects",
-        "technical_skills",
-        "extras_section"
-      ],
-      "customization_metrics": {
-        "overall_match_score": "88%",
-        "keyword_optimization": "95%",
-        "section_relevance_scores": {
-          "work_summary": "90%",
-          "key_achievements": "85%",
-          "experience": "80%",
-          "projects": "90%",
-          "technical_skills": "95%"
+        "proficiency_levels": {
+          "Python": "Advanced",
+          "TensorFlow": "Intermediate",
+          "PyTorch": "Intermediate",
+          "Scikit-learn": "Intermediate",
+          "GCP": "Intermediate",
+          "AWS": "Basic",
+          "Azure": "Basic"
         }
+      },
+      "languages": [],
+      "professional_development": []
+    },
+    "section_order": [
+      "work_summary",
+      "experience",
+      "projects_section",
+      "technical_skills",
+      "extras_section"
+    ],
+    "customization_metrics": {
+      "overall_match_score": "80%",
+      "keyword_optimization": "90%",
+      "section_relevance_scores": {
+        "projects_section": "85%",
+        "technical_skills": "90%",
+        "experience": "80%"
       }
     }
   },
-  "summary_customization": {
-    "summary_customization": {
-      "tailored_summary": "Experienced Data Scientist with expertise in AI, GCP, AWS, and Azure. Skilled in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn). Strong analytical and problem-solving skills with a proven track record of handling large datasets. Seeking to leverage this background to deploy AI models on cloud platforms and contribute to scalable AI architecture.",
-      "optimization_metrics": {
-        "keyword_match": "100%",
-        "relevance_score": "95%"
-      }
+  "customized_summary": {
+    "tailored_summary": "Dynamic and innovative Data Scientist with over 3 years of experience at NTT, specializing in leveraging advanced analytics, machine learning, and AI-driven solutions to drive actionable insights. Proficient in Python and AI/ML libraries (TensorFlow, PyTorch, Scikit-learn, etc.) with experience in cloud platforms (GCP, AWS, Azure). Strong analytical and problem-solving skills with a track record of handling large datasets.",
+    "optimization_metrics": {
+      "keyword_match": "100%",
+      "relevance_score": "Highly relevant to position"
     }
   },
-  "latex_resume": "{\n    \"customized_resume\": {\n        \"projects_section\": {\n            \"highlighted_projects\": [\n                {\n                    \"name\": \"Identification of Critical Slopes using Satellite Imagery, GIS and Machine Learning\",\n                    \"priority_level\": \"High\",\n                    \"description\": \"Developed a Landslide Susceptibility Map (LSM) using AI and Geographic Information System (GIS) technologies to minimize the impact of landslides on infrastructure and human life. This project has the potential to save lives and reduce damage to property.\",\n                    \"technologies\": [\"AI\", \"GIS\", \"Machine Learning\"],\n                    \"methodologies\": [],\n                    \"team_size\": \"\",\n                    \"duration\": \"\",\n                    \"impact\": [\"Minimized impact of landslides on infrastructure and human life\"],\n                    \"role\": \"Lead Data Scientist\",\n                    \"alignment_score\": \"90%\"\n                },\n                {\n                    \"name\": \"Elevating E-commerce Performance through Data Science and Strategic Marketing\",\n                    \"priority_level\": \"High\",\n                    \"description\": \"Elevated an emerging e-commerce fashion platform's performance through data-driven strategies. Achieved remarkable results including a 300% surge in site visitors, 2.3x sales growth, and a 20-22% reduction in churn rate, showcasing expertise in data science and strategic marketing.\",\n                    \"technologies\": [\"Data Science\", \"Strategic Marketing\"],\n                    \"methodologies\": [],\n                    \"team_size\": \"\",\n                    \"duration\": \"\",\n                    \"impact\": [\"300% surge in site visitors\", \"2.3x sales growth\", \"20-22% reduction in churn rate\"],\n                    \"role\": \"Data Analyst\",\n                    \"alignment_score\": \"85%\"\n                },\n                {\n                    \"name\": \"NLP based Data-Driven Text Classification\",\n                    \"priority_level\": \"Medium\",\n                    \"description\": \"Crafted an end-to-end NLP and machine learning project, utilizing movie genre data to showcase expertise in Natural Language Processing and enhance text-based classification.\",\n                    \"technologies\": [\"NLP\", \"Machine Learning\"],\n                    \"methodologies\": [],\n                    \"team_size\": \"\",\n                    \"duration\": \"\",\n                    \"impact\": [\"Enhanced text-based classification\"],\n                    \"role\": \"NLP Specialist\",\n                    \"alignment_score\": \"80%\"\n                }\n            ]\n        },\n        \"extras_section\": {\n            \"certifications\": [\n                {\n                    \"name\": \"Certified ML Expert\",\n                    \"issuer\": \"LinkedIn\",\n                    \"date\": \"2023\",\n                    \"relevance\": \"Demonstrates expertise in machine learning and AI technologies.\"\n                }\n            ],\n            \"publications\": [],\n            \"speaking_engagements\": [],\n            \"volunteer_work\": []\n        },\n        \"additional_sections\": {\n            \"technical_skills\": {\n                \"primary_skills\": [\"Python\", \"AI/ML libraries (TensorFlow, PyTorch, Scikit-learn)\", \"Cloud platforms (GCP, AWS, Azure)\"],\n                \"secondary_skills\": [\"Data Science\", \"Machine Learning\", \"Big Data Analytics\"],\n                \"proficiency_levels\": {\n                    \"Python\": \"Advanced\",\n                    \"TensorFlow\": \"Intermediate\",\n                    \"PyTorch\": \"Intermediate\",\n                    \"Scikit-learn\": \"Advanced\",\n                    \"GCP\": \"Intermediate\",\n                    \"AWS\": \"Intermediate\",\n                    \"Azure\": \"Beginner\"\n                }\n            },\n            \"languages\": [],\n            \"professional_development\": []\n        },\n        \"section_order\": [\"work_summary\", \"key_achievements\", \"experience\", \"projects\", \"technical_skills\", \"extras_section\"],\n        \"customization_metrics\": {\n            \"overall_match_score\": \"88%\",\n            \"keyword_optimization\": \"95%\",\n            \"section_relevance_scores\": {\n                \"work_summary\": \"90%\",\n                \"key_achievements\": \"85%\",\n                \"experience\": \"80%\",\n                \"projects\": \"90%\",\n                \"technical_skills\": \"95%\"\n            }\n        }\n    }\n}",
+  "latex_document": {},
   "quality_check": {
-    "quality_check": {
-      "content_issues": [
-        "Missing specific achievements in work summary",
-        "Incomplete details in project methodologies",
-        "No languages or professional development listed"
+    "needs_improvements": true,
+    "recommendations": {
+      "summary_customizer_agent": {
+        "needs_revision": true,
+        "issues": [
+          "Professional summary lacks specific achievements",
+          "Summary not aligned with job requirements"
+        ]
+      },
+      "skill_customizer_agent": {
+        "needs_enhancement": true,
+        "issues": [
+          "Missing key technical skills such as Python and AI/ML libraries",
+          "Skills not properly prioritized based on job analysis"
+        ]
+      },
+      "resume_customizer_agent": {
+        "needs_refinement": true,
+        "issues": [
+          "Experience section needs more quantifiable results related to AI and cloud platforms",
+          "Project descriptions need better alignment with job responsibilities"
+        ]
+      },
+      "format_converter_agent": {
+        "needs_restructuring": true,
+        "issues": [
+          "Inconsistent spacing in LaTeX formatting",
+          "Section ordering needs optimization to highlight relevant experience first"
+        ]
+      }
+    },
+    "ats_compatibility_score": "85%",
+    "overall_quality_score": "78%",
+    "improvement_priority": {
+      "high": [
+        "skills_section",
+        "professional_summary"
       ],
-      "formatting_issues": [
-        "Inconsistent spacing between sections",
-        "Lack of bullet points for clarity"
+      "medium": [
+        "experience_details",
+        "formatting"
       ],
-      "ats_compatibility_issues": [
-        "Some keywords from job analysis are not included",
-        "Formatting may confuse ATS parsers"
-      ],
-      "alignment_issues": [
-        "Skills like analytical and problem-solving not explicitly mentioned",
-        "Experience with cloud computing platforms not detailed"
-      ],
-      "recommendations": [
-        "Add specific achievements in the work summary section",
-        "Include methodologies for each project for completeness",
-        "List languages and professional development to enhance profile",
-        "Use bullet points for better readability and clarity",
-        "Incorporate missing keywords from the job analysis to improve ATS compatibility"
+      "low": [
+        "additional_sections"
       ]
+    },
+    "validation_results": {
+      "resume_analysis_validation": "pass",
+      "customized_skills_validation": "fail",
+      "customized_resume_validation": "fail",
+      "customized_summary_validation": "fail",
+      "latex_format_validation": "pass"
     }
   },
   "workflow_metrics": {
     "steps_completed": 7,
     "total_steps": 7,
-    "tokens_used": 0,
     "final_state": "quality_check",
     "errors": [],
     "step_timings": {
-      "analyze_resume": 18.058660745620728,
-      "analyze_job_description": 2.5492546558380127,
-      "customize_skills": 8.259178876876831,
-      "customize_resume": 8.125956296920776,
-      "customize_summary": 1.725177526473999,
-      "convert_format": 8.185864210128784,
-      "quality_check": 5.427217960357666
+      "analyze_resume": 18.135873794555664,
+      "analyze_job_description": 2.853546142578125,
+      "customize_skills": 3.673246145248413,
+      "customize_resume": 15.164616107940674,
+      "customize_summary": 1.9430439472198486,
+      "latex_generation": 3.886826753616333,
+      "quality_check": 3.525625228881836
+    },
+    "validation_status": {
+      "resume_analysis": "verified",
+      "latex_format": "incomplete",
+      "quality_check": "verified"
+    },
+    "quality_improvements": {
+      "improvements_applied": [],
+      "improvement_results": {
+        "skills_section": "failed - Missing 'resume_analysis' key in resume analysis",
+        "professional_summary": "failed - 'Context' object has no attribute 'skill_customization'",
+        "experience_details": "failed - missing required data",
+        "formatting": "failed - missing customized resume"
+      },
+      "total_improvements": 0
     }
   }
 }
