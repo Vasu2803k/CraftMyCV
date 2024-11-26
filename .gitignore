@@ -35,6 +35,9 @@ ENV/
 data/output/
 data/logs/
 
+# temp
+temp.py
+
 # Environment variables
 .env
 

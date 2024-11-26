@@ -140,116 +140,78 @@ class CraftMyCVWorkflow(Workflow):
 
     def _build_latex_prompt(self, agent_config, recommendations=None, **inputs):
         """Build prompt for generating raw LaTeX code"""
-        prompt = f"""Role: {agent_config['role']}
-        Goal: {agent_config['goal']}
+        prompt = f"""
+        Generate LaTeX code based on the input data according to the system instructions.
 
-        System Instructions:
-        {agent_config['system_prompt']}
+        **System Instructions**: {agent_config['system_prompt']}
+
+        **Input Data**:
         """
-        
-        if recommendations:
-            prompt += f"\nQuality Improvement Recommendations:\n{recommendations}"
-        
-        prompt += """
-        CRITICAL REQUIREMENTS:
-        1. Generate ONLY raw LaTeX code
-        2. Include all necessary package imports
-        3. Use professional formatting and layout
-        4. Ensure ATS compatibility
-        5. Follow proper LaTeX syntax
-        6. Include all sections in a logical order
-        7. Use appropriate commands for formatting
-        8. Handle special characters correctly
-        
-        FORMATTING REQUIREMENTS:
-        1. Follow EXACTLY the formatting structure shown in the expected output
-        2. Maintain identical:
-           - Line breaks
-           - Spacing
-           - Indentation
-           - Section ordering
-           - Environment definitions
-           - Package configurations
-        3. Use the same:
-           - Command definitions
-           - Environment structures
-           - Margin settings
-           - Font configurations
-           - Header/footer setup
-        
-        DO NOT:
-        1. Include any JSON wrapping
-        2. Add any explanatory text
-        3. Use markdown formatting
-        4. Include any non-LaTeX content
-        5. Modify the formatting structure
-        6. Change environment definitions
-        7. Alter package configurations
-        
-        Input Data:
-        """
-        
         for key, value in inputs.items():
             prompt += f"\n{key}: {value}"
-            
-        prompt += """
-        
-        FINAL REMINDER:
-        - Return ONLY the raw LaTeX code
-        - Start with \\documentclass
-        - Include all necessary packages
-        - Follow EXACTLY the formatting shown in expected output
-        - Maintain identical spacing and line breaks
-        - End with \\end{document}
+
+        if recommendations:
+            prompt += f"""
+            Ensure that all recommendations provided are applied to improve the output.
+            **Quality Improvement Recommendations**: {recommendations}
+            """
+
+        prompt += f"""
+        **Expected Output Format**:
+
+        - {agent_config['expected_output']}
+
+        # Notes
+
+        - The output must be raw LaTeX code only
+        - Include all necessary package imports and configurations
+        - Follow professional formatting and layout standards
+        - Ensure proper LaTeX syntax and ATS compatibility
+        - Structure content in logical sections
+        - Handle special characters correctly
         """
         return prompt
     
     def _build_content_prompt(self, agent_config, recommendations=None, **inputs):
         """Helper method to build prompts for agents with quality recommendations"""
-        prompt = f"""Role: {agent_config['role']}
-        Goal: {agent_config['goal']}
+        prompt = f"""
+        Generate a valid JSON object based on the input data according to the system instructions.
 
-        System Instructions:
-        {agent_config['system_prompt']}
+        **System Instructions**: {agent_config['system_prompt']}
+
+        **Input Data**:
         """
-        
-        if recommendations:
-            prompt += f"\nQuality Improvement Recommendations:\n{recommendations}"
-        
-        prompt += f"""
-        CRITICAL JSON RESPONSE REQUIREMENTS:
-        You MUST return a single, valid JSON object. Follow these rules exactly:
-        1. Start with a single opening curly brace
-        2. End with a single closing curly brace
-        3. Use double quotes for ALL keys and string values
-        4. Do not include ANY explanatory text before or after the JSON
-        5. Do not include markdown formatting
-        6. Do not include multiple JSON objects
-        7. Ensure all arrays and objects are properly closed
-        8. No trailing commas after the last item
-        9. No comments within the JSON
-        10. No line breaks within string values
-
-        Expected Output Format:
-        {agent_config['expected_output']}
-
-        Input Data:
-        """
-        
         for key, value in inputs.items():
-            if key != 'recommendations':
-                prompt += f"\n{key}: {value}"
-            
-        prompt += """
+            prompt += f"\n{key}: {value}"
 
-        FINAL REMINDER:
-        1. Return ONLY the JSON object
-        2. No text before or after
-        3. No markdown formatting
-        4. No explanation or comments
-        5. Must be valid, parseable JSON
-        """
+        if recommendations:
+            prompt += f"""Ensure that all recommendations provided, which might be added during a retry mechanism, are applied to improve the output.
+            **Quality Improvement Recommendations**: {recommendations}
+            """
+        prompt += f"""
+        # Steps
+
+        - Ensure that the JSON object starts with a single opening curly brace and ends with a single closing curly brace.
+        - Use double quotes for all keys and string values within the JSON object.
+        - Avoid any extraneous text, markdown, or multiple JSON objects.
+        - Properly close all arrays and objects within the JSON.
+        - Do not include trailing commas or comments within the JSON content.
+        - Maintain string values without line breaks.
+
+        # Output Format
+
+        Return exactly one JSON object as specified in the agent configuration.
         
+        **Expected Output Format**:
+
+        - {agent_config['expected_output']}
+        
+        # Notes
+
+        - Ensure consistency with the formatting rules, as any deviation might cause errors in JSON parsing.
+        - No text, explanation, comments, or markdown should surround the JSON output.
+        - Carefully check the structure of arrays and objects to prevent errors in JSON syntax.
+        """
         return prompt
 
     def _validate_llm_response(self, response_text: str) -> dict | str:
