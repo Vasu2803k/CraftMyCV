@@ -36,15 +36,15 @@ agents:
                 "city": "City",
                 "state": "State",
                 "country": "Country",
-                "postal_code": "Postal/ZIP code"
-                // Additional location fields can be included
+                "postal_code": "Postal/ZIP code",
+                "...": "..."
               },
               "social_profiles": {
                 "linkedin": "LinkedIn URL",
                 "github": "GitHub URL",
-                // Any other social/professional profiles
+                "...": "..."
               },
-              // Additional contact methods can be added
+              "...": "..."
             }
           },
           "professional_summary": {
@@ -53,14 +53,14 @@ agents:
             "key_expertise": [
               "Domain 1",
               "Domain 2",
-              // Additional domains...
+              "..."
             ],
             "career_highlights": [
               "Highlight 1",
               "Highlight 2",
-              // Additional highlights...
+              "..."
             ],
-            // Additional summary elements can be included
+            "...": "..."
           },
           "work_experience": [
             {
@@ -68,7 +68,7 @@ agents:
                 "name": "Company name",
                 "industry": "Industry type",
                 "location": "Company location",
-                // Additional company details...
+                "...": "..."
               },
               "position": "Job title",
               "duration": {
@@ -79,25 +79,25 @@ agents:
               "responsibilities": [
                 "Detailed responsibility 1",
                 "Detailed responsibility 2",
-                // Additional responsibilities...
+                "..."
               ],
               "achievements": [
                 {
                   "description": "Achievement description",
                   "metrics": "Quantifiable results",
                   "impact": "Business impact",
-                  // Additional achievement details...
-                }
-                // Additional achievements...
+                  "...": "..."
+                },
+                "..."
               ],
               "technologies_used": [
                 "Tech 1",
                 "Tech 2",
-                // Additional technologies...
+                "..."
               ],
-              // Additional job-related fields can be included
-            }
-            // Additional work experiences...
+              "...": "..."
+            },
+            "..."
           ],
           "skills": {
             "technical_skills": {
@@ -106,7 +106,7 @@ agents:
               "tools": ["Tool 1", "Tool 2", "..."],
               "platforms": ["Platform 1", "Platform 2", "..."],
               "methodologies": ["Methodology 1", "Methodology 2", "..."],
-              // Additional technical skill categories...
+              "...": "..."
             },
             "soft_skills": ["Soft skill 1", "Soft skill 2", "..."],
             "domain_knowledge": ["Domain 1", "Domain 2", "..."],
@@ -114,11 +114,11 @@ agents:
               {
                 "language": "Language name",
                 "proficiency": "Proficiency level",
-                // Additional language attributes...
-              }
-              // Additional languages...
+                "...": "..."
+              },
+              "..."
             ],
-            // Additional skill categories...
+            "...": "..."
           },
           "education": [
             {
@@ -134,13 +134,17 @@ agents:
               "academic_achievements": [
                 "Achievement 1",
                 "Achievement 2",
-                // Additional achievements...
+                "..."
               ],
-              // Additional education details...
-            }
-            // Additional education entries...
+              "gpa": {
+                "score": "GPA value",
+                "scale": "GPA scale (e.g. 4.0, 10.0)",
+                "percentage": "Percentage equivalent (optional)"
+              },
+              "...": "..."
+            },
+            "..."
           ],
-          // Optional sections based on resume content
           "certifications": [
             {
               "name": "Certification name",
@@ -148,9 +152,9 @@ agents:
               "date_obtained": "YYYY-MM",
               "expiry_date": "YYYY-MM or Never",
               "credential_id": "Certification ID",
-              // Additional certification details...
-            }
-            // Additional certifications...
+              "...": "..."
+            },
+            "..."
           ],
           "projects": [
             {
@@ -163,23 +167,23 @@ agents:
               "description": "Project description",
               "technologies": ["Tech 1", "Tech 2", "..."],
               "outcomes": ["Outcome 1", "Outcome 2", "..."],
-              // Additional project details...
-            }
-            // Additional projects...
+              "...": "..."
+            },
+            "..."
           ],
-          // Additional optional sections based on resume content
           "publications_and_research": [...],
           "awards_and_achievements": [...],
           "volunteer_work": [...],
-          
           "ambiguous_content": [
             {
               "section": "Section name",
               "content": "Unclear content",
-              "issue": "Brief description of ambiguity"
-            }
-            // Additional ambiguities...
-          ]
+              "issue": "Brief description of ambiguity",
+              "...": "..."
+            },
+            "..."
+          ],
+          "...": "..."
         }
       }
 
@@ -236,63 +240,63 @@ agents:
       - Consider industry-specific standards and practices
     expected_output: |
       {
-        "position_overview": {
-          "title": "Job title",
-          "department": "Department name",
-          // Additional position fields can be included
-          "reporting_to": "Reporting relationship",
-          "location": {
-            "type": "Remote/Hybrid/Onsite",
-            "location": "Location details",
-            // Additional location attributes as needed
+        "job_analysis": {
+          "position_overview": {
+            "title": "Job title",
+            "department": "Department name",
+            "reporting_to": "Reporting relationship",
+            "location": {
+              "type": "Remote/Hybrid/Onsite",
+              "location": "Location details",
+              "...": "..."
+            },
+            "employment_type": "Full-time/Contract/Part-time",
+            "...": "..."
           },
-          "employment_type": "Full-time/Contract/Part-time"
-        },
-        "core_requirements": {
-          // All fields below are flexible and can be extended
-          "minimum_qualifications": {
-            "education": ["Required education"],
-            "experience": "Years of experience",
-            // Add any other qualification requirements
-            "certifications": ["Required certifications"],
-            "licenses": ["Required licenses"]
+          "core_requirements": {
+            "minimum_qualifications": {
+              "education": ["Required education", "..."],
+              "experience": "Years of experience",
+              "certifications": ["Required certifications", "..."],
+              "licenses": ["Required licenses", "..."],
+              "...": "..."
+            },
+            "technical_requirements": {
+              "must_have": ["Critical technical skills", "..."],
+              "nice_to_have": ["Preferred technical skills", "..."],
+              "tools_and_technologies": ["Required tools", "..."],
+              "methodologies": ["Required methodologies", "..."],
+              "...": "..."
+            },
+            "soft_skills": {
+              "critical": ["Essential soft skills", "..."],
+              "preferred": ["Desired soft skills", "..."],
+              "...": "..."
+            },
+            "...": "..."
           },
-          "technical_requirements": {
-            // Skills can be reorganized based on job posting
-            "must_have": ["Critical technical skills"],
-            "nice_to_have": ["Preferred technical skills"],
-            // Additional skill categories can be added
-            "tools_and_technologies": ["Required tools"],
-            "methodologies": ["Required methodologies"]
+          "responsibilities": {
+            "primary_duties": ["Main responsibilities", "..."],
+            "secondary_duties": ["Additional duties", "..."],
+            "leadership_aspects": ["Leadership requirements", "..."],
+            "collaboration": ["Team interaction details", "..."],
+            "...": "..."
           },
-          // Soft skills can be customized per role
-          "soft_skills": {
-            "critical": ["Essential soft skills"],
-            "preferred": ["Desired soft skills"]
-          }
-        },
-        // Additional sections can be added based on job posting
-        "responsibilities": {
-          "primary_duties": ["Main responsibilities"],
-          "secondary_duties": ["Additional duties"],
-          // Leadership fields optional based on role
-          "leadership_aspects": ["Leadership requirements"],
-          "collaboration": ["Team interaction details"]
-        },
-        // Culture section can be expanded as needed
-        "company_culture": {
-          "values": ["Company values"],
-          "work_environment": "Environment description",
-          // Additional culture elements can be included
-          "team_dynamics": "Team structure and dynamics",
-          "growth_opportunities": ["Career growth details"]
-        },
-        // Keywords section can be customized per industry
-        "keywords": {
-          "unique_requirements": ["Unique requirement 1", "Unique requirement 2", "..."],
-          "technical": ["Technical keyword 1", "Technical keyword 2", "..."],
-          "industry": ["Industry keyword 1", "Industry keyword 2", "..."],
-          "soft_skills": ["Soft skill keyword 1", "Soft skill keyword 2", "..."]
+          "company_culture": {
+            "values": ["Company values", "..."],
+            "work_environment": "Environment description",
+            "team_dynamics": "Team structure and dynamics",
+            "growth_opportunities": ["Career growth details", "..."],
+            "...": "..."
+          },
+          "keywords": {
+            "unique_requirements": ["Unique requirement 1", "Unique requirement 2", "..."],
+            "technical": ["Technical keyword 1", "Technical keyword 2", "..."],
+            "industry": ["Industry keyword 1", "Industry keyword 2", "..."],
+            "soft_skills": ["Soft skill keyword 1", "Soft skill keyword 2", "..."],
+            "...": "..."
+          },
+          "...": "..."
         }
       }
 
@@ -326,8 +330,7 @@ agents:
       - Do not exaggerate or inflate achievements
     expected_output: |
       {
-        "content_customization": {
-          // Personal information section with contact details
+        "customized_resume": {
           "personal_info": {
             "name": "Full name",
             "contact": {
@@ -335,120 +338,124 @@ agents:
               "phone": "Phone number",
               "location": "City, State",
               "linkedin": "LinkedIn URL",
-              // Optional fields based on profile
               "portfolio": "Portfolio URL (if applicable)",
-              "github": "GitHub profile (if applicable)"
-            }
+              "github": "GitHub profile (if applicable)",
+              "...": "..."
+            },
+            "...": "..."
           },
-          // Professional summary can be expanded with additional elements
-          "summary_section": {
+          "professional_summary": {
             "customized": "Tailored summary",
             "keywords_added": ["Keyword 1", "Keyword 2", "..."],
-            // Additional customization attributes
             "focus_areas": ["Area 1", "Area 2", "..."],
-            "key_highlights": ["Highlight 1", "Highlight 2", "..."]
+            "key_highlights": ["Highlight 1", "Highlight 2", "..."],
+            "...": "..."
           },
-          // Experience section can include multiple positions
-          "experience_section": [
+          "work_experience": [
             {
               "position": "Job title",
               "company": "Company name",
               "duration": "Start date - End date",
               "location": "City, State",
-              // Each bullet point can have detailed customization
               "customized_bullets": [
                 {
                   "content": "Enhanced bullet point",
                   "added_keywords": ["Keyword 1", "Keyword 2", "..."],
-                  // Metrics and impact details
                   "quantified_metrics": "Metrics added",
-                  "impact_focus": "Impact statement"
-                }
-              ]
-            }
+                  "impact_focus": "Impact statement",
+                  "...": "..."
+                },
+                "..."
+              ],
+              "...": "..."
+            },
+            "..."
           ],
-          // Projects section with detailed structure
-          "projects_section": [
+          "projects": [
             {
               "project_name": "Project title",
               "duration": "Timeline",
-              // Technical stack and tools used
               "technologies": ["Tech 1", "Tech 2", "..."],
-              // Enhanced project descriptions
               "customized_bullets": [
                 {
                   "content": ["Enhanced project bullet 1", "Enhanced project bullet 2", "..."],
                   "added_keywords": ["Keyword 1", "Keyword 2", "..."],
                   "technical_highlights": ["Highlight 1", "Highlight 2", "..."],
-                  "impact_metrics": "Project impact and results"
-                }
+                  "impact_metrics": "Project impact and results",
+                  "...": "..."
+                },
+                "..."
               ],
-              // Project links and resources
               "links": {
                 "github": "Repository URL",
-                "live": "Live project URL"
-              }
+                "live": "Live project URL",
+                "...": "..."
+              },
+              "...": "..."
             }
           ],
-          // Comprehensive skills categorization
-          "skills_section": {
+          "skills": {
             "technical_skills": ["Skill 1", "Skill 2", "..."],
             "soft_skills": ["Skill 1", "Skill 2", "..."],
             "tools": ["Tool 1", "Tool 2", "..."],
-            // Language proficiencies if applicable
-            "languages": ["Language 1", "Language 2", "..."]
-            // Additional skill categories can be added
+            "languages": ["Language 1", "Language 2", "..."],
+            "...": "..."
           },
-          // Leadership and responsibility roles
           "positions_of_responsibility": [
             {
               "title": "Position title",
               "organization": "Organization name",
               "duration": "Timeline",
-              "customized_bullets": ["Enhanced 1", "Enhanced 2", "..."]
-            }
+              "customized_bullets": ["Enhanced 1", "Enhanced 2", "..."],
+              "...": "..."
+            },
+            "..."
           ],
-          // Notable achievements and recognition
           "awards_and_achievements": [
             {
               "title": "Award name",
               "issuer": "Issuing organization",
               "date": "Date received",
-              "description": "Award description and significance"
-            }
+              "description": "Award description and significance",
+              "...": "..."
+            },
+            "..."
           ],
-          // Academic or professional publications
-          "publications": [
+          "research_and_publications": [
             {
               "title": "Publication title",
               "journal": "Journal/Conference name",
               "date": "Publication date",
               "doi": "DOI link",
-              "impact": "Publication impact and citations"
-            }
+              "impact": "Publication impact and citations",
+              "...": "..."
+            },
+            "..."
           ],
-          // Professional certifications and credentials
           "certifications": [
             {
               "name": "Certification name",
               "issuer": "Issuing organization",
               "date": "Date obtained",
               "expiry": "Expiration date (if applicable)",
-              "credential_id": "Certification ID"
-            }
+              "credential_id": "Certification ID",
+              "...": "..."
+            },
+            "..."
           ],
-          // Educational background and qualifications
           "education": [
             {
               "degree": "Degree name",
               "institution": "Institution name",
               "duration": "Start date - End date",
               "location": "City, State",
-              // Optional academic details
               "gpa": "GPA if applicable",
-              "relevant_coursework": ["Course 1", "Course 2", "..."]
-            }
-          ]
+              "relevant_coursework": ["Course 1", "Course 2", "..."],
+              "...": "..."
+            },
+            "..."
+          ],
+          "...": "..."
         }
       }
 
@@ -466,7 +473,7 @@ agents:
       5. Maintain professional tone and brevity
       
       GUIDELINES:
-      - Ensure the summary is tailored based on the latest customized resume content. Do not use the original summary.
+      - Ensure the summary is tailored based on the latest customized resume content.
       - Focus on most relevant experiences
       - Include quantifiable achievements
       - Use industry-specific terminology
@@ -481,16 +488,23 @@ agents:
     expected_output: |
       {
         "summary_analysis": {
-          // Core summary elements
           "customized_summary": "Enhanced text",
-          // Key components can be expanded based on profile
           "key_components": {
             "professional_identity": "Core professional description",
             "years_experience": "Experience summary",
-            // Achievements and value props can be extended
-            "key_achievements": ["Achievement 1", "Achievement 2"],
-            "unique_value_props": ["Value 1", "Value 2"]
-          }
+            "key_achievements": [
+              "Achievement 1",
+              "Achievement 2",
+              "..."
+            ],
+            "unique_value_props": [
+              "Value 1",
+              "Value 2",
+              "..."
+            ],
+            "...": "..."
+          },
+          "...": "..."
         }
       }
 
@@ -522,117 +536,145 @@ agents:
       - Ensure content logical flow
     expected_output: |
       {
-        "quality_validation": {
-          "sections": {
-            "personal_info": {
-              "status": "Pass/Fail",
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
+        "pre_latex_quality_check": {
+          "quality_validation": {
+            "sections": {
+              "personal_info": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "professional_summary": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "experience": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "projects": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "skills": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "education": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "certifications": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "research_and_publications": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "awards_and_achievements": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "positions_of_responsibility": {
+                "status": "Pass/Fail",
+                "completeness": "0-100",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "...": "..."
             },
-            "professional_summary": {
-              "status": "Pass/Fail", 
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
+            "relationships": {
+              "chronological_order": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "skill_alignment": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "content_flow": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "...": "..."
             },
-            "experience": {
-              "status": "Pass/Fail",
-              "completeness": "0-100", 
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "projects": {
-              "status": "Pass/Fail",
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "skills": {
-              "status": "Pass/Fail",
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "education": {
-              "status": "Pass/Fail",
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "certifications": {
-              "status": "Pass/Fail",
-              "completeness": "0-100",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            }
+            "...": "..."
           },
-          "relationships": {
-            "chronological_order": {
-              "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
+          "formatting_validation": {
+            "consistency": {
+              "date_formats": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "naming_conventions": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "text_formatting": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "...": "..."
             },
-            "skill_alignment": {
-              "status": "Pass/Fail", 
-              "issues": ["Issue description 1", "Issue description 2", "..."]
+            "fields": {
+              "required": {
+                "missing": ["Field name 1", "Field name 2", "..."],
+                "incomplete": ["Field name 1", "Field name 2", "..."]
+              },
+              "optional": {
+                "recommended": ["Field name 1", "Field name 2", "..."]
+              },
+              "...": "..."
             },
-            "content_flow": {
-              "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            }
-          }
-        },
-        "formatting_validation": {
-          "consistency": {
-            "date_formats": {
-              "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "naming_conventions": {
-              "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            },
-            "text_formatting": {
-              "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."  ]
-            }
+            "...": "..."
           },
-          "fields": {
-            "required": {
-              "missing": ["Field name 1", "Field name 2", "..."],
-              "incomplete": ["Field name 1", "Field name 2", "..."]
-            },
-            "optional": {
-              "recommended": ["Field name 1", "Field name 2", "..."]
-            }
-          }
-        },
-        "latex_readiness": {
-          "structure": {
-            "status": "Pass/Fail",
-            "issues": [
-              {
-                "section": "Section name",
-                "description": "Issue description",
-                "severity": "High/Medium/Low",
-                "requires_fix": true
-              }
-            ]
-          },
-          "formatting": {
-            "status": "Pass/Fail",
-            "issues": [
-              {
-                "field": "Field name",
-                "current": "Current format",
-                "required": "Required format",
-                "requires_fix": true
-              }
-            ]
-          },
-          "hierarchy": {
-            "section_order": {
+          "latex_readiness": {
+            "structure": {
               "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
+              "issues": [
+                {
+                  "section": "Section name",
+                  "description": "Issue description",
+                  "severity": "High/Medium/Low",
+                  "requires_fix": true
+                },
+                "..."
+              ]
             },
-            "nesting": {
+            "formatting": {
               "status": "Pass/Fail",
-              "issues": ["Issue description 1", "Issue description 2", "..."]
-            }
-          }
+              "issues": [
+                {
+                  "field": "Field name",
+                  "current": "Current format",
+                  "required": "Required format",
+                  "requires_fix": true
+                },
+                "..."
+              ]
+            },
+            "hierarchy": {
+              "section_order": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "nesting": {
+                "status": "Pass/Fail",
+                "issues": ["Issue description 1", "Issue description 2", "..."]
+              },
+              "...": "..."
+            },
+            "...": "..."
+          },
+          "...": "..."
         }
       }
 
@@ -667,6 +709,12 @@ agents:
       - Use appropriate packages
       - Implement proper encoding
       - Create clean, maintainable code
+
+      MOST IMPORTANT:
+      - Maintain the same order of sections as per the expected output and make sure to include the available sections only. 
+      - Flexibility is allowed only in the content of the sections. If a section is not present, compensate it by adding the content the next section and make sure to add any section from the customized resume to compensate for the missing section at the end of the document.
+      - Ensure factual accuracy. Do not make up any information.
+      - Strictly follow the formatting guidelines. Use the same formatting including the line breaks, spacing, etc.
     expected_output: |
       """
       \documentclass[10pt, letterpaper]{article}
@@ -941,106 +989,101 @@ agents:
       - Maintain ATS compatibility
     expected_output: |
       {
-        "compilation_validation": {
-          // Compilation status can include additional checks
-          "compilation_status": {
-            "success": "Yes/No",
-            "errors": ["Error 1", "Error 2"],
-            "warnings": ["Warning 1", "Warning 2"]
-            // Additional compilation metrics can be added
-          },
-          // Syntax validation can be extended
-          "latex_syntax": {
-            "validation": "Pass/Fail",
-            "issues": ["Issue 1", "Issue 2"]
-          },
-          // Package compatibility can be customized
-          "package_compatibility": {
-            "conflicts": ["Conflict 1", "Conflict 2"],
-            "missing_packages": ["Package 1", "Package 2"]
-          }
-        },
-        "content_integrity": {
-          // Content checks can be expanded
-          "content_preservation": {
-            "missing_content": ["Missing item 1", "Missing item 2"],
-            "modified_content": ["Modified item 1", "Modified item 2"]
-          },
-          // Section validation can be customized
-          "section_validation": {
-            "all_sections_present": "Yes/No",
-            "section_order": "Pass/Fail",
-            "missing_sections": ["Section 1", "Section 2"]
-          },
-          // Formatting checks can be extended
-          "formatting_check": {
-            "typography": {
-              "font_consistency": "Pass/Fail",
-              "size_consistency": "Pass/Fail",
-              "spacing_issues": ["Issue 1", "Issue 2"]
+        "post_latex_quality_check": {
+          "compilation_validation": {
+            "compilation_status": {
+              "success": "Yes/No",
+              "errors": ["Error 1", "Error 2", "..."],
+              "warnings": ["Warning 1", "Warning 2", "..."],
+              "...": "..."
             },
-            "layout": {
-              "margins": "Pass/Fail",
-              "alignment": "Pass/Fail",
-              "page_breaks": "Pass/Fail"
-            }
-          }
-        },
-        // PDF output quality checks can be expanded
-        "pdf_output_quality": {
-          "rendering": {
-            "visual_quality": "0-100",
-            "resolution_issues": ["Issue 1", "Issue 2"],
-            "font_rendering": "Pass/Fail"
-            // Additional quality metrics can be added
+            "latex_syntax": {
+              "validation": "Pass/Fail",
+              "issues": ["Issue 1", "Issue 2", "..."]
+            },
+            "package_compatibility": {
+              "conflicts": ["Conflict 1", "Conflict 2", "..."],
+              "missing_packages": ["Package 1", "Package 2", "..."]
+            },
+            "...": "..."
           },
-          // Link validation can be customized
-          "hyperlinks": {
-            "functionality": "Pass/Fail",
-            "broken_links": ["Link 1", "Link 2"]
+          "content_integrity": {
+            "content_preservation": {
+              "missing_content": ["Missing item 1", "Missing item 2", "..."],
+              "modified_content": ["Modified item 1", "Modified item 2", "..."]
+            },
+            "section_validation": {
+              "all_sections_present": "Yes/No",
+              "section_order": "Pass/Fail",
+              "missing_sections": ["Section 1", "Section 2", "..."]
+            },
+            "formatting_check": {
+              "typography": {
+                "font_consistency": "Pass/Fail",
+                "size_consistency": "Pass/Fail",
+                "spacing_issues": ["Issue 1", "Issue 2", "..."]
+              },
+              "layout": {
+                "margins": "Pass/Fail",
+                "alignment": "Pass/Fail",
+                "page_breaks": "Pass/Fail"
+              }
+            },
+            "...": "..."
           },
-          // Platform compatibility can be extended
-          "cross_platform": {
-            "compatibility_score": "0-100",
-            "platform_issues": ["Issue 1", "Issue 2"]
-          }
-        },
-        // ATS compatibility checks can be expanded
-        "ats_compatibility": {
-          "text_extraction": {
-            "success_rate": "0-100",
-            "extraction_issues": ["Issue 1", "Issue 2"]
+          "pdf_output_quality": {
+            "rendering": {
+              "visual_quality": "0-100",
+              "resolution_issues": ["Issue 1", "Issue 2", "..."],
+              "font_rendering": "Pass/Fail",
+              "...": "..."
+            },
+            "hyperlinks": {
+              "functionality": "Pass/Fail",
+              "broken_links": ["Link 1", "Link 2", "..."]
+            },
+            "cross_platform": {
+              "compatibility_score": "0-100",
+              "platform_issues": ["Issue 1", "Issue 2", "..."]
+            },
+            "...": "..."
           },
-          // Keyword validation can be customized
-          "keyword_preservation": {
-            "preserved_keywords": ["Keyword 1", "Keyword 2"],
-            "lost_keywords": ["Keyword 1", "Keyword 2"]
+          "ats_compatibility": {
+            "text_extraction": {
+              "success_rate": "0-100",
+              "extraction_issues": ["Issue 1", "Issue 2", "..."]
+            },
+            "keyword_preservation": {
+              "preserved_keywords": ["Keyword 1", "Keyword 2", "..."],
+              "lost_keywords": ["Keyword 1", "Keyword 2", "..."]
+            },
+            "formatting_compliance": {
+              "compliance_score": "0-100",
+              "non_compliant_elements": ["Element 1", "Element 2", "..."]
+            },
+            "...": "..."
           },
-          // Formatting compliance can be extended
-          "formatting_compliance": {
-            "compliance_score": "0-100",
-            "non_compliant_elements": ["Element 1", "Element 2"]
-          }
+          "...": "..."
         }
       }
 
 # LLM configurations
 llm_config:
   openai_llm:
-    model_1: "gpt-3.5-turbo"
-    model_2: "gpt-4-turbo"
+    model_1: "gpt-4o"
+    model_2: "gpt-4o-mini"
     temperature_1: 0.3
     temperature_2: 0.3
-    max_tokens: 4000
+    max_tokens: 8000
 
   claude_llm:
     model_1: "claude-3-sonnet"
     model_2: "claude-3-opus"
     temperature_1: 0.3
     temperature_2: 0.3
-    max_tokens: 4000
+    max_tokens: 8000
 
 fallback_llm:
-  model: "gpt-3.5-turbo"
+  model: "gpt-4o-mini"
   temperature: 0.3
-  max_tokens: 4000
+  max_tokens: 8000
