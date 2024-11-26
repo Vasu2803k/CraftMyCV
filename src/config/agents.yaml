@@ -668,249 +668,250 @@ agents:
       - Implement proper encoding
       - Create clean, maintainable code
     expected_output: |
-      % Resume Template
+      """
       \documentclass[10pt, letterpaper]{article}
 
-    \usepackage[ignoreheadfoot,top=2cm,bottom=2cm,left=2cm,right=2cm,footskip=1.0cm]{geometry}
-    \usepackage{titlesec}
-    \usepackage{tabularx}
-    \usepackage{array}
-    \usepackage[dvipsnames]{xcolor}
-    \definecolor{primaryColor}{RGB}{0, 79, 144}
-    \usepackage{enumitem}
-    \usepackage{fontawesome5}
-    \usepackage{amsmath}
-    \usepackage[colorlinks=true,urlcolor=primaryColor]{hyperref}
-    \usepackage[pscoord]{eso-pic}
-    \usepackage{calc}
-    \usepackage{bookmark}
-    \usepackage{lastpage}
-    \usepackage{changepage}
-    \usepackage{paracol}
-    \usepackage{ifthen}
-    \usepackage{needspace}
-    \usepackage{iftex}
+      \usepackage[ignoreheadfoot,top=2cm,bottom=2cm,left=2cm,right=2cm,footskip=1.0cm]{geometry}
+      \usepackage{titlesec}
+      \usepackage{tabularx}
+      \usepackage{array}
+      \usepackage[dvipsnames]{xcolor}
+      \definecolor{primaryColor}{RGB}{0, 79, 144}
+      \usepackage{enumitem}
+      \usepackage{fontawesome5}
+      \usepackage{amsmath}
+      \usepackage[colorlinks=true,urlcolor=primaryColor]{hyperref}
+      \usepackage[pscoord]{eso-pic}
+      \usepackage{calc}
+      \usepackage{bookmark}
+      \usepackage{lastpage}
+      \usepackage{changepage}
+      \usepackage{paracol}
+      \usepackage{ifthen}
+      \usepackage{needspace}
+      \usepackage{iftex}
 
-    \ifPDFTeX
-        \input{glyphtounicode}
-        \pdfgentounicode=1
-        \usepackage[utf8]{inputenc}
-        \usepackage{lmodern}
-    \fi
+      \ifPDFTeX
+          \input{glyphtounicode}
+          \pdfgentounicode=1
+          \usepackage[utf8]{inputenc}
+          \usepackage{lmodern}
+      \fi
 
-    \AtBeginEnvironment{adjustwidth}{\partopsep0pt}
-    \pagestyle{empty}
-    \setcounter{secnumdepth}{0}
-    \setlength{\parindent}{0pt}
-    \setlength{\topskip}{0pt}
-    \setlength{\columnsep}{0cm}
+      \AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+      \pagestyle{empty}
+      \setcounter{secnumdepth}{0}
+      \setlength{\parindent}{0pt}
+      \setlength{\topskip}{0pt}
+      \setlength{\columnsep}{0cm}
 
-    \makeatletter
-    \let\ps@customFooterStyle\ps@plain
-    \patchcmd{\ps@customFooterStyle}{\thepage}{
-        \color{gray}\textit{\small Shrikant Mane - Page \thepage{} of \pageref*{LastPage}}
-    }{}{} 
-    \makeatother
-    \pagestyle{customFooterStyle}
+      \makeatletter
+      \let\ps@customFooterStyle\ps@plain
+      \patchcmd{\ps@customFooterStyle}{\thepage}{
+          \color{gray}\textit{\small Shrikant Mane - Page \thepage{} of \pageref*{LastPage}}
+      }{}{} 
+      \makeatother
+      \pagestyle{customFooterStyle}
 
-    \titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
-    \titlespacing{\section}{-1pt}{0.3cm}{0.2cm}
+      \titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+      \titlespacing{\section}{-1pt}{0.3cm}{0.2cm}
 
-    \renewcommand\labelitemi{$\circ$}
-    \newenvironment{highlights}{
-        \begin{itemize}[topsep=0.10cm,parsep=0.10cm,partopsep=0pt,itemsep=0pt,leftmargin=0.4cm+10pt]
-    }{
-        \end{itemize}
-    }
+      \renewcommand\labelitemi{$\circ$}
+      \newenvironment{highlights}{
+          \begin{itemize}[topsep=0.10cm,parsep=0.10cm,partopsep=0pt,itemsep=0pt,leftmargin=0.4cm+10pt]
+      }{
+          \end{itemize}
+      }
 
-    \newenvironment{onecolentry}{
-        \begin{adjustwidth}{0.2cm+0.00001cm}{0.2cm+0.00001cm}
-    }{
-        \end{adjustwidth}
-    }
+      \newenvironment{onecolentry}{
+          \begin{adjustwidth}{0.2cm+0.00001cm}{0.2cm+0.00001cm}
+      }{
+          \end{adjustwidth}
+      }
 
-    \newenvironment{twocolentry}[2][]{
-        \onecolentry
-        \def\secondColumn{#2}
-        \setcolumnwidth{\fill, 4.5cm}
-        \begin{paracol}{2}
-    }{
-        \switchcolumn \raggedleft \secondColumn
-        \end{paracol}
-        \endonecolentry
-    }
+      \newenvironment{twocolentry}[2][]{
+          \onecolentry
+          \def\secondColumn{#2}
+          \setcolumnwidth{\fill, 4.5cm}
+          \begin{paracol}{2}
+      }{
+          \switchcolumn \raggedleft \secondColumn
+          \end{paracol}
+          \endonecolentry
+      }
 
-    \newenvironment{header}{
-        \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
-    }{
-        \par\kern\topsep
-    }
+      \newenvironment{header}{
+          \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+      }{
+          \par\kern\topsep
+      }
 
-    \begin{document}
-    \newcommand{\AND}{\unskip\cleaders\hbox{~~~~~}\hskip1em plus1fill\ignorespaces}
+      \begin{document}
+      \newcommand{\AND}{\unskip\cleaders\hbox{~~~~~}\hskip1em plus1fill\ignorespaces}
 
-    \begin{header}
-        \textbf{\fontsize{24pt}{24pt}\selectfont Shrikant Mane}
+      \begin{header}
+          \textbf{\fontsize{24pt}{24pt}\selectfont Shrikant Mane}
 
-        \vspace{0.3cm}
+          \vspace{0.3cm}
 
-        \normalsize
-        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Pune, India}%
-        \kern 0.25cm%
-        \AND%
-        \kern 0.25cm%
-        \mbox{\href{mailto:shrikantgmane08@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}shrikantgmane08@gmail.com}}%
-        \kern 0.25cm%
-        \AND%
-        \kern 0.25cm%
-        \mbox{\href{tel:+91-7875371607}{\color{black}{\footnotesize\faPhone}\hspace*{0.13cm}+91-7875371607}}%
-        \kern 0.25cm%
-        \AND%
-        \kern 0.25cm%
-        \mbox{\href{https://linkedin.com/in/shrikantmane1203}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}shrikantmane1203}}%
-        \kern 0.25cm%
-        \AND%
-        \kern 0.25cm%
-        \mbox{\href{https://github.com/maneshrikant08}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}maneshrikant08}}%
-    \end{header}
+          \normalsize
+          \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Pune, India}%
+          \kern 0.25cm%
+          \AND%
+          \kern 0.25cm%
+          \mbox{\href{mailto:shrikantgmane08@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}shrikantgmane08@gmail.com}}%
+          \kern 0.25cm%
+          \AND%
+          \kern 0.25cm%
+          \mbox{\href{tel:+91-7875371607}{\color{black}{\footnotesize\faPhone}\hspace*{0.13cm}+91-7875371607}}%
+          \kern 0.25cm%
+          \AND%
+          \kern 0.25cm%
+          \mbox{\href{https://linkedin.com/in/shrikantmane1203}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}shrikantmane1203}}%
+          \kern 0.25cm%
+          \AND%
+          \kern 0.25cm%
+          \mbox{\href{https://github.com/maneshrikant08}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}maneshrikant08}}%
+      \end{header}
 
-    \section{Professional Summary}
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Specialized in building mobile-first, performance-optimized web applications with modern JavaScript frameworks
-            \item Experienced in developing user-centric interfaces, implementing state management solutions, and optimizing application performance
-            \item Strong collaborator with excellent communication skills and proven ability to work in cross-functional teams
-        \end{highlights}
-    \end{onecolentry}
+      \section{Professional Summary}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Specialized in building mobile-first, performance-optimized web applications with modern JavaScript frameworks
+              \item Experienced in developing user-centric interfaces, implementing state management solutions, and optimizing application performance
+              \item Strong collaborator with excellent communication skills and proven ability to work in cross-functional teams
+          \end{highlights}
+      \end{onecolentry}
 
-    \section{Experience}
-    \begin{twocolentry}{
-    \textit{Pune, India}
-    \textit{2023 - Present}}
-        \textbf{Frontend Developer}
-        \textit{Phoenixzone Technologies}
-    \end{twocolentry}
+      \section{Experience}
+      \begin{twocolentry}{
+      \textit{Pune, India}
+      \textit{2023 - Present}}
+          \textbf{Frontend Developer}
+          \textit{Phoenixzone Technologies}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Architected and implemented responsive, mobile-first interfaces using React.js, improving user engagement by 35\%
-            \item Implemented state management solutions and created a library of 15+ reusable components, reducing development time by 30\%
-            \item Optimized application load time from 4.2s to 2.1s through React Hooks and code splitting
-            \item Implemented error tracking reducing bug resolution time by 40\% through better debugging processes
-            \item Collaborated with backend team on API integration ensuring 99.9\% uptime
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Architected and implemented responsive, mobile-first interfaces using React.js, improving user engagement by 35\%
+              \item Implemented state management solutions and created a library of 15+ reusable components, reducing development time by 30\%
+              \item Optimized application load time from 4.2s to 2.1s through React Hooks and code splitting
+              \item Implemented error tracking reducing bug resolution time by 40\% through better debugging processes
+              \item Collaborated with backend team on API integration ensuring 99.9\% uptime
+          \end{highlights}
+      \end{onecolentry}
 
-    \section{Projects}
-    \begin{twocolentry}{
-    \textit{React.js, Node.js, Express.js}}
-        \textbf{KitabGhar}
-    \end{twocolentry}
+      \section{Projects}
+      \begin{twocolentry}{
+      \textit{React.js, Node.js, Express.js}}
+          \textbf{KitabGhar}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Developed a responsive e-book platform with scalable architecture for handling large user bases
-            \item Implemented caching strategy reducing API response time by 45\%
-            \item Built reusable component library using Material UI, improving development velocity by 50\%
-            \item Achieved 90+ Lighthouse performance score through image optimization and lazy loading
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Developed a responsive e-book platform with scalable architecture for handling large user bases
+              \item Implemented caching strategy reducing API response time by 45\%
+              \item Built reusable component library using Material UI, improving development velocity by 50\%
+              \item Achieved 90+ Lighthouse performance score through image optimization and lazy loading
+          \end{highlights}
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{twocolentry}{
-    \textit{Spring Boot, React.js, MySQL}}
-        \textbf{ConcertHub}
-    \end{twocolentry}
+      \begin{twocolentry}{
+      \textit{Spring Boot, React.js, MySQL}}
+          \textbf{ConcertHub}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Built a scalable concert booking platform using React.js and Spring Boot microservices architecture
-            \item Implemented secure user authentication system using JWT tokens and role-based access control
-            \item Developed responsive search functionality with real-time filtering and sorting capabilities
-            \item Integrated payment gateway and booking system with robust error handling
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Built a scalable concert booking platform using React.js and Spring Boot microservices architecture
+              \item Implemented secure user authentication system using JWT tokens and role-based access control
+              \item Developed responsive search functionality with real-time filtering and sorting capabilities
+              \item Integrated payment gateway and booking system with robust error handling
+          \end{highlights}
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{twocolentry}{
-    \textit{React.js, D3.js, Firebase}}
-        \textbf{SocialMetrics}
-    \end{twocolentry}
+      \begin{twocolentry}{
+      \textit{React.js, D3.js, Firebase}}
+          \textbf{SocialMetrics}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Developed a dashboard for analyzing social media engagement metrics
-            \item Created interactive data visualizations using D3.js for trend analysis
-            \item Implemented real-time updates using Firebase WebSocket connections
-            \item Built responsive layouts supporting all device sizes with 60fps animations
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Developed a dashboard for analyzing social media engagement metrics
+              \item Created interactive data visualizations using D3.js for trend analysis
+              \item Implemented real-time updates using Firebase WebSocket connections
+              \item Built responsive layouts supporting all device sizes with 60fps animations
+          \end{highlights}
+      \end{onecolentry}
 
-    \section{Education}
-    \begin{twocolentry}{
-    \textit{2019 - 2023}}
-        \textbf{Yeshwantrao Chavan College of Engineering}
-        \textit{Bachelor of Engineering in Computer Technology}
-    \end{twocolentry}
+      \section{Education}
+      \begin{twocolentry}{
+      \textit{Pune, India}
+      \textit{2019 - 2023}}
+          \textbf{Yeshwantrao Chavan College of Engineering}
+          \textit{Bachelor of Engineering in Computer Technology}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item CGPA: 8.2/10
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item CGPA: 8.2/10
+          \end{highlights}
+      \end{onecolentry}
 
-    \begin{twocolentry}{
-    \textit{2016 - 2018}}
-        \textbf{MIT Junior College}
-        \textit{Higher Secondary}
-    \end{twocolentry}
+      \begin{twocolentry}{
+      \textit{2016 - 2018}}
+          \textbf{MIT Junior College}
+          \textit{Higher Secondary}
+      \end{twocolentry}
 
-    \begin{onecolentry}
-        \begin{highlights}
-            \item Percentage: 85\%
-        \end{highlights}
-    \end{onecolentry}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item Percentage: 85\%
+          \end{highlights}
+      \end{onecolentry}
 
-    \section{Technical Skills}
-    \begin{onecolentry}
-        \textbf{Frontend Frameworks:} React.js (Primary), Vue.js (Learning), Material-UI, Styled-components
-    \end{onecolentry}
+      \section{Technical Skills}
+      \begin{onecolentry}
+          \textbf{Frontend Frameworks:} React.js (Primary), Vue.js (Learning), Material-UI, Styled-components
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{onecolentry}
-        \textbf{Core Technologies:} JavaScript (ES6+), HTML5, CSS3, Sass
-    \end{onecolentry}
+      \begin{onecolentry}
+          \textbf{Core Technologies:} JavaScript (ES6+), HTML5, CSS3, Sass
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{onecolentry}
-        \textbf{State Management:} Redux, Context API, REST APIs, JWT Authentication
-    \end{onecolentry}
+      \begin{onecolentry}
+          \textbf{State Management:} Redux, Context API, REST APIs, JWT Authentication
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{onecolentry}
-        \textbf{Build Tools \& DevOps:} Git, Docker, Webpack, AWS Cloud Platform
-    \end{onecolentry}
+      \begin{onecolentry}
+          \textbf{Build Tools \& DevOps:} Git, Docker, Webpack, AWS Cloud Platform
+      \end{onecolentry}
 
-    \vspace{0.2cm}
+      \vspace{0.2cm}
 
-    \begin{onecolentry}
-        \textbf{Backend Technologies:} Node.js, Spring Boot, ASP.NET, MySQL, MongoDB
-    \end{onecolentry}
+      \begin{onecolentry}
+          \textbf{Backend Technologies:} Node.js, Spring Boot, ASP.NET, MySQL, MongoDB
+      \end{onecolentry}
 
-    \section{Certifications}
-    \begin{onecolentry}
-        \begin{highlights}
-            \item AWS Solution Architect Associate
-            \item Post Graduate Diploma in Advanced Computing (PG-DAC) — Grade: A
-        \end{highlights}
-    \end{onecolentry}
+      \section{Certifications}
+      \begin{onecolentry}
+          \begin{highlights}
+              \item AWS Solution Architect Associate
+              \item Post Graduate Diploma in Advanced Computing (PG-DAC) — Grade: A
+          \end{highlights}
+      \end{onecolentry}
 
-  \end{document}
+      \end{document}"""
 
   post_latex_quality_controller_agent:
     role: "Post-LaTeX Document Quality Specialist"
@@ -1023,7 +1024,7 @@ agents:
         }
       }
 
-# Keep the LLM configurations
+# LLM configurations
 llm_config:
   openai_llm:
     model_1: "gpt-3.5-turbo"

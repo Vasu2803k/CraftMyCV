@@ -101,7 +101,7 @@ class TextExtractor:
         path = Path(pdf_path)
         if not path.exists():
             raise FileNotFoundError(f"PDF file not found: {pdf_path}")
-        if not pdf_path.lower().endswith('.pdf'):
+        if not str(path).lower().endswith('.pdf'):
             raise ValueError(f"Invalid file format. Expected PDF, got: {path.suffix}")
         
         output_string = StringIO()
@@ -127,7 +127,7 @@ class TextExtractor:
         path = Path(doc_path)
         if not path.exists():
             raise FileNotFoundError(f"DOC file not found: {doc_path}")
-        if not doc_path.lower().endswith('.doc'):
+        if not str(path).lower().endswith('.doc'):
             raise ValueError(f"Invalid file format. Expected DOC, got: {path.suffix}")
         
         ole = None
@@ -162,7 +162,7 @@ class TextExtractor:
         path = Path(txt_path)
         if not path.exists():
             raise FileNotFoundError(f"TXT file not found: {txt_path}")
-        if not txt_path.lower().endswith('.txt'):
+        if not str(path).lower().endswith('.txt'):
             raise ValueError(f"Invalid file format. Expected TXT, got: {path.suffix}")
         
         try:
@@ -189,7 +189,7 @@ class TextExtractor:
         path = Path(docx_path)
         if not path.exists():
             raise FileNotFoundError(f"DOCX file not found: {docx_path}")
-        if not docx_path.lower().endswith('.docx'):
+        if not str(path).lower().endswith('.docx'):
             raise ValueError(f"Invalid file format. Expected DOCX, got: {path.suffix}")
         
         try:
@@ -206,7 +206,7 @@ class TextExtractor:
         path = Path(image_path)
         if not path.exists():
             raise FileNotFoundError(f"Image file not found: {image_path}")
-        if not image_path.lower().endswith(('.png', '.jpg', '.jpeg')):
+        if not str(path).lower().endswith(('.png', '.jpg', '.jpeg')):
             raise ValueError(f"Invalid file format. Expected image file, got: {path.suffix}")
         
         try:

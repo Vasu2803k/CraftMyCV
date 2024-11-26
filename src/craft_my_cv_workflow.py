@@ -43,6 +43,8 @@ async def validate_file_path(file_path: str) -> Path:
         raise FileNotFoundError(f"File not found: {file_path}")
     if not path.is_file():
         raise ValueError(f"Not a file: {file_path}")
+    if not os.access(path, os.R_OK):
+        raise PermissionError(f"File not readable: {file_path}")
     return path
 
 async def save_output(output: Any, output_path: str):
@@ -67,7 +69,7 @@ async def save_output(output: Any, output_path: str):
             logger.error(f"Original output content: {str(output)}")
             raise ValueError("No data to save")
             
-        logger.debug(f"Attempting to save output: {json.dumps(data_to_save, indent=2)[:200]}...")  # Log first 200 chars
+        logger.debug(f"Attempting to save output: {json.dumps(data_to_save, indent=2)[:200]}...")
         
         # Ensure the output directory exists
         output_dir = os.path.dirname(output_path)
@@ -88,13 +90,13 @@ async def save_output(output: Any, output_path: str):
         logger.error(f"Failed to save output: {str(e)}")
         logger.error(f"Stack trace:\n{traceback.format_exc()}")
         logger.error(f"Output data type: {type(output)}")
-        logger.error(f"Output content preview: {str(output)[:500]}")  # Log first 500 chars
+        logger.error(f"Output content preview: {str(output)[:500]}")
         raise
 
 class CraftMyCVWorkflow(Workflow):
     def __init__(self):
         super().__init__()
-        # Simplified workflow steps based on flowchart
+        # Updated workflow steps based on flowchart
         self.steps = [
             self.setup_workflow_context,
             self.resume_analyzer,
@@ -103,8 +105,10 @@ class CraftMyCVWorkflow(Workflow):
             self.summary_customizer,
             self.pre_latex_quality_controller,
             self.latex_formatter,
-            self.post_latex_quality_controller
+            self.post_latex_quality_controller,
+            self.finalize_output
         ]
+        
         try:
             # Load configurations
             with open('src/config/agents.yaml', 'r') as f:
@@ -114,73 +118,67 @@ class CraftMyCVWorkflow(Workflow):
             fallback_config = agent_config_yaml['fallback_llm']
             
             # Validate environment variables
-            openai_api_key = os.getenv('OPENAI_API_KEY')
-            claude_api_key = os.getenv('CLAUDE_API_KEY')
-            fallback_api_key = os.getenv('FALLBACK_LLM_API_KEY')
+            required_keys = {
+                'OPENAI_API_KEY': os.getenv('OPENAI_API_KEY'),
+                'CLAUDE_API_KEY': os.getenv('CLAUDE_API_KEY'),
+                'FALLBACK_LLM_API_KEY': os.getenv('FALLBACK_LLM_API_KEY')
+            }
             
-            if not all([openai_api_key, claude_api_key, fallback_api_key]):
-                raise ValueError("Missing required API keys in environment variables")
+            missing_keys = [k for k, v in required_keys.items() if not v]
+            if missing_keys:
+                raise ValueError(f"Missing required API keys: {', '.join(missing_keys)}")
             
-            # Initialize LLMs
-            self.openai_llm1 = OpenAI(
-                model=llm_config['openai_llm']['model_1'],
-                api_key=openai_api_key,
-                temperature=llm_config['openai_llm']['temperature_1']
-            )
-            
-            self.openai_llm2 = OpenAI(
-                model=llm_config['openai_llm']['model_2'],
-                api_key=openai_api_key,
-                temperature=llm_config['openai_llm']['temperature_2']
-            )
-            
-            self.claude_llm1 = Anthropic(
-                model=llm_config['claude_llm']['model_1'],
-                api_key=claude_api_key,
-                temperature=llm_config['claude_llm']['temperature_1']
-            )
-            
-            self.claude_llm2 = Anthropic(
-                model=llm_config['claude_llm']['model_2'],
-                api_key=claude_api_key,
-                temperature=llm_config['claude_llm']['temperature_2']
-            )
+            # Initialize LLMs with improved error handling
+            self.llms = {
+                'openai_llm1': self._init_llm(OpenAI, {
+                    'model': llm_config['openai_llm']['model_1'],
+                    'api_key': required_keys['OPENAI_API_KEY'],
+                    'temperature': llm_config['openai_llm']['temperature_1']
+                }),
+                'openai_llm2': self._init_llm(OpenAI, {
+                    'model': llm_config['openai_llm']['model_2'],
+                    'api_key': required_keys['OPENAI_API_KEY'],
+                    'temperature': llm_config['openai_llm']['temperature_2']
+                }),
+                'claude_llm1': self._init_llm(Anthropic, {
+                    'model': llm_config['claude_llm']['model_1'],
+                    'api_key': required_keys['CLAUDE_API_KEY'],
+                    'temperature': llm_config['claude_llm']['temperature_1']
+                }),
+                'claude_llm2': self._init_llm(Anthropic, {
+                    'model': llm_config['claude_llm']['model_2'],
+                    'api_key': required_keys['CLAUDE_API_KEY'],
+                    'temperature': llm_config['claude_llm']['temperature_2']
+                })
+            }
             
             # Initialize fallback LLM
-            self.fallback_llm = OpenAI(
-                model=fallback_config['model'],
-                api_key=fallback_api_key,
-                temperature=fallback_config['temperature']
-            )
+            self.fallback_llm = self._init_llm(OpenAI, {
+                'model': fallback_config['model'],
+                'api_key': required_keys['FALLBACK_LLM_API_KEY'],
+                'temperature': fallback_config['temperature']
+            })
             
-            # Create FallbackLLM instances
-            self.openai_llm1_with_fallback = FallbackLLM(
-                primary_llm=self.openai_llm1,
-                fallback_llm=self.fallback_llm,
-                timeout=360
-            )
-            
-            self.openai_llm2_with_fallback = FallbackLLM(
-                primary_llm=self.openai_llm2,
-                fallback_llm=self.fallback_llm,
-                timeout=360
-            )
-            
-            self.claude_llm1_with_fallback = FallbackLLM(
-                primary_llm=self.claude_llm1,
-                fallback_llm=self.fallback_llm,
-                timeout=360
-            )
-            
-            self.claude_llm2_with_fallback = FallbackLLM(
-                primary_llm=self.claude_llm2,
-                fallback_llm=self.fallback_llm,
-                timeout=360
-            )
+            # Create FallbackLLM instances with unified timeout
+            self.llm_with_fallback = {
+                name: FallbackLLM(
+                    primary_llm=llm,
+                    fallback_llm=self.fallback_llm,
+                    timeout=60
+                ) for name, llm in self.llms.items()
+            }
 
         except Exception as e:
             logger.error(f"Failed to initialize workflow: {str(e)}")
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
+            raise
+
+    def _init_llm(self, llm_class, config: dict) -> LLM:
+        """Initialize LLM with error handling"""
+        try:
+            return llm_class(**config)
+        except Exception as e:
+            logger.error(f"Failed to initialize {llm_class.__name__}: {str(e)}")
             raise
 
     def _build_latex_prompt(self, agent_config, recommendations=None, **inputs):
@@ -192,13 +190,9 @@ class CraftMyCVWorkflow(Workflow):
         {agent_config['system_prompt']}
         """
         
-        if recommendations and 'issues_and_improvements' in recommendations:
-            prompt += "\nQuality Improvement Recommendations:\n"
-            for issue in recommendations['issues_and_improvements']:
-                prompt += f"- Issue: {issue['issue']}\n"
-                prompt += f"  Section: {issue['section']}\n"
-                prompt += f"  Resolution: {issue['resolution']}\n"
-                
+        if recommendations:
+            prompt += f"\nQuality Improvement Recommendations:\n{recommendations}"
+        
         prompt += """
         CRITICAL REQUIREMENTS:
         1. Generate ONLY raw LaTeX code
@@ -216,7 +210,6 @@ class CraftMyCVWorkflow(Workflow):
         3. Use markdown formatting
         4. Include any non-LaTeX content
         
-        You will be provided with the required input data.
         Input Data:
         """
         
@@ -242,16 +235,8 @@ class CraftMyCVWorkflow(Workflow):
         {agent_config['system_prompt']}
         """
         
-        # Add quality recommendations if available
-        if recommendations and 'issues_and_improvements' in recommendations:
-            prompt += "\nQuality Improvement Recommendations:\n"
-            for agent_type, issues in recommendations['issues_and_improvements'].items():
-                prompt += f"\nIssues for {agent_type}:\n"
-                for issue in issues:
-                    prompt += f"- Issue: {issue['issue']}\n"
-                    prompt += f"  Section: {issue['section']}\n"
-                    prompt += f"  Resolution: {issue['resolution']}\n"
-                    prompt += f"  Benefit: {issue['benefit']}\n"
+        if recommendations:
+            prompt += f"\nQuality Improvement Recommendations:\n{recommendations}"
         
         prompt += f"""
         CRITICAL JSON RESPONSE REQUIREMENTS:
@@ -260,22 +245,21 @@ class CraftMyCVWorkflow(Workflow):
         2. End with a single closing curly brace
         3. Use double quotes for ALL keys and string values
         4. Do not include ANY explanatory text before or after the JSON
-        5. Do not include markdown formatting (like ```json or ```)
+        5. Do not include markdown formatting
         6. Do not include multiple JSON objects
         7. Ensure all arrays and objects are properly closed
-        8. No trailing commas after the last item in arrays/objects
+        8. No trailing commas after the last item
         9. No comments within the JSON
         10. No line breaks within string values
 
         Expected Output Format:
         {agent_config['expected_output']}
 
-        You will be provided with the required input data.
         Input Data:
         """
         
         for key, value in inputs.items():
-            if key != 'recommendations':  # Skip printing recommendations in input data
+            if key != 'recommendations':
                 prompt += f"\n{key}: {value}"
             
         prompt += """
@@ -291,20 +275,22 @@ class CraftMyCVWorkflow(Workflow):
         return prompt
 
     def _validate_llm_response(self, response_text: str) -> dict | str:
-        """Validate and parse LLM response, handling markdown code blocks"""
+        """Validate and parse LLM response with enhanced error handling"""
         try:
             # Remove any markdown code block formatting if present
             if response_text.startswith("```") and response_text.endswith("```"):
-                # Extract content between code block markers
                 lines = response_text.split("\n")
-                response_text = "\n".join(lines[1:-1])  # Remove first and last lines
+                response_text = "\n".join(lines[1:-1])
             
             # Try to parse as JSON first
             try:
-                return json.loads(response_text)
+                parsed = json.loads(response_text)
+                self._validate_json_structure(parsed)
+                return parsed
             except json.JSONDecodeError:
                 # If not JSON, check if it's LaTeX
                 if response_text.strip().startswith("\\documentclass"):
+                    self._validate_latex_structure(response_text.strip())
                     return response_text.strip()
                 else:
                     raise ValueError("Response is neither valid JSON nor LaTeX")
@@ -314,12 +300,37 @@ class CraftMyCVWorkflow(Workflow):
             logger.error(f"Response text:\n{response_text}")
             raise ValueError(f"Invalid response format: {str(e)}")
 
+    def _validate_json_structure(self, data: dict):
+        """Validate JSON structure meets expected format"""
+        if not isinstance(data, dict):
+            raise ValueError("Response must be a dictionary")
+            
+        # Add specific validation rules based on response type
+        if 'resume_analysis' in data:
+            required_fields = ['personal_info', 'professional_summary', 'work_experience']
+            missing = [f for f in required_fields if f not in data['resume_analysis']]
+            if missing:
+                raise ValueError(f"Missing required fields in resume analysis: {missing}")
+                
+        # Add more validation rules for other response types
+
+    def _validate_latex_structure(self, latex_text: str):
+        """Validate LaTeX document structure"""
+        required_elements = [
+            "\\documentclass",
+            "\\begin{document}",
+            "\\end{document}"
+        ]
+        
+        missing = [elem for elem in required_elements if elem not in latex_text]
+        if missing:
+            raise ValueError(f"Missing required LaTeX elements: {missing}")
+
     def _log_step_output(self, step_name: str, output: Any, duration: float = None):
         """Log detailed output for each workflow step"""
         logger.info(f"\n{'='*80}")
         logger.info(f"Step Completed: {step_name}")
         logger.info(f"Duration: {duration:.2f} seconds" if duration else "Duration: Unknown")
-        logger.info("\nFull Output:")
         
         try:
             if isinstance(output, dict):
@@ -327,13 +338,106 @@ class CraftMyCVWorkflow(Workflow):
             else:
                 formatted_output = str(output)
             
-            for line in formatted_output.split('\n'):
-                logger.info(line)
+            logger.info("\nOutput Summary:")
+            logger.info(formatted_output)
+                
         except Exception as e:
             logger.error(f"Error formatting output: {str(e)}")
-            logger.info(f"Raw output: {output}")
+            logger.info(f"Raw output: {str(output)[:500]}")
         
         logger.info(f"\n{'='*80}\n")
+
+    async def _apply_quality_recommendations(self, ctx: Context, recommendations: dict) -> bool:
+        """Apply quality recommendations and determine if improvements are needed"""
+        try:
+            # Extract quality metrics
+            quality_scores = recommendations.get('quality_validation', {}).get('sections', {})
+            formatting_issues = recommendations.get('formatting_validation', {}).get('consistency', {})
+            latex_readiness = recommendations.get('latex_readiness', {}).get('status', 'Fail')
+            
+            # Map of possible section names to standardized names
+            section_name_map = {
+                'summary_section': ['summary_section', 'professional_summary', 'summary'],
+                'experience_section': ['experience_section', 'experience', 'work_experience'],
+                'skills_section': ['skills_section', 'skills', 'technical_skills'],
+                'education_section': ['education_section', 'education'],
+                'personal_info': ['personal_info', 'contact_info', 'contact'],
+                'projects_section': ['projects_section', 'projects'],
+                'certifications_section': ['certifications_section', 'certifications']
+            }
+            
+            # Calculate overall quality score with section name mapping
+            section_scores = []
+            critical_issues = []
+            
+            # Check for specific formatting issues
+            date_format_issues = formatting_issues.get('date_formats', {})
+            if date_format_issues.get('status') == 'Fail':
+                critical_issues.append("Date format inconsistencies detected")
+            
+            # Check for missing durations in projects and experience
+            for section_scores_key, score_data in quality_scores.items():
+                # Check if the section name matches any of our mapped names
+                for standard_name, variants in section_name_map.items():
+                    if section_scores_key in variants:
+                        if isinstance(score_data, dict):
+                            # Convert completeness score to float if it's a string
+                            completeness = score_data.get('completeness', 0)
+                            if isinstance(completeness, str):
+                                # Remove any '%' symbol and convert to float
+                                completeness = float(completeness.replace('%', ''))
+                            section_scores.append(completeness)
+                            
+                            # Check for specific issues in the section
+                            issues = score_data.get('issues', [])
+                            for issue in issues:
+                                if 'Duration' in issue or 'duration' in issue:
+                                    critical_issues.append(f"Duration issue in {standard_name}: {issue}")
+                            break
+            
+            avg_quality = sum(section_scores) / len(section_scores) if section_scores else 0
+            
+            # Check formatting issues with more specific checks
+            has_formatting_issues = (
+                any(issue.get('status', 'Fail') == 'Fail' for issue in formatting_issues.values()) or
+                bool(critical_issues)  # Consider critical issues as formatting issues
+            )
+            
+            # Determine if improvements needed
+            needs_improvement = (
+                avg_quality < 85 or  # Quality threshold
+                has_formatting_issues or
+                latex_readiness == 'Fail'
+            )
+            
+            if needs_improvement:
+                logger.info("Quality check indicates improvements needed:")
+                if avg_quality < 85:
+                    logger.info(f"- Average quality score ({avg_quality:.1f}) below threshold")
+                if has_formatting_issues:
+                    logger.info("- Formatting issues detected:")
+                    for issue in critical_issues:
+                        logger.info(f"  * {issue}")
+                    if formatting_issues:
+                        logger.info("  * General formatting issues found")
+                if latex_readiness == 'Fail':
+                    logger.info("- LaTeX readiness check failed")
+                
+                # Log specific recommendations for improvement
+                logger.info("\nRecommended improvements:")
+                if critical_issues:
+                    for i, issue in enumerate(critical_issues, 1):
+                        logger.info(f"{i}. {issue}")
+                if avg_quality < 85:
+                    logger.info(f"- Improve content quality in sections with scores below 85%")
+                
+            return needs_improvement
+            
+        except Exception as e:
+            logger.error(f"Error applying quality recommendations: {str(e)}")
+            logger.error(f"Recommendations data: {json.dumps(recommendations, indent=2)}")
+            logger.error(f"Stack trace:\n{traceback.format_exc()}")
+            return True  # Conservative approach: assume improvements needed on error
 
     @step
     async def setup_workflow_context(self, event: StartEvent) -> Event:
@@ -346,31 +450,32 @@ class CraftMyCVWorkflow(Workflow):
         ctx.workflow_state = "initialized"
         ctx.errors = []
         ctx.step_timings = {}
+        ctx.retry_count = 0
+        ctx.max_retries = 3
         
         # Initialize workflow data containers
         ctx.resume_text = event.data.get("resume_text")
         ctx.job_description = event.data.get("job_description")
         
-        # Initialize result containers based on agent output structure
-        ctx.resume_analysis = None  # Will contain resume_analyzer_agent output
-        ctx.job_analysis = None    # Will contain job_description_analyzer_agent output
-        ctx.resume_customization = None  # Will contain resume_customizer_agent output
-        ctx.summary_customization = None  # Will contain summary_customizer_agent output
-        ctx.latex_resume = None    # Will contain format_converter_agent output
+        # Initialize result containers
+        ctx.resume_analysis = None
+        ctx.job_analysis = None
+        ctx.resume_customization = None
+        ctx.summary_customization = None
+        ctx.latex_resume = None
         
         # Quality check containers
-        ctx.pre_latex_quality_check = None  # Will contain pre_latex_quality_controller_agent output
-        ctx.post_latex_quality_check = None  # Will contain post_latex_quality_controller_agent output
-        ctx.content_quality_check = None  # Will contain resume_feedback_agent output
+        ctx.pre_latex_quality_check = None
+        ctx.post_latex_quality_check = None
         
-        # Validation containers
+        # Validation status tracking
         ctx.validation_status = {
             "resume_analyzer": False,
             "job_description_analyzer": False,
             "resume_customizer": False,
             "summary_customizer": False,
             "latex_formatter": False,
-            "quality_controllers": False  # Covers all quality control steps
+            "quality_controllers": False
         }
         
         return Event(data={"context": ctx})
@@ -394,19 +499,15 @@ class CraftMyCVWorkflow(Workflow):
                 resume_text=ctx.resume_text
             )
             
-            response = await self.openai_llm1_with_fallback.acomplete(prompt)
-            
-            # Validate and parse response
+            response = await self.llm_with_fallback['openai_llm1'].acomplete(prompt)
             parsed_response = self._validate_llm_response(response.text)
             
             ctx.resume_analysis = parsed_response
-            
             ctx.steps_completed += 1
             
             duration = time() - start_time
             ctx.step_timings['resume_analyzer'] = duration
             
-            # Log step output
             self._log_step_output(
                 "Resume Analysis",
                 ctx.resume_analysis,
@@ -414,6 +515,7 @@ class CraftMyCVWorkflow(Workflow):
             )
             
             return Event(data={"context": ctx})
+            
         except Exception as e:
             error_msg = f"Resume analysis failed: {str(e)}"
             ctx.errors.append(error_msg)
@@ -430,28 +532,26 @@ class CraftMyCVWorkflow(Workflow):
             ctx.workflow_state = "job_description_analyzer"
             agent_config = self.agent_config['job_description_analyzer_agent']
             
-            logger.info("Starting job description analysis...")
             if not ctx.job_description:
                 raise ValueError("Missing job description input")
+            
+            if len(ctx.job_description.strip()) < 50:
+                raise ValueError("Job description is too short or empty")
             
             prompt = self._build_content_prompt(
                 agent_config,
                 job_description=ctx.job_description
             )
             
-            response = await self.openai_llm1_with_fallback.acomplete(prompt)
-            
-            # Validate and parse response
+            response = await self.llm_with_fallback['openai_llm1'].acomplete(prompt)
             parsed_response = self._validate_llm_response(response.text)
             
             ctx.job_analysis = parsed_response
-            
             ctx.steps_completed += 1
             
             duration = time() - start_time
             ctx.step_timings['job_description_analyzer'] = duration
             
-            # Log step output
             self._log_step_output(
                 "Job Description Analysis",
                 ctx.job_analysis,
@@ -459,6 +559,7 @@ class CraftMyCVWorkflow(Workflow):
             )
             
             return Event(data={"context": ctx})
+            
         except Exception as e:
             error_msg = f"Job description analysis failed: {str(e)}"
             ctx.errors.append(error_msg)
@@ -468,39 +569,43 @@ class CraftMyCVWorkflow(Workflow):
 
     @step
     async def resume_customizer(self, event: Event) -> Event:
-        """Generate a customized resume content based on job requirements"""
+        """Customize resume content based on job requirements"""
         try:
             start_time = time()
             ctx = event.data["context"]
             ctx.workflow_state = "resume_customizer"
             agent_config = self.agent_config['resume_customizer_agent']
             
-            logger.info("Starting resume customization...")
             if not all([ctx.resume_analysis, ctx.job_analysis]):
                 raise ValueError("Missing required input data for resume customization")
             
-            resume_data = ctx.resume_analysis
+            resume_data = ctx.resume_analysis.get('resume_analysis', {})
             if not resume_data:
                 raise ValueError("Missing resume analysis data")
             
-            # Build prompt with correct data structure
+            recommendations = None
+            if hasattr(ctx, 'pre_latex_quality_check'):
+                recommendations = json.dumps(ctx.pre_latex_quality_check)
+            
             prompt = self._build_content_prompt(
                 agent_config,
                 resume_data=json.dumps(resume_data),
-                job_analysis=json.dumps(ctx.job_analysis)
+                job_analysis=json.dumps(ctx.job_analysis),
+                recommendations=recommendations
             )
             
-            response = await self.openai_llm2_with_fallback.acomplete(prompt)
+            response = await self.llm_with_fallback['openai_llm2'].acomplete(prompt)
+            parsed_response = self._validate_llm_response(response.text)
             
-            # Validate and parse response
-            ctx.resume_customization = self._validate_llm_response(response.text)
-
+            if 'content_customization' not in parsed_response:
+                raise ValueError("Missing 'content_customization' in response")
+            
+            ctx.resume_customization = parsed_response
             ctx.steps_completed += 1
             
             duration = time() - start_time
             ctx.step_timings['resume_customizer'] = duration
             
-            # Log step output
             self._log_step_output(
                 "Resume Customization",
                 ctx.resume_customization,
@@ -508,6 +613,7 @@ class CraftMyCVWorkflow(Workflow):
             )
             
             return Event(data={"context": ctx})
+            
         except Exception as e:
             error_msg = f"Resume customization failed: {str(e)}"
             ctx.errors.append(error_msg)
@@ -524,53 +630,47 @@ class CraftMyCVWorkflow(Workflow):
             ctx.workflow_state = "summary_customizer"
             agent_config = self.agent_config['summary_customizer_agent']
             
-            logger.info("Starting professional summary creation...")
-            
-            # More flexible data validation
             if not ctx.resume_analysis or not ctx.job_analysis:
-                raise ValueError("Missing basic resume or job analysis data")
+                raise ValueError("Missing required analysis data")
             
-            # Extract resume data with safer fallbacks
             resume_data = ctx.resume_analysis
-            work_summary = resume_data.get('work_summary', {})
-            experience = resume_data.get('experience', [])
-            skills = resume_data.get('skills', {})
+            work_summary = resume_data.get('resume_analysis', {}).get('work_summary', {})
+            experience = resume_data.get('resume_analysis', {}).get('work_experience', [])
+            skills = resume_data.get('resume_analysis', {}).get('skills', {})
             
-            # Get customized skills data with fallback
-            customized_skills = ctx.skill_customization
-            job_analysis = ctx.job_analysis
+            customized_resume = ctx.resume_customization.get('content_customization', {})
             
-            # Build input data structure with available information
+            recommendations = None
+            if hasattr(ctx, 'pre_latex_quality_check'):
+                recommendations = json.dumps(ctx.pre_latex_quality_check)
+            
             input_data = {
                 'resume_data': {
                     'work_summary': work_summary,
                     'experience': experience,
                     'skills': skills
                 },
-                'customized_skills': customized_skills,
-                'job_analysis': job_analysis
+                'customized_resume': customized_resume,
+                'job_analysis': ctx.job_analysis
             }
             
             prompt = self._build_content_prompt(
                 agent_config,
                 resume_data=json.dumps(input_data['resume_data']),
-                customized_skills=json.dumps(input_data['customized_skills']),
-                job_analysis=json.dumps(input_data['job_analysis'])
+                customized_resume=json.dumps(input_data['customized_resume']),
+                job_analysis=json.dumps(input_data['job_analysis']),
+                recommendations=recommendations
             )
             
-            response = await self.openai_llm1_with_fallback.acomplete(prompt)
-            
-            # Validate and parse response
+            response = await self.llm_with_fallback['openai_llm1'].acomplete(prompt)
             parsed_response = self._validate_llm_response(response.text)
             
             ctx.summary_customization = parsed_response
-            
             ctx.steps_completed += 1
             
             duration = time() - start_time
             ctx.step_timings['summary_customizer'] = duration
             
-            # Log step output
             self._log_step_output(
                 "Professional Summary",
                 ctx.summary_customization,
@@ -581,8 +681,6 @@ class CraftMyCVWorkflow(Workflow):
             
         except Exception as e:
             error_msg = f"Summary customization failed: {str(e)}"
-            if not hasattr(ctx, 'errors'):
-                ctx.errors = []
             ctx.errors.append(error_msg)
             logger.error(error_msg)
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
@@ -599,27 +697,51 @@ class CraftMyCVWorkflow(Workflow):
             
             logger.info("Starting pre-LaTeX quality assessment...")
             
-            # Prepare input data for quality check
-            input_data = {
+            required_inputs = {
                 "resume_analysis": ctx.resume_analysis,
                 "job_analysis": ctx.job_analysis,
-                "customized_skills": ctx.skill_customization,
                 "customized_resume": ctx.resume_customization,
                 "customized_summary": ctx.summary_customization
             }
+            
+            missing_inputs = [k for k, v in required_inputs.items() if not v]
+            if missing_inputs:
+                raise ValueError(f"Missing required inputs: {missing_inputs}")
+            
+            input_data = {
+                "customized_resume": ctx.resume_customization.get('content_customization', {}),
+                "customized_summary": ctx.summary_customization.get('summary_analysis', {})
+            }
+            
+            for key, value in input_data.items():
+                if not isinstance(value, dict):
+                    raise ValueError(f"Invalid {key} structure: expected dictionary")
             
             prompt = self._build_content_prompt(
                 agent_config,
                 **input_data
             )
             
-            response = await self.openai_llm2_with_fallback.acomplete(prompt)
+            response = await self.llm_with_fallback['openai_llm2'].acomplete(prompt)
+            parsed_response = self._validate_llm_response(response.text)
             
-            # Validate and parse response
-            ctx.pre_latex_quality_check = self._validate_llm_response(response.text)
+            required_sections = ['quality_validation', 'formatting_validation', 'latex_readiness']
+            missing_sections = [s for s in required_sections if s not in parsed_response]
+            if missing_sections:
+                raise ValueError(f"Missing required quality check sections: {missing_sections}")
             
-            # Update validation status
-            ctx.validation_status["quality_checks"] = True
+            # Store quality check results
+            ctx.pre_latex_quality_check = parsed_response
+            
+            # Determine if improvements are needed
+            needs_improvement = await self._apply_quality_recommendations(ctx, parsed_response)
+            
+            if needs_improvement and ctx.retry_count < ctx.max_retries:
+                ctx.retry_count += 1
+                logger.info(f"Quality check indicates improvements needed. Attempt {ctx.retry_count}/{ctx.max_retries}")
+                # Return to resume customizer step
+                ctx.workflow_state = "resume_customizer"
+                return await self.resume_customizer(Event(data={"context": ctx}))
             
             duration = time() - start_time
             ctx.step_timings['pre_latex_quality_controller'] = duration
@@ -641,7 +763,7 @@ class CraftMyCVWorkflow(Workflow):
 
     @step
     async def latex_formatter(self, event: Event) -> Event:
-        """Convert resume content to LaTeX format"""
+        """Convert structured content to LaTeX format"""
         try:
             start_time = time()
             ctx = event.data["context"]
@@ -649,59 +771,94 @@ class CraftMyCVWorkflow(Workflow):
             agent_config = self.agent_config['latex_formatting_agent']
             
             logger.info("Starting LaTeX conversion...")
-            if not ctx.resume_customization.get('customized_resume'):
-                raise ValueError("Missing customized resume data")
             
-            # Prepare input data for LaTeX conversion
+            # Get customized content
+            customized_resume = ctx.resume_customization.get('content_customization', {})
+            customized_summary = ctx.summary_customization.get('summary_analysis', {})
+            job_requirements = ctx.job_analysis
+            
+            if not all([customized_resume, customized_summary, job_requirements]):
+                raise ValueError("Missing required content for LaTeX conversion")
+            
+            required_sections = ['personal_info', 'summary_section', 'experience_section', 'skills_section']
+            missing_sections = [s for s in required_sections if s not in customized_resume]
+            if missing_sections:
+                raise ValueError(f"Missing required resume sections: {missing_sections}")
+            
+            recommendations = None
+            if hasattr(ctx, 'pre_latex_quality_check'):
+                recommendations = json.dumps(ctx.pre_latex_quality_check)
+            
             resume_data = {
-                "customized_skills": ctx.skill_customization.get('customized_skills', {}),
-                "customized_resume": ctx.resume_customization.get('customized_resume', {}),
-                "customized_summary": ctx.summary_customization.get('customized_summary', {})
+                "customized_resume": customized_resume,
+                "customized_summary": customized_summary,
+                "job_requirements": job_requirements
             }
             
-            # Use the specialized LaTeX prompt builder
             prompt = self._build_latex_prompt(
                 agent_config,
-                resume_data=json.dumps(resume_data)
+                resume_data=json.dumps(resume_data),
+                recommendations=recommendations
             )
             
-            response = await self.openai_llm1_with_fallback.acomplete(prompt)
+            response = await self.llm_with_fallback['openai_llm1'].acomplete(prompt)
+            latex_content = self._validate_llm_response(response.text)
             
-            # Validate response and ensure it has latex_document structure
-            parsed_response = self._validate_llm_response(response.text)
-            
-            if 'latex_document' not in parsed_response:
-                raise ValueError("Missing 'latex_document' key in LaTeX response")
-            
-            # Additional LaTeX-specific validation
-            latex_doc = parsed_response['latex_document']
-            required_sections = ['content', 'metadata', 'validation']
-            for section in required_sections:
-                if section not in latex_doc:
-                    raise ValueError(f"Missing required section '{section}' in latex_document")
-            
-            # Validate content structure
-            content = latex_doc['content']
-            if not all(key in content for key in ['preamble', 'document_class', 'main_content']):
-                raise ValueError("Missing required content structure in latex_document")
-            
-            ctx.latex_resume = parsed_response['latex_document']
+            if isinstance(latex_content, str):
+                latex_content = latex_content.strip()
+                
+                # Validate LaTeX structure
+                required_latex_elements = [
+                    "\\documentclass",
+                    "\\begin{document}",
+                    "\\end{document}"
+                ]
+                
+                missing_elements = [
+                    elem for elem in required_latex_elements 
+                    if elem not in latex_content
+                ]
+                
+                if missing_elements:
+                    raise ValueError(f"Invalid LaTeX structure. Missing: {missing_elements}")
+                
+                ctx.latex_resume = {
+                    "latex_document": {
+                        "content": latex_content,
+                        "metadata": {
+                            "timestamp": time(),
+                            "version": "1.0",
+                            "generator": "latex_formatting_agent"
+                        },
+                        "validation": {
+                            "structure_check": "pass",
+                            "required_elements": required_latex_elements,
+                            "validation_timestamp": time()
+                        }
+                    }
+                }
+            else:
+                raise ValueError("Invalid LaTeX response format: expected string")
             
             ctx.steps_completed += 1
             
             duration = time() - start_time
             ctx.step_timings['latex_formatter'] = duration
             
-            # Log step output
             self._log_step_output(
                 "LaTeX Generation",
-                ctx.latex_resume,
+                {
+                    "status": "success",
+                    "latex_length": len(latex_content),
+                    "validation": ctx.latex_resume["latex_document"]["validation"]
+                },
                 duration=duration
             )
             
             return Event(data={"context": ctx})
+            
         except Exception as e:
-            error_msg = f"Format conversion failed: {str(e)}"
+            error_msg = f"LaTeX formatting failed: {str(e)}"
             ctx.errors.append(error_msg)
             logger.error(error_msg)
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
@@ -709,12 +866,12 @@ class CraftMyCVWorkflow(Workflow):
 
     @step
     async def post_latex_quality_controller(self, event: Event) -> Event:
-        """Perform quality check specifically for LaTeX output"""
+        """Perform final quality check on LaTeX output"""
         try:
             start_time = time()
             ctx = event.data["context"]
             ctx.workflow_state = "post_latex_quality_controller"
-            agent_config = self.agent_config['latex_quality_controller_agent']
+            agent_config = self.agent_config['post_latex_quality_controller_agent']
             
             logger.info("Starting LaTeX quality assessment...")
             
@@ -727,15 +884,21 @@ class CraftMyCVWorkflow(Workflow):
                 job_requirements=json.dumps(ctx.job_analysis)
             )
             
-            response = await self.openai_llm2_with_fallback.acomplete(prompt)
+            response = await self.llm_with_fallback['openai_llm2'].acomplete(prompt)
+            parsed_response = self._validate_llm_response(response.text)
             
-            # Validate and parse response
-            ctx.latex_quality_check = self._validate_llm_response(response.text)
+            ctx.latex_quality_check = parsed_response
+            
+            # Check if LaTeX needs improvement
+            latex_quality = parsed_response.get('compilation_validation', {}).get('compilation_status', {})
+            if latex_quality.get('success') != "Yes" and ctx.retry_count < ctx.max_retries:
+                ctx.retry_count += 1
+                logger.info(f"LaTeX quality check failed. Attempt {ctx.retry_count}/{ctx.max_retries}")
+                return await self.latex_formatter(Event(data={"context": ctx}))
             
             duration = time() - start_time
             ctx.step_timings['post_latex_quality_controller'] = duration
             
-            # Log step output
             self._log_step_output(
                 "LaTeX Quality Check",
                 ctx.latex_quality_check,
@@ -752,256 +915,42 @@ class CraftMyCVWorkflow(Workflow):
             raise
 
     @step
-    async def content_quality_controller(self, event: Event) -> StopEvent:
-        """Perform final quality check and validation"""
+    async def finalize_output(self, event: Event) -> StopEvent:
+        """Prepare final output and complete workflow"""
         try:
-            start_time = time()
             ctx = event.data["context"]
-            ctx.workflow_state = "content_quality_controller"
-            agent_config = self.agent_config['content_quality_controller_agent']
             
-            logger.info("Starting quality assessment...")
-            if not all([ctx.latex_resume, ctx.job_analysis]):
-                raise ValueError("Missing required input data for quality assessment")
-            
-            prompt = self._build_content_prompt(
-                agent_config,
-                latex_resume=ctx.latex_resume,
-                job_analysis=json.dumps(ctx.job_analysis)
-            )
-            
-            response = await self.openai_llm2_with_fallback.acomplete(prompt)
-            
-            # Validate and parse response
-            ctx.content_quality_check = self._validate_llm_response(response.text)
-            
-            ctx.steps_completed += 1
-            
-            duration = time() - start_time
-            ctx.step_timings['content_quality_controller'] = duration
-            
-            # Log step output
-            self._log_step_output(
-                "Content Quality Assessment",
-                ctx.content_quality_check,
-                duration=duration
-            )
-            
-            # Prepare final output with correct structure
-            final_output = {
-                "resume_analysis": ctx.resume_analysis.get('resume_analysis', {}),
-                "job_analysis": ctx.job_analysis.get('job_analysis', {}),
-                "customized_skills": ctx.skill_customization.get('customized_skills', {}),
-                "customized_resume": ctx.resume_customization.get('customized_resume', {}),
-                "customized_summary": ctx.summary_customization.get('customized_summary', {}),
-                "latex_document": ctx.latex_resume.get('latex_document', {}),
-                "content_quality_check": ctx.content_quality_check.get('content_quality_check', {}),
-                "workflow_metrics": {
+            # Prepare final output structure
+            output = {
+                "workflow_summary": {
+                    "status": "completed",
                     "steps_completed": ctx.steps_completed,
                     "total_steps": ctx.total_steps,
-                    "final_state": ctx.workflow_state,
-                    "errors": ctx.errors,
+                    "total_duration": sum(ctx.step_timings.values()),
                     "step_timings": ctx.step_timings,
-                    "validation_status": {
-                        "resume_analysis": "verified" if ctx.resume_analysis.get('resume_analysis') else "incomplete",
-                        "latex_format": "verified" if ctx.latex_resume.get('latex_document', {}).get('validation', {}).get('structure_check') == "pass" else "incomplete",
-                        "content_quality_check": "verified" if ctx.content_quality_check.get('content_quality_check') else "incomplete"
+                    "errors": ctx.errors
+                },
+                "resume_output": {
+                    "latex_document": ctx.latex_resume["latex_document"],
+                    "quality_validation": {
+                        "pre_latex": ctx.pre_latex_quality_check,
+                        "post_latex": ctx.latex_quality_check
                     }
+                },
+                "metadata": {
+                    "timestamp": time(),
+                    "version": "1.0"
                 }
             }
             
-            ctx.workflow_state = "completed"
-            
-            # Changed: Return StopEvent with the final output in the event data
-            return StopEvent(final_output)
+            return StopEvent(result=output)
             
         except Exception as e:
-            error_msg = f"Quality check failed: {str(e)}"
+            error_msg = f"Output finalization failed: {str(e)}"
             ctx.errors.append(error_msg)
             logger.error(error_msg)
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
             raise
-
-async def apply_quality_recommendations(event: Event | StopEvent, recommendations: dict, workflow: Workflow) -> Event:
-    """Apply quality check recommendations and improvements"""
-    try:
-        # Handle both Event and StopEvent types
-        if isinstance(event, StopEvent):
-            ctx = Context(workflow=workflow)
-            # Copy relevant data from StopEvent result
-            for key, value in event.result.items():
-                setattr(ctx, key, value)
-        else:
-            ctx = event.data.get("context")
-            
-        if not ctx:
-            raise ValueError("Missing context in event data")
-
-        logger.info("Applying quality check recommendations...")
-        
-        if not recommendations or not isinstance(recommendations, dict):
-            logger.warning("No valid recommendations to apply")
-            return event
-
-        # Track improvements
-        improvements_applied = []
-        improvement_results = {}
-
-        # Check if these are pre-latex recommendations (agent-wise) or post-latex recommendations
-        if 'issues_and_improvements' in recommendations:
-            # Pre-latex case: Handle agent-specific improvements
-            for agent_type, issues in recommendations['issues_and_improvements'].items():
-                logger.info(f"\nProcessing improvements for {agent_type}...")
-                
-                for issue in issues:
-                    issue_section = issue.get('section')
-                    if not issue_section:
-                        continue
-                        
-                    logger.info(f"\nApplying improvement for {issue_section}")
-                    resolution = issue.get('resolution', 'No resolution provided')
-                    benefit = issue.get('benefit', 'No benefit description')
-                    logger.info(f"Resolution: {resolution}")
-                    logger.info(f"Expected benefit: {benefit}")
-                    
-                    try:
-                        # Create new event with current context state
-                        improvement_event = Event(data={
-                            "context": ctx,
-                            "recommendations": {
-                                "issues_and_improvements": {agent_type: [issue]}
-                            }
-                        })
-
-                        # Map agent types to workflow steps
-                        result = None
-                        if agent_type == 'skill_customizer_agent':
-                            if hasattr(ctx, 'resume_analysis'):
-                                result = await workflow.skill_customizer(improvement_event)
-                                
-                        elif agent_type == 'summary_customizer_agent':
-                            if hasattr(ctx, 'resume_analysis') and hasattr(ctx, 'job_analysis'):
-                                result = await workflow.summary_customizer(improvement_event)
-                                
-                        elif agent_type == 'resume_customizer_agent':
-                            if all(hasattr(ctx, attr) for attr in ['resume_analysis', 'job_analysis', 'skill_customization']):
-                                result = await workflow.resume_customizer(improvement_event)
-
-                        if result and (isinstance(result, Event) or isinstance(result, StopEvent)):
-                            # Update context with improvement results
-                            if isinstance(result, Event):
-                                ctx = result.data.get("context", ctx)
-                            else:  # StopEvent
-                                for key, value in result.result.items():
-                                    setattr(ctx, key, value)
-                                    
-                            improvements_applied.append(f"{agent_type}:{issue_section}")
-                            improvement_results[f"{agent_type}:{issue_section}"] = {
-                                'status': 'success',
-                                'resolution': resolution,
-                                'benefit': benefit
-                            }
-                        else:
-                            logger.warning(f"No changes applied for {agent_type}:{issue_section}")
-                            improvement_results[f"{agent_type}:{issue_section}"] = {
-                                'status': 'skipped',
-                                'reason': 'No changes required or applicable'
-                            }
-
-                    except Exception as e:
-                        error_msg = f"Error applying {agent_type}:{issue_section} improvement: {str(e)}"
-                        logger.error(error_msg)
-                        logger.error(f"Stack trace:\n{traceback.format_exc()}")
-                        improvement_results[f"{agent_type}:{issue_section}"] = {
-                            'status': 'failed',
-                            'error': str(e)
-                        }
-                        continue
-
-        else:
-            # Post-latex case: Handle direct improvements
-            for issue in recommendations.get('recommendations', {}).get('issues_and_improvements', []):
-                issue_section = issue.get('section')
-                if not issue_section:
-                    continue
-                    
-                logger.info(f"\nApplying improvement for {issue_section}")
-                resolution = issue.get('resolution', 'No resolution provided')
-                logger.info(f"Resolution: {resolution}")
-                
-                try:
-                    # Create new event with current context state
-                    improvement_event = Event(data={
-                        "context": ctx,
-                        "recommendations": {"current_issue": issue}
-                    })
-
-                    # Map sections to workflow steps
-                    result = None
-                    if issue_section in ['document_formatting', 'typography', 'section_headers']:
-                        if hasattr(ctx, 'resume_customization'):
-                            result = await workflow.latex_formatter(improvement_event)
-                            
-                    if result and (isinstance(result, Event) or isinstance(result, StopEvent)):
-                        if isinstance(result, Event):
-                            ctx = result.data.get("context", ctx)
-                        else:  # StopEvent
-                            for key, value in result.result.items():
-                                setattr(ctx, key, value)
-                                
-                        improvements_applied.append(issue_section)
-                        improvement_results[issue_section] = {
-                            'status': 'success',
-                            'resolution': resolution
-                        }
-                    else:
-                        logger.warning(f"No changes applied for {issue_section}")
-                        improvement_results[issue_section] = {
-                            'status': 'skipped',
-                            'reason': 'No changes required or applicable'
-                        }
-
-                except Exception as e:
-                    error_msg = f"Error applying {issue_section} improvement: {str(e)}"
-                    logger.error(error_msg)
-                    logger.error(f"Stack trace:\n{traceback.format_exc()}")
-                    improvement_results[issue_section] = {
-                        'status': 'failed',
-                        'error': str(e)
-                    }
-                    continue
-
-        # Update workflow metrics with improvement results
-        if not hasattr(ctx, 'workflow_metrics'):
-            ctx.workflow_metrics = {}
-        
-        # Calculate success rate only if there are improvement results
-        success_rate = 0
-        if improvement_results:
-            successful_improvements = len([r for r in improvement_results.values() if r.get('status') == 'success'])
-            success_rate = (successful_improvements / len(improvement_results)) * 100
-            
-        ctx.workflow_metrics['quality_improvements'] = {
-            'improvements_applied': improvements_applied,
-            'improvement_results': improvement_results,
-            'total_improvements': len(improvements_applied),
-            'success_rate': f"{success_rate:.2f}%"
-        }
-
-        # Log improvement summary
-        logger.info("\nQuality Improvement Summary:")
-        logger.info(f"Total improvements attempted: {len(improvement_results)}")
-        logger.info(f"Successful improvements: {len(improvements_applied)}")
-        logger.info(f"Success rate: {success_rate:.2f}%")
-        
-        # Create new event with updated context
-        return Event(data={"context": ctx})
-
-    except Exception as e:
-        logger.error(f"Failed to apply quality recommendations: {str(e)}")
-        logger.error(f"Stack trace:\n{traceback.format_exc()}")
-        # Return original event if improvements fail
-        return event
 
 async def main():
     parser = argparse.ArgumentParser(description='Create a customized CV using AI agents')
@@ -1030,18 +979,20 @@ async def main():
         # Validate resume file path
         resume_path = await validate_file_path(args.resume)
         
+        # Initialize text processor
+        text_processor = TextExtractionTool()
+        
+        # Extract resume text with OCR fallback
+        logger.info("Extracting text from resume...")
+        resume_text = text_processor.run(resume_path)
+        
         # Handle job description
         job_description = ""
         if Path(args.job_description).exists():
-            with open(args.job_description, 'r', encoding='utf-8') as f:
-                job_description = f.read()
+            job_path = await validate_file_path(args.job_description)
+            job_description = text_processor.run(job_path)
         else:
             job_description = args.job_description
-
-        # Extract resume text
-        logger.info("Extracting text from resume...")
-        text_extractor = TextExtractionTool()
-        resume_text = text_extractor._run(str(resume_path))
 
         # Initialize workflow
         logger.info("Initializing CV creation workflow...")
@@ -1055,90 +1006,18 @@ async def main():
         
         # Run workflow steps
         current_event = event
-        for step in workflow.steps:
-            logger.info(f"Executing step: {step.__name__.replace('_', ' ').title()}")
-            try:
+        try:
+            for step in workflow.steps:
+                logger.info(f"Executing step: {step.__name__.replace('_', ' ').title()}")
                 current_event = await step(current_event)
-            except Exception as e:
-                logger.error(f"Step {step.__name__} failed: {str(e)}")
-                raise
-        
-        # Quality improvement loop
-        max_improvement_iterations = 3
-        current_iteration = 0
-        
-        while current_iteration < max_improvement_iterations:
-            logger.info(f"\nStarting quality check iteration {current_iteration + 1}/{max_improvement_iterations}")
-            
-            # Get quality check result
-            quality_check = None
-            if isinstance(current_event, StopEvent):
-                quality_check = current_event.result.get('content_quality_check', {})
-            else:
-                quality_check = current_event.data.get("context", {}).get('content_quality_check', {})
-
-            if not quality_check:
-                logger.warning("No quality check results available")
-                break
-            
-            # Check if improvements are needed
-            needs_improvements = False
-            if 'improvement_priority' in quality_check:
-                for priority in ['high', 'medium', 'low']:
-                    if quality_check['improvement_priority'].get(priority):
-                        needs_improvements = True
-                        break
-            
-            if needs_improvements:
-                logger.info("Content improvements needed")
                 
-                # Apply improvements
-                try:
-                    improved_event = await apply_quality_recommendations(
-                        current_event,
-                        quality_check,
-                        workflow
-                    )
-                    
-                    if improved_event != current_event:
-                        # Perform quality check again
-                        current_event = await workflow.content_quality_controller(improved_event)
-                        current_iteration += 1
-                    else:
-                        logger.info("No improvements were applied")
-                        break
-                        
-                except Exception as e:
-                    logger.error(f"Error in improvement iteration {current_iteration + 1}: {str(e)}")
-                    logger.error(f"Stack trace:\n{traceback.format_exc()}")
-                    break
-            else:
-                logger.info("No content improvements needed")
-                break
-            
-        if current_iteration == max_improvement_iterations:
-            logger.warning(f"Reached maximum improvement iterations ({max_improvement_iterations})")
+        except Exception as e:
+            logger.error(f"Workflow failed: {str(e)}")
+            logger.error(f"Stack trace:\n{traceback.format_exc()}")
+            raise
         
         # Save the final output
         await save_output(current_event, args.output)
-        
-        # Log completion summary
-        logger.info("\nWorkflow Completion Summary:")
-        if isinstance(current_event, StopEvent):
-            metrics = current_event.result.get('workflow_metrics', {})
-        else:
-            metrics = current_event.data.get("context", {}).get('workflow_metrics', {})
-            
-        if metrics:
-            logger.info(f"Steps completed: {metrics.get('steps_completed', 'Unknown')}")
-            logger.info(f"Total duration: {sum(metrics.get('step_timings', {}).values()):.2f} seconds")
-            
-            if 'quality_improvements' in metrics:
-                qi_metrics = metrics['quality_improvements']
-                logger.info("\nQuality Improvement Results:")
-                logger.info(f"Total improvements: {qi_metrics.get('total_improvements', 0)}")
-                logger.info(f"Success rate: {qi_metrics.get('success_rate', '0%')}")
-        
         logger.info("\nProcess completed successfully!")
 
     except Exception as e:

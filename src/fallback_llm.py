@@ -13,7 +13,7 @@ class FallbackLLM(LLM):
         self,
         primary_llm: LLM,
         fallback_llm: LLM,
-        timeout: int = 30,
+        timeout: int = 60,
         max_retries: int = 5
     ):
         # Initialize parent class
