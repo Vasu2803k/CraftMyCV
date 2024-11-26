@@ -1,4 +1,3 @@
-# Core Agents Configuration
 agents:
   resume_analyzer_agent:
     role: "Resume Analysis Specialist"
@@ -26,149 +25,162 @@ agents:
       - Flag any ambiguous or unclear content
       - Ensure all dates and durations are properly formatted
     expected_output: |
-      Return a structured JSON object with comprehensive resume data:
       {
-        "personal_info": {
-          "name": "Full name",
-          "contact": {
-            "email": "Email address",
-            "phone": "Phone number",
-            "location": {
-              "city": "City",
-              "state": "State",
-              "country": "Country"
-            },
-            "linkedin": "LinkedIn URL",
-            "portfolio": "Portfolio URL"
-          }
-        },
-        "professional_summary": {
-          "overview": "Complete professional summary",
-          "years_of_experience": "Total years",
-          "key_expertise": ["Domain 1", "Domain 2"],
-          "career_highlights": [
-            "Highlight 1",
-            "Highlight 2"
-          ]
-        },
-        "work_experience": [
-          {
-            "company": {
-              "name": "Company name",
-              "industry": "Industry type",
-              "location": "Company location"
-            },
-            "position": "Job title",
-            "duration": {
-              "start_date": "YYYY-MM",
-              "end_date": "YYYY-MM or Present",
-              "total_duration": "Duration in years/months"
-            },
-            "responsibilities": [
-              "Detailed responsibility 1",
-              "Detailed responsibility 2"
-            ],
-            "achievements": [
-              {
-                "description": "Achievement description",
-                "metrics": "Quantifiable results",
-                "impact": "Business impact"
-              }
-            ],
-            "technologies_used": ["Tech 1", "Tech 2"],
-            "team_size": "Number of team members",
-            "reporting_structure": "Reporting relationships"
-          }
-        ],
-        "skills": {
-          "technical_skills": {
-            "programming_languages": ["Skill 1", "Skill 2"],
-            "frameworks": ["Framework 1", "Framework 2"],
-            "tools": ["Tool 1", "Tool 2"],
-            "platforms": ["Platform 1", "Platform 2"],
-            "methodologies": ["Methodology 1", "Methodology 2"]
-          },
-          "soft_skills": ["Soft skill 1", "Soft skill 2"],
-          "domain_knowledge": ["Domain 1", "Domain 2"],
-          "languages": [
-            {
-              "language": "Language name",
-              "proficiency": "Proficiency level"
+        "resume_analysis": {
+          "personal_info": {
+            "name": "Full name",
+            "contact": {
+              "email": "Email address", 
+              "phone": "Phone number",
+              "location": {
+                "city": "City",
+                "state": "State",
+                "country": "Country",
+                "postal_code": "Postal/ZIP code"
+                // Additional location fields can be included
+              },
+              "social_profiles": {
+                "linkedin": "LinkedIn URL",
+                "github": "GitHub URL",
+                // Any other social/professional profiles
+              },
+              // Additional contact methods can be added
             }
+          },
+          "professional_summary": {
+            "overview": "Complete professional summary",
+            "years_of_experience": "Total years",
+            "key_expertise": [
+              "Domain 1",
+              "Domain 2",
+              // Additional domains...
+            ],
+            "career_highlights": [
+              "Highlight 1",
+              "Highlight 2",
+              // Additional highlights...
+            ],
+            // Additional summary elements can be included
+          },
+          "work_experience": [
+            {
+              "company": {
+                "name": "Company name",
+                "industry": "Industry type",
+                "location": "Company location",
+                // Additional company details...
+              },
+              "position": "Job title",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM or Present",
+                "total_duration": "Duration in years/months"
+              },
+              "responsibilities": [
+                "Detailed responsibility 1",
+                "Detailed responsibility 2",
+                // Additional responsibilities...
+              ],
+              "achievements": [
+                {
+                  "description": "Achievement description",
+                  "metrics": "Quantifiable results",
+                  "impact": "Business impact",
+                  // Additional achievement details...
+                }
+                // Additional achievements...
+              ],
+              "technologies_used": [
+                "Tech 1",
+                "Tech 2",
+                // Additional technologies...
+              ],
+              // Additional job-related fields can be included
+            }
+            // Additional work experiences...
+          ],
+          "skills": {
+            "technical_skills": {
+              "programming_languages": ["Language 1", "Language 2", "..."],
+              "frameworks": ["Framework 1", "Framework 2", "..."],
+              "tools": ["Tool 1", "Tool 2", "..."],
+              "platforms": ["Platform 1", "Platform 2", "..."],
+              "methodologies": ["Methodology 1", "Methodology 2", "..."],
+              // Additional technical skill categories...
+            },
+            "soft_skills": ["Soft skill 1", "Soft skill 2", "..."],
+            "domain_knowledge": ["Domain 1", "Domain 2", "..."],
+            "languages": [
+              {
+                "language": "Language name",
+                "proficiency": "Proficiency level",
+                // Additional language attributes...
+              }
+              // Additional languages...
+            ],
+            // Additional skill categories...
+          },
+          "education": [
+            {
+              "degree": "Degree name",
+              "field": "Field of study",
+              "institution": "Institution name",
+              "location": "Institution location",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM",
+                "graduation_status": "Completed/Ongoing"
+              },
+              "academic_achievements": [
+                "Achievement 1",
+                "Achievement 2",
+                // Additional achievements...
+              ],
+              // Additional education details...
+            }
+            // Additional education entries...
+          ],
+          // Optional sections based on resume content
+          "certifications": [
+            {
+              "name": "Certification name",
+              "issuer": "Issuing organization",
+              "date_obtained": "YYYY-MM",
+              "expiry_date": "YYYY-MM or Never",
+              "credential_id": "Certification ID",
+              // Additional certification details...
+            }
+            // Additional certifications...
+          ],
+          "projects": [
+            {
+              "name": "Project name",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM",
+                "total_duration": "Duration in months"
+              },
+              "description": "Project description",
+              "technologies": ["Tech 1", "Tech 2", "..."],
+              "outcomes": ["Outcome 1", "Outcome 2", "..."],
+              // Additional project details...
+            }
+            // Additional projects...
+          ],
+          // Additional optional sections based on resume content
+          "publications_and_research": [...],
+          "awards_and_achievements": [...],
+          "volunteer_work": [...],
+          
+          "ambiguous_content": [
+            {
+              "section": "Section name",
+              "content": "Unclear content",
+              "issue": "Brief description of ambiguity"
+            }
+            // Additional ambiguities...
           ]
-        },
-        "education": [
-          {
-            "degree": "Degree name",
-            "field": "Field of study",
-            "institution": "Institution name",
-            "location": "Institution location",
-            "duration": {
-              "start_date": "YYYY-MM",
-              "end_date": "YYYY-MM",
-              "graduation_status": "Completed/Ongoing"
-            },
-            "gpa": "GPA if available",
-            "achievements": ["Achievement 1", "Achievement 2"],
-            "relevant_coursework": ["Course 1", "Course 2"]
-          }
-        ],
-        "certifications": [
-          {
-            "name": "Certification name",
-            "issuer": "Issuing organization",
-            "date_obtained": "YYYY-MM",
-            "expiry_date": "YYYY-MM or Never",
-            "credential_id": "Certification ID"
-          }
-        ],
-        "projects": [
-          {
-            "name": "Project name",
-            "duration": {
-              "start_date": "YYYY-MM",
-              "end_date": "YYYY-MM",
-              "total_duration": "Duration in months"
-            },
-            "description": "Project description",
-            "role": "Your role",
-            "team_size": "Number of team members",
-            "technologies": ["Tech 1", "Tech 2"],
-            "methodologies": ["Methodology 1", "Methodology 2"],
-            "outcomes": ["Outcome 1", "Outcome 2"],
-            "url": "Project URL if available"
-          }
-        ],
-        "publications_and_research": [
-          {
-            "title": "Publication title",
-            "type": "Type of publication",
-            "date": "YYYY-MM",
-            "publisher": "Publisher name",
-            "url": "Publication URL",
-            "description": "Brief description"
-          }
-        ],
-        "awards_and_achievements": [
-          {
-            "title": "Award name",
-            "issuer": "Issuing organization",
-            "date": "YYYY-MM",
-            "description": "Achievement description"
-          }
-        ],
-        "volunteer_work": [
-          {
-            "organization": "Organization name",
-            "role": "Role title",
-            "duration": {
-              "start_date": "YYYY-MM",
-              "end_date": "YYYY-MM or Present"
-            },
-            "description": "Description of work",
-            "impact": "Impact made"
-          }
-        ]
+        }
       }
 
   job_description_analyzer_agent:
@@ -182,179 +194,105 @@ agents:
       2. Identify must-have vs. nice-to-have skills
       3. Recognize company culture indicators
       4. Analyze seniority level and experience requirements
-      5. Identify key technologies and tools
+      5. Identify key methodologies and tools
+      6. Determine role environment and working style
       
       GUIDELINES:
-      - Separate technical requirements from soft skills
+      - Separate role-specific skills from general skills
       - Identify primary vs secondary requirements
+      - Identify role requirements and core requirements separately
       - Extract specific years of experience needed
       - Note any mandatory certifications or education
-      - Identify company values and culture traits
+      - Analyze and document company culture and values from job description
+      - If culture/values not explicitly stated, infer from company's public information and industry standards
+      - Identify work environment characteristics:
+        * Pace (fast-paced, methodical, deadline-driven)
+        * Focus (production, research, service, creative)
+        * Structure (highly structured vs flexible)
+      - Determine role type:
+        * Operational (production, service delivery)
+        * Strategic (planning, development)
+        * Research and analysis
+        * Creative and design
+        * Customer-facing
+      - Analyze team dynamics and reporting structures
+      - Note any specific working style requirements:
+        * Independent vs collaborative work
+        * Client interaction level
+        * Cross-functional collaboration
+      - Document environment-specific requirements:
+        * Travel requirements
+        * Shift work/flexibility
+        * Physical demands
+        * Workplace setting (office, field, laboratory, etc.)
       
       IMPORTANT:
       - Maintain objective analysis
       - Flag any ambiguous requirements
       - Note industry-specific terminology
       - Identify any unique or special requirements
+      - Document working environment demands
+      - Highlight role-specific working patterns
+      - Consider industry-specific standards and practices
     expected_output: |
       {
         "position_overview": {
           "title": "Job title",
           "department": "Department name",
+          // Additional position fields can be included
           "reporting_to": "Reporting relationship",
           "location": {
             "type": "Remote/Hybrid/Onsite",
-            "location": "Location details"
+            "location": "Location details",
+            // Additional location attributes as needed
           },
           "employment_type": "Full-time/Contract/Part-time"
         },
         "core_requirements": {
+          // All fields below are flexible and can be extended
           "minimum_qualifications": {
             "education": ["Required education"],
             "experience": "Years of experience",
+            // Add any other qualification requirements
             "certifications": ["Required certifications"],
             "licenses": ["Required licenses"]
           },
           "technical_requirements": {
+            // Skills can be reorganized based on job posting
             "must_have": ["Critical technical skills"],
             "nice_to_have": ["Preferred technical skills"],
+            // Additional skill categories can be added
             "tools_and_technologies": ["Required tools"],
             "methodologies": ["Required methodologies"]
           },
+          // Soft skills can be customized per role
           "soft_skills": {
             "critical": ["Essential soft skills"],
             "preferred": ["Desired soft skills"]
           }
         },
+        // Additional sections can be added based on job posting
         "responsibilities": {
           "primary_duties": ["Main responsibilities"],
           "secondary_duties": ["Additional duties"],
+          // Leadership fields optional based on role
           "leadership_aspects": ["Leadership requirements"],
           "collaboration": ["Team interaction details"]
         },
+        // Culture section can be expanded as needed
         "company_culture": {
           "values": ["Company values"],
           "work_environment": "Environment description",
+          // Additional culture elements can be included
           "team_dynamics": "Team structure and dynamics",
           "growth_opportunities": ["Career growth details"]
         },
-        "compensation_benefits": {
-          "salary_range": "If provided",
-          "benefits": ["Listed benefits"],
-          "perks": ["Additional perks"]
-        },
+        // Keywords section can be customized per industry
         "keywords": {
-          "technical": ["Technical keywords"],
-          "industry": ["Industry keywords"],
-          "soft_skills": ["Soft skill keywords"]
-        }
-      }
-
-  skill_customizer_agent:
-    role: "Skill Customization Specialist"
-    goal: "Optimize and align resume skills with job requirements while maintaining authenticity"
-    system_prompt: |
-      You are a Skill Customization Specialist focused on creating perfect alignment between resume skills and job requirements.
-      
-      CORE RESPONSIBILITIES:
-      1. Analyze and map skills between resume and job requirements
-      2. Identify skill gaps and opportunities
-      3. Optimize skill presentation for ATS systems
-      4. Maintain authenticity while maximizing relevance
-      5. Prioritize skills based on job importance
-      
-      GUIDELINES:
-      - Match exact technical terms from job description
-      - Identify transferable skills for gap bridging
-      - Maintain truthful representation of abilities
-      - Consider both technical and soft skills
-      - Prioritize skills based on job requirements
-      
-      IMPORTANT:
-      - Never fabricate or exaggerate skills
-      - Flag any critical missing requirements
-      - Maintain industry-standard terminology
-      - Consider skill proficiency levels
-    expected_output: |
-      {
-        "skill_analysis": {
-          "matching_skills": {
-            "exact_matches": [
-              {
-                "skill": "Skill name",
-                "priority": "High/Medium/Low",
-                "context": "Where/how used",
-                "proficiency": "Proficiency level"
-              }
-            ],
-            "partial_matches": [
-              {
-                "resume_skill": "Skill in resume",
-                "job_requirement": "Required skill",
-                "compatibility": "Compatibility explanation"
-              }
-            ]
-          },
-          "missing_skills": {
-            "critical": [
-              {
-                "skill": "Missing skill",
-                "impact": "Impact on application",
-                "acquisition_suggestion": "How to acquire"
-              }
-            ],
-            "non_critical": ["Skill 1", "Skill 2"]
-          },
-          "transferable_skills": [
-            {
-              "resume_skill": "Existing skill",
-              "can_substitute": "Required skill",
-              "justification": "Why it's transferable"
-            }
-          ]
-        },
-        "optimized_skill_presentation": {
-          "technical_skills": {
-            "primary": [
-              {
-                "skill": "Skill name",
-                "proficiency": "Level",
-                "relevance": "Job relevance",
-                "keywords": ["Related terms"]
-              }
-            ],
-            "secondary": ["Skill 1", "Skill 2"]
-          },
-          "soft_skills": {
-            "primary": ["Skill 1", "Skill 2"],
-            "secondary": ["Skill 3", "Skill 4"]
-          },
-          "domain_expertise": [
-            {
-              "domain": "Domain name",
-              "years_experience": "Duration",
-              "relevance": "Relevance to role"
-            }
-          ]
-        },
-        "skill_gap_recommendations": {
-          "immediate_actions": ["Action 1", "Action 2"],
-          "long_term_development": ["Development 1", "Development 2"],
-          "training_suggestions": [
-            {
-              "skill": "Skill to develop",
-              "resources": ["Resource 1", "Resource 2"],
-              "timeline": "Expected time to acquire"
-            }
-          ]
-        },
-        "ats_optimization": {
-          "keyword_coverage": "Percentage",
-          "suggested_formats": ["Format 1", "Format 2"],
-          "skill_grouping": {
-            "technical": ["Group 1", "Group 2"],
-            "soft": ["Group 1", "Group 2"]
-          }
+          "unique_requirements": ["Unique requirement 1", "Unique requirement 2", "..."],
+          "technical": ["Technical keyword 1", "Technical keyword 2", "..."],
+          "industry": ["Industry keyword 1", "Industry keyword 2", "..."],
+          "soft_skills": ["Soft skill keyword 1", "Soft skill keyword 2", "..."]
         }
       }
 
@@ -366,15 +304,16 @@ agents:
       
       CORE RESPONSIBILITIES:
       1. Analyze job requirements and resume content alignment
-      2. Customize content while maintaining authenticity
-      3. Optimize for both ATS and human readers
-      4. Enhance achievement descriptions
-      5. Structure content for maximum impact
+      2. Use the industry-specific keywords from the job description to customize the resume
+      3. Customize content while maintaining authenticity
+      4. Optimize for both ATS and human readers
+      5. Enhance achievement descriptions
+      6. Structure content for maximum impact
       
       GUIDELINES:
       - Prioritize relevant experiences and achievements
       - Use industry-specific keywords naturally
-      - Quantify achievements where possible
+      - Quantify achievements where possible (Ensure the metrics are quantifiable and meaningful)
       - Maintain chronological consistency
       - Focus on impact and results
       
@@ -383,51 +322,133 @@ agents:
       - Avoid keyword stuffing
       - Maintain professional tone
       - Ensure readability and flow
+      - Tailor the summary to the job description and candidate profile
+      - Do not exaggerate or inflate achievements
     expected_output: |
       {
         "content_customization": {
-          "professional_summary": {
-            "original": "Original summary",
-            "customized": "Tailored summary",
-            "keywords_added": ["Keyword 1", "Keyword 2"],
-            "focus_areas": ["Area 1", "Area 2"]
+          // Personal information section with contact details
+          "personal_info": {
+            "name": "Full name",
+            "contact": {
+              "email": "Email address",
+              "phone": "Phone number",
+              "location": "City, State",
+              "linkedin": "LinkedIn URL",
+              // Optional fields based on profile
+              "portfolio": "Portfolio URL (if applicable)",
+              "github": "GitHub profile (if applicable)"
+            }
           },
+          // Professional summary can be expanded with additional elements
+          "summary_section": {
+            "customized": "Tailored summary",
+            "keywords_added": ["Keyword 1", "Keyword 2", "..."],
+            // Additional customization attributes
+            "focus_areas": ["Area 1", "Area 2", "..."],
+            "key_highlights": ["Highlight 1", "Highlight 2", "..."]
+          },
+          // Experience section can include multiple positions
           "experience_section": [
             {
               "position": "Job title",
-              "original_bullets": ["Original 1", "Original 2"],
+              "company": "Company name",
+              "duration": "Start date - End date",
+              "location": "City, State",
+              // Each bullet point can have detailed customization
               "customized_bullets": [
                 {
                   "content": "Enhanced bullet point",
-                  "added_keywords": ["Keyword 1", "Keyword 2"],
+                  "added_keywords": ["Keyword 1", "Keyword 2", "..."],
+                  // Metrics and impact details
                   "quantified_metrics": "Metrics added",
                   "impact_focus": "Impact statement"
                 }
-              ],
-              "relevance_score": "0-100"
+              ]
             }
           ],
+          // Projects section with detailed structure
           "projects_section": [
             {
-              "project": "Project name",
-              "original_description": "Original description",
-              "enhanced_description": "Enhanced description",
-              "highlighted_skills": ["Skill 1", "Skill 2"],
-              "relevance_score": "0-100"
+              "project_name": "Project title",
+              "duration": "Timeline",
+              // Technical stack and tools used
+              "technologies": ["Tech 1", "Tech 2", "..."],
+              // Enhanced project descriptions
+              "customized_bullets": [
+                {
+                  "content": ["Enhanced project bullet 1", "Enhanced project bullet 2", "..."],
+                  "added_keywords": ["Keyword 1", "Keyword 2", "..."],
+                  "technical_highlights": ["Highlight 1", "Highlight 2", "..."],
+                  "impact_metrics": "Project impact and results"
+                }
+              ],
+              // Project links and resources
+              "links": {
+                "github": "Repository URL",
+                "live": "Live project URL"
+              }
+            }
+          ],
+          // Comprehensive skills categorization
+          "skills_section": {
+            "technical_skills": ["Skill 1", "Skill 2", "..."],
+            "soft_skills": ["Skill 1", "Skill 2", "..."],
+            "tools": ["Tool 1", "Tool 2", "..."],
+            // Language proficiencies if applicable
+            "languages": ["Language 1", "Language 2", "..."]
+            // Additional skill categories can be added
+          },
+          // Leadership and responsibility roles
+          "positions_of_responsibility": [
+            {
+              "title": "Position title",
+              "organization": "Organization name",
+              "duration": "Timeline",
+              "customized_bullets": ["Enhanced 1", "Enhanced 2", "..."]
+            }
+          ],
+          // Notable achievements and recognition
+          "awards_and_achievements": [
+            {
+              "title": "Award name",
+              "issuer": "Issuing organization",
+              "date": "Date received",
+              "description": "Award description and significance"
+            }
+          ],
+          // Academic or professional publications
+          "publications": [
+            {
+              "title": "Publication title",
+              "journal": "Journal/Conference name",
+              "date": "Publication date",
+              "doi": "DOI link",
+              "impact": "Publication impact and citations"
+            }
+          ],
+          // Professional certifications and credentials
+          "certifications": [
+            {
+              "name": "Certification name",
+              "issuer": "Issuing organization",
+              "date": "Date obtained",
+              "expiry": "Expiration date (if applicable)",
+              "credential_id": "Certification ID"
+            }
+          ],
+          // Educational background and qualifications
+          "education": [
+            {
+              "degree": "Degree name",
+              "institution": "Institution name",
+              "duration": "Start date - End date",
+              "location": "City, State",
+              // Optional academic details
+              "gpa": "GPA if applicable",
+              "relevant_coursework": ["Course 1", "Course 2", "..."]
             }
           ]
-        },
-        "ats_optimization": {
-          "keyword_density": "Percentage",
-          "format_compliance": "Compliance status",
-          "section_ordering": ["Section 1", "Section 2"],
-          "suggested_improvements": ["Suggestion 1", "Suggestion 2"]
-        },
-        "readability_metrics": {
-          "overall_score": "0-100",
-          "sentence_structure": "Analysis",
-          "content_clarity": "Analysis",
-          "professional_tone": "Analysis"
         }
       }
 
@@ -445,6 +466,7 @@ agents:
       5. Maintain professional tone and brevity
       
       GUIDELINES:
+      - Ensure the summary is tailored based on the latest customized resume content. Do not use the original summary.
       - Focus on most relevant experiences
       - Include quantifiable achievements
       - Use industry-specific terminology
@@ -459,30 +481,158 @@ agents:
     expected_output: |
       {
         "summary_analysis": {
-          "original_summary": "Original text",
+          // Core summary elements
           "customized_summary": "Enhanced text",
+          // Key components can be expanded based on profile
           "key_components": {
             "professional_identity": "Core professional description",
             "years_experience": "Experience summary",
+            // Achievements and value props can be extended
             "key_achievements": ["Achievement 1", "Achievement 2"],
             "unique_value_props": ["Value 1", "Value 2"]
+          }
+        }
+      }
+
+  pre_latex_quality_controller_agent:
+    role: "Pre-LaTeX Content Quality Specialist"
+    goal: "Ensure content quality and completeness before LaTeX conversion"
+    system_prompt: |
+      You are a Pre-LaTeX Content Quality Specialist focused on ensuring content readiness for LaTeX conversion.
+      
+      CORE RESPONSIBILITIES:
+      1. Validate content structure and completeness
+      2. Check data consistency across sections
+      3. Verify content formatting readiness
+      4. Ensure all required fields are present
+      5. Validate section relationships and flow
+      
+      GUIDELINES:
+      - Check all required sections exist
+      - Verify data structure consistency
+      - Validate content relationships
+      - Check for missing required fields
+      - Ensure proper content hierarchy
+      
+      IMPORTANT:
+      - Flag incomplete sections
+      - Identify structural issues
+      - Check cross-references
+      - Verify data integrity
+      - Ensure content logical flow
+    expected_output: |
+      {
+        "quality_validation": {
+          "sections": {
+            "personal_info": {
+              "status": "Pass/Fail",
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "professional_summary": {
+              "status": "Pass/Fail", 
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "experience": {
+              "status": "Pass/Fail",
+              "completeness": "0-100", 
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "projects": {
+              "status": "Pass/Fail",
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "skills": {
+              "status": "Pass/Fail",
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "education": {
+              "status": "Pass/Fail",
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "certifications": {
+              "status": "Pass/Fail",
+              "completeness": "0-100",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            }
           },
-          "keyword_optimization": {
-            "added_keywords": ["Keyword 1", "Keyword 2"],
-            "keyword_density": "Percentage",
-            "industry_terms": ["Term 1", "Term 2"]
+          "relationships": {
+            "chronological_order": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "skill_alignment": {
+              "status": "Pass/Fail", 
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "content_flow": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            }
           }
         },
-        "impact_metrics": {
-          "clarity_score": "0-100",
-          "relevance_score": "0-100",
-          "conciseness_score": "0-100",
-          "keyword_effectiveness": "0-100"
+        "formatting_validation": {
+          "consistency": {
+            "date_formats": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "naming_conventions": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "text_formatting": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."  ]
+            }
+          },
+          "fields": {
+            "required": {
+              "missing": ["Field name 1", "Field name 2", "..."],
+              "incomplete": ["Field name 1", "Field name 2", "..."]
+            },
+            "optional": {
+              "recommended": ["Field name 1", "Field name 2", "..."]
+            }
+          }
         },
-        "improvement_suggestions": {
-          "content_enhancements": ["Suggestion 1", "Suggestion 2"],
-          "structure_improvements": ["Improvement 1", "Improvement 2"],
-          "language_refinements": ["Refinement 1", "Refinement 2"]
+        "latex_readiness": {
+          "structure": {
+            "status": "Pass/Fail",
+            "issues": [
+              {
+                "section": "Section name",
+                "description": "Issue description",
+                "severity": "High/Medium/Low",
+                "requires_fix": true
+              }
+            ]
+          },
+          "formatting": {
+            "status": "Pass/Fail",
+            "issues": [
+              {
+                "field": "Field name",
+                "current": "Current format",
+                "required": "Required format",
+                "requires_fix": true
+              }
+            ]
+          },
+          "hierarchy": {
+            "section_order": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            },
+            "nesting": {
+              "status": "Pass/Fail",
+              "issues": ["Issue description 1", "Issue description 2", "..."]
+            }
+          }
         }
       }
 
@@ -519,227 +669,248 @@ agents:
       - Create clean, maintainable code
     expected_output: |
       % Resume Template
-      \documentclass[11pt,a4paper,sans]{moderncv}
-      
-      % Packages
-      \usepackage[utf8]{inputenc}
-      \usepackage[scale=0.85]{geometry}
-      \usepackage{fontawesome5}
-      \usepackage{hyperref}
-      
-      % Style configuration
-      \moderncvstyle{classic}
-      \moderncvcolor{blue}
-      
-      % Personal Information
-      \name{First}{Last}
-      \title{Professional Title}
-      \address{Street Address}{City, State ZIP}
-      \phone{phone}
-      \email{email}
-      \social[linkedin]{profile}
-      \social[github]{profile}
-      
-      \begin{document}
-      
-      % Professional Summary
-      \section{Professional Summary}
-      \cvitem{}{Professional summary text goes here}
-      
-      % Experience Section
-      \section{Professional Experience}
-      \subsection{Company Name}
-      \cventry{YYYY--Present}{Job Title}{Company}{Location}{}{
-        \begin{itemize}
-          \item Achievement or responsibility 1
-          \item Achievement or responsibility 2
-        \end{itemize}
-      }
-      
-      % Skills Section
-      \section{Technical Skills}
-      \cvitem{Category 1}{Skill 1, Skill 2, Skill 3}
-      \cvitem{Category 2}{Skill 1, Skill 2, Skill 3}
-      
-      % Education Section
-      \section{Education}
-      \cventry{YYYY--YYYY}{Degree}{Institution}{Location}{}{GPA: X.XX}
-      
-      % Projects Section
-      \section{Projects}
-      \cvitem{Project Name}{
-        \begin{itemize}
-          \item Description of project
-          \item Technologies used
-        \end{itemize}
-      }
-      
-      % Certifications Section
-      \section{Certifications}
-      \cvitem{YYYY}{Certification Name - Issuing Organization}
-      
-      % Additional Sections as needed
-      \section{Additional Section}
-      \cvitem{Item}{Description}
-      
-      \end{document}
-      
-      % Style Definitions (if custom styling needed)
-      \newcommand{\customsection}[1]{
-        \section{#1}
-      }
-      
-      % Custom Environment Definitions
-      \newenvironment{achievement}{
-        \begin{itemize}
-          \setlength{\itemsep}{2pt}
-          \setlength{\parskip}{0pt}
-          \setlength{\parsep}{0pt}
-      }{
-        \end{itemize}
-      }
+      \documentclass[10pt, letterpaper]{article}
 
-  pre_latex_quality_controller_agent:
-    role: "Pre-LaTeX Content Quality Specialist"
-    goal: "Ensure content quality and completeness before LaTeX conversion"
-    system_prompt: |
-      You are a Pre-LaTeX Content Quality Specialist focused on ensuring content readiness for LaTeX conversion.
-      
-      CORE RESPONSIBILITIES:
-      1. Validate content structure and completeness
-      2. Check data consistency across sections
-      3. Verify content formatting readiness
-      4. Ensure all required fields are present
-      5. Validate section relationships and flow
-      
-      GUIDELINES:
-      - Check all required sections exist
-      - Verify data structure consistency
-      - Validate content relationships
-      - Check for missing required fields
-      - Ensure proper content hierarchy
-      
-      IMPORTANT:
-      - Flag incomplete sections
-      - Identify structural issues
-      - Check cross-references
-      - Verify data integrity
-      - Ensure content logical flow
-    expected_output: |
-      {
-        "structure_validation": {
-          "required_sections": {
-            "personal_info": {
-              "present": "Yes/No",
-              "completeness": "0-100",
-              "issues": ["Issue 1", "Issue 2"]
-            },
-            "professional_summary": {
-              "present": "Yes/No",
-              "completeness": "0-100",
-              "issues": ["Issue 1", "Issue 2"]
-            },
-            "experience": {
-              "present": "Yes/No",
-              "completeness": "0-100",
-              "issues": ["Issue 1", "Issue 2"]
-            },
-            "education": {
-              "present": "Yes/No",
-              "completeness": "0-100",
-              "issues": ["Issue 1", "Issue 2"]
-            },
-            "skills": {
-              "present": "Yes/No",
-              "completeness": "0-100",
-              "issues": ["Issue 1", "Issue 2"]
-            }
-          },
-          "section_relationships": {
-            "chronological_order": "Pass/Fail",
-            "skill_alignment": "Pass/Fail",
-            "content_flow": "Pass/Fail"
-          }
-        },
-        "content_quality": {
-          "data_consistency": {
-            "date_formats": "Pass/Fail",
-            "naming_conventions": "Pass/Fail",
-            "formatting_patterns": "Pass/Fail"
-          },
-          "field_validation": {
-            "required_fields": {
-              "missing_fields": ["Field 1", "Field 2"],
-              "incomplete_fields": ["Field 1", "Field 2"]
-            },
-            "optional_fields": {
-              "recommended_additions": ["Field 1", "Field 2"]
-            }
-          }
-        },
-        "conversion_readiness": {
-          "structural_issues": [
-            {
-              "section": "Section name",
-              "issue": "Issue description",
-              "severity": "High/Medium/Low",
-              "fix_required": "Yes/No"
-            }
-          ],
-          "data_format_issues": [
-            {
-              "field": "Field name",
-              "current_format": "Current format",
-              "required_format": "Required format",
-              "fix_required": "Yes/No"
-            }
-          ],
-          "content_hierarchy": {
-            "section_order": "Pass/Fail",
-            "subsection_structure": "Pass/Fail",
-            "nesting_issues": ["Issue 1", "Issue 2"]
-          }
-        },
-        "recommendations": {
-          "issues_and_improvements": {
-            "resume_customizer_agent": [
-              {
-                "issue": "Weak achievement descriptions in experience section",
-                "section": "work_experience",
-                "resolution": "Add quantifiable metrics and results",
-                "benefit": "Improves impact and credibility of achievements"
-              },
-              {
-                "issue": "Missing key technologies in project descriptions",
-                "section": "projects",
-                "resolution": "Add relevant technical stack details",
-                "benefit": "Better highlights technical expertise"
-              }
-            ],
-            "skill_customizer_agent": [
-              {
-                "issue": "Skills not properly categorized",
-                "section": "skills",
-                "resolution": "Reorganize skills into technical, soft, and domain categories",
-                "benefit": "Improves skill section readability and ATS matching"
-              }
-            ],
-            "summary_customizer_agent": [
-              {
-                "issue": "Professional summary lacks impact",
-                "section": "professional_summary",
-                "resolution": "Enhance with key achievements and value proposition",
-                "benefit": "Stronger first impression and better job alignment"
-              }
-            ]
-          }
-        },
-        "final_assessment": {
-          "ready_for_conversion": "Yes/No",
-          "overall_quality_score": "0-100",
-          "required_actions": ["Action 1", "Action 2"]
-        }
-      }
+    \usepackage[ignoreheadfoot,top=2cm,bottom=2cm,left=2cm,right=2cm,footskip=1.0cm]{geometry}
+    \usepackage{titlesec}
+    \usepackage{tabularx}
+    \usepackage{array}
+    \usepackage[dvipsnames]{xcolor}
+    \definecolor{primaryColor}{RGB}{0, 79, 144}
+    \usepackage{enumitem}
+    \usepackage{fontawesome5}
+    \usepackage{amsmath}
+    \usepackage[colorlinks=true,urlcolor=primaryColor]{hyperref}
+    \usepackage[pscoord]{eso-pic}
+    \usepackage{calc}
+    \usepackage{bookmark}
+    \usepackage{lastpage}
+    \usepackage{changepage}
+    \usepackage{paracol}
+    \usepackage{ifthen}
+    \usepackage{needspace}
+    \usepackage{iftex}
+
+    \ifPDFTeX
+        \input{glyphtounicode}
+        \pdfgentounicode=1
+        \usepackage[utf8]{inputenc}
+        \usepackage{lmodern}
+    \fi
+
+    \AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+    \pagestyle{empty}
+    \setcounter{secnumdepth}{0}
+    \setlength{\parindent}{0pt}
+    \setlength{\topskip}{0pt}
+    \setlength{\columnsep}{0cm}
+
+    \makeatletter
+    \let\ps@customFooterStyle\ps@plain
+    \patchcmd{\ps@customFooterStyle}{\thepage}{
+        \color{gray}\textit{\small Shrikant Mane - Page \thepage{} of \pageref*{LastPage}}
+    }{}{} 
+    \makeatother
+    \pagestyle{customFooterStyle}
+
+    \titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+    \titlespacing{\section}{-1pt}{0.3cm}{0.2cm}
+
+    \renewcommand\labelitemi{$\circ$}
+    \newenvironment{highlights}{
+        \begin{itemize}[topsep=0.10cm,parsep=0.10cm,partopsep=0pt,itemsep=0pt,leftmargin=0.4cm+10pt]
+    }{
+        \end{itemize}
+    }
+
+    \newenvironment{onecolentry}{
+        \begin{adjustwidth}{0.2cm+0.00001cm}{0.2cm+0.00001cm}
+    }{
+        \end{adjustwidth}
+    }
+
+    \newenvironment{twocolentry}[2][]{
+        \onecolentry
+        \def\secondColumn{#2}
+        \setcolumnwidth{\fill, 4.5cm}
+        \begin{paracol}{2}
+    }{
+        \switchcolumn \raggedleft \secondColumn
+        \end{paracol}
+        \endonecolentry
+    }
+
+    \newenvironment{header}{
+        \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+    }{
+        \par\kern\topsep
+    }
+
+    \begin{document}
+    \newcommand{\AND}{\unskip\cleaders\hbox{~~~~~}\hskip1em plus1fill\ignorespaces}
+
+    \begin{header}
+        \textbf{\fontsize{24pt}{24pt}\selectfont Shrikant Mane}
+
+        \vspace{0.3cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Pune, India}%
+        \kern 0.25cm%
+        \AND%
+        \kern 0.25cm%
+        \mbox{\href{mailto:shrikantgmane08@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}shrikantgmane08@gmail.com}}%
+        \kern 0.25cm%
+        \AND%
+        \kern 0.25cm%
+        \mbox{\href{tel:+91-7875371607}{\color{black}{\footnotesize\faPhone}\hspace*{0.13cm}+91-7875371607}}%
+        \kern 0.25cm%
+        \AND%
+        \kern 0.25cm%
+        \mbox{\href{https://linkedin.com/in/shrikantmane1203}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}shrikantmane1203}}%
+        \kern 0.25cm%
+        \AND%
+        \kern 0.25cm%
+        \mbox{\href{https://github.com/maneshrikant08}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}maneshrikant08}}%
+    \end{header}
+
+    \section{Professional Summary}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Specialized in building mobile-first, performance-optimized web applications with modern JavaScript frameworks
+            \item Experienced in developing user-centric interfaces, implementing state management solutions, and optimizing application performance
+            \item Strong collaborator with excellent communication skills and proven ability to work in cross-functional teams
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Experience}
+    \begin{twocolentry}{
+    \textit{Pune, India}
+    \textit{2023 - Present}}
+        \textbf{Frontend Developer}
+        \textit{Phoenixzone Technologies}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Architected and implemented responsive, mobile-first interfaces using React.js, improving user engagement by 35\%
+            \item Implemented state management solutions and created a library of 15+ reusable components, reducing development time by 30\%
+            \item Optimized application load time from 4.2s to 2.1s through React Hooks and code splitting
+            \item Implemented error tracking reducing bug resolution time by 40\% through better debugging processes
+            \item Collaborated with backend team on API integration ensuring 99.9\% uptime
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Projects}
+    \begin{twocolentry}{
+    \textit{React.js, Node.js, Express.js}}
+        \textbf{KitabGhar}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Developed a responsive e-book platform with scalable architecture for handling large user bases
+            \item Implemented caching strategy reducing API response time by 45\%
+            \item Built reusable component library using Material UI, improving development velocity by 50\%
+            \item Achieved 90+ Lighthouse performance score through image optimization and lazy loading
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{twocolentry}{
+    \textit{Spring Boot, React.js, MySQL}}
+        \textbf{ConcertHub}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Built a scalable concert booking platform using React.js and Spring Boot microservices architecture
+            \item Implemented secure user authentication system using JWT tokens and role-based access control
+            \item Developed responsive search functionality with real-time filtering and sorting capabilities
+            \item Integrated payment gateway and booking system with robust error handling
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{twocolentry}{
+    \textit{React.js, D3.js, Firebase}}
+        \textbf{SocialMetrics}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Developed a dashboard for analyzing social media engagement metrics
+            \item Created interactive data visualizations using D3.js for trend analysis
+            \item Implemented real-time updates using Firebase WebSocket connections
+            \item Built responsive layouts supporting all device sizes with 60fps animations
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Education}
+    \begin{twocolentry}{
+    \textit{2019 - 2023}}
+        \textbf{Yeshwantrao Chavan College of Engineering}
+        \textit{Bachelor of Engineering in Computer Technology}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item CGPA: 8.2/10
+        \end{highlights}
+    \end{onecolentry}
+
+    \begin{twocolentry}{
+    \textit{2016 - 2018}}
+        \textbf{MIT Junior College}
+        \textit{Higher Secondary}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Percentage: 85\%
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Technical Skills}
+    \begin{onecolentry}
+        \textbf{Frontend Frameworks:} React.js (Primary), Vue.js (Learning), Material-UI, Styled-components
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{onecolentry}
+        \textbf{Core Technologies:} JavaScript (ES6+), HTML5, CSS3, Sass
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{onecolentry}
+        \textbf{State Management:} Redux, Context API, REST APIs, JWT Authentication
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{onecolentry}
+        \textbf{Build Tools \& DevOps:} Git, Docker, Webpack, AWS Cloud Platform
+    \end{onecolentry}
+
+    \vspace{0.2cm}
+
+    \begin{onecolentry}
+        \textbf{Backend Technologies:} Node.js, Spring Boot, ASP.NET, MySQL, MongoDB
+    \end{onecolentry}
+
+    \section{Certifications}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item AWS Solution Architect Associate
+            \item Post Graduate Diploma in Advanced Computing (PG-DAC) — Grade: A
+        \end{highlights}
+    \end{onecolentry}
+
+  \end{document}
 
   post_latex_quality_controller_agent:
     role: "Post-LaTeX Document Quality Specialist"
@@ -770,30 +941,37 @@ agents:
     expected_output: |
       {
         "compilation_validation": {
+          // Compilation status can include additional checks
           "compilation_status": {
             "success": "Yes/No",
             "errors": ["Error 1", "Error 2"],
             "warnings": ["Warning 1", "Warning 2"]
+            // Additional compilation metrics can be added
           },
+          // Syntax validation can be extended
           "latex_syntax": {
             "validation": "Pass/Fail",
             "issues": ["Issue 1", "Issue 2"]
           },
+          // Package compatibility can be customized
           "package_compatibility": {
             "conflicts": ["Conflict 1", "Conflict 2"],
             "missing_packages": ["Package 1", "Package 2"]
           }
         },
         "content_integrity": {
+          // Content checks can be expanded
           "content_preservation": {
             "missing_content": ["Missing item 1", "Missing item 2"],
             "modified_content": ["Modified item 1", "Modified item 2"]
           },
+          // Section validation can be customized
           "section_validation": {
             "all_sections_present": "Yes/No",
             "section_order": "Pass/Fail",
             "missing_sections": ["Section 1", "Section 2"]
           },
+          // Formatting checks can be extended
           "formatting_check": {
             "typography": {
               "font_consistency": "Pass/Fail",
@@ -807,196 +985,45 @@ agents:
             }
           }
         },
+        // PDF output quality checks can be expanded
         "pdf_output_quality": {
           "rendering": {
             "visual_quality": "0-100",
             "resolution_issues": ["Issue 1", "Issue 2"],
             "font_rendering": "Pass/Fail"
+            // Additional quality metrics can be added
           },
+          // Link validation can be customized
           "hyperlinks": {
             "functionality": "Pass/Fail",
             "broken_links": ["Link 1", "Link 2"]
           },
+          // Platform compatibility can be extended
           "cross_platform": {
             "compatibility_score": "0-100",
             "platform_issues": ["Issue 1", "Issue 2"]
           }
         },
+        // ATS compatibility checks can be expanded
         "ats_compatibility": {
           "text_extraction": {
             "success_rate": "0-100",
             "extraction_issues": ["Issue 1", "Issue 2"]
           },
+          // Keyword validation can be customized
           "keyword_preservation": {
             "preserved_keywords": ["Keyword 1", "Keyword 2"],
             "lost_keywords": ["Keyword 1", "Keyword 2"]
           },
+          // Formatting compliance can be extended
           "formatting_compliance": {
             "compliance_score": "0-100",
             "non_compliant_elements": ["Element 1", "Element 2"]
           }
-        },
-        "recommendations": {
-          "issues_and_improvements": [
-            {
-              "issue": "Inconsistent margin spacing",
-              "section": "document_formatting",
-              "resolution": "Adjust geometry package parameters"
-            },
-            {
-              "issue": "Font rendering issues in PDF",
-              "section": "typography",
-              "resolution": "Update font package configuration"
-            },
-            {
-              "issue": "Content overflow in experience section",
-              "section": "work_experience",
-              "resolution": "Adjust spacing or content length"
-            },
-            {
-              "issue": "Bullet points not properly aligned",
-              "section": "formatting",
-              "resolution": "Fix itemize environment parameters"
-            },
-            {
-              "issue": "Poor image resolution",
-              "section": "graphics",
-              "resolution": "Update image DPI settings"
-            },
-            {
-              "issue": "Inconsistent header formatting",
-              "section": "section_headers",
-              "resolution": "Standardize section header styling"
-            }
-          ]
-        },
-        "final_assessment": {
-          "document_ready": "Yes/No",
-          "quality_score": "0-100",
-          "required_actions": ["Action 1", "Action 2"],
-          "optional_improvements": ["Improvement 1", "Improvement 2"]
         }
       }
 
-  resume_feedback_agent:
-    role: "Resume Feedback Specialist"
-    goal: "Provide comprehensive feedback on resume content, structure, and effectiveness"
-    system_prompt: |
-      You are a Resume Feedback Specialist focused on providing actionable feedback for resume improvement.
-      
-      CORE RESPONSIBILITIES:
-      1. Evaluate overall resume effectiveness
-      2. Identify strengths and weaknesses
-      3. Provide specific improvement suggestions
-      4. Assess market competitiveness
-      5. Review alignment with industry standards
-      
-      GUIDELINES:
-      - Analyze content relevance and impact
-      - Evaluate presentation and structure
-      - Check industry alignment
-      - Review achievement descriptions
-      - Assess competitive positioning
-      
-      IMPORTANT:
-      - Provide actionable feedback
-      - Maintain constructive tone
-      - Focus on high-impact improvements
-      - Consider target role requirements
-      - Highlight unique value propositions
-    expected_output: |
-      {
-        "content_analysis": {
-          "strengths": [
-            {
-              "area": "Area of strength",
-              "description": "Detailed description",
-              "impact": "Positive impact on application"
-            }
-          ],
-          "weaknesses": [
-            {
-              "area": "Area needing improvement",
-              "description": "Issue description",
-              "impact": "Negative impact on application"
-            }
-          ]
-        },
-        "market_competitiveness": {
-          "industry_alignment": "0-100",
-          "role_alignment": "0-100",
-          "unique_selling_points": ["USP 1", "USP 2"],
-          "missing_elements": ["Element 1", "Element 2"]
-        },
-        "section_feedback": {
-          "professional_summary": {
-            "effectiveness": "0-100",
-            "suggestions": ["Suggestion 1", "Suggestion 2"]
-          },
-          "experience": {
-            "effectiveness": "0-100",
-            "suggestions": ["Suggestion 1", "Suggestion 2"]
-          },
-          "skills": {
-            "effectiveness": "0-100",
-            "suggestions": ["Suggestion 1", "Suggestion 2"]
-          }
-        },
-        "recommendations": {
-          "issues_and_improvements": {
-            "resume_customizer_agent": [
-              {
-                "issue": "Achievement descriptions lack metrics",
-                "section": "work_experience",
-                "resolution": "Add quantifiable results",
-                "benefit": "Demonstrates concrete impact"
-              }
-            ],
-            "skill_customizer_agent": [
-              {
-                "issue": "Technical skills need updating",
-                "section": "skills",
-                "resolution": "Add emerging technologies",
-                "benefit": "Shows current technical relevance"
-              }
-            ],
-            "summary_customizer_agent": [
-              {
-                "issue": "Value proposition not clear",
-                "section": "professional_summary",
-                "resolution": "Highlight unique expertise",
-                "benefit": "Stronger market positioning"
-              }
-            ]
-          }
-        },
-        "improvement_priority": {
-          "high_priority": [
-            {
-              "area": "Area for improvement",
-              "timeline": "Immediate",
-              "expected_impact": "Impact description"
-            }
-          ],
-          "medium_priority": [
-            {
-              "area": "Area for improvement",
-              "timeline": "Next iteration",
-              "expected_impact": "Impact description"
-            }
-          ],
-          "low_priority": [
-            {
-              "area": "Area for improvement",
-              "timeline": "Future enhancement",
-              "expected_impact": "Impact description"
-            }
-          ]
-        }
-      }
-
-# Continue with other agents following similar pattern...
-
+# Keep the LLM configurations
 llm_config:
   openai_llm:
     model_1: "gpt-3.5-turbo"

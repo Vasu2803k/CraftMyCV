@@ -94,17 +94,16 @@ async def save_output(output: Any, output_path: str):
 class CraftMyCVWorkflow(Workflow):
     def __init__(self):
         super().__init__()
+        # Simplified workflow steps based on flowchart
         self.steps = [
             self.setup_workflow_context,
             self.resume_analyzer,
             self.job_description_analyzer,
-            self.skill_customizer,
             self.resume_customizer,
             self.summary_customizer,
             self.pre_latex_quality_controller,
             self.latex_formatter,
-            self.post_latex_quality_controller,
-            self.content_quality_controller
+            self.post_latex_quality_controller
         ]
         try:
             # Load configurations
@@ -217,6 +216,7 @@ class CraftMyCVWorkflow(Workflow):
         3. Use markdown formatting
         4. Include any non-LaTeX content
         
+        You will be provided with the required input data.
         Input Data:
         """
         
@@ -270,6 +270,7 @@ class CraftMyCVWorkflow(Workflow):
         Expected Output Format:
         {agent_config['expected_output']}
 
+        You will be provided with the required input data.
         Input Data:
         """
         
@@ -353,7 +354,6 @@ class CraftMyCVWorkflow(Workflow):
         # Initialize result containers based on agent output structure
         ctx.resume_analysis = None  # Will contain resume_analyzer_agent output
         ctx.job_analysis = None    # Will contain job_description_analyzer_agent output
-        ctx.skill_customization = None  # Will contain skill_customizer_agent output
         ctx.resume_customization = None  # Will contain resume_customizer_agent output
         ctx.summary_customization = None  # Will contain summary_customizer_agent output
         ctx.latex_resume = None    # Will contain format_converter_agent output
@@ -367,7 +367,6 @@ class CraftMyCVWorkflow(Workflow):
         ctx.validation_status = {
             "resume_analyzer": False,
             "job_description_analyzer": False,
-            "skill_customizer": False,
             "resume_customizer": False,
             "summary_customizer": False,
             "latex_formatter": False,
@@ -468,69 +467,6 @@ class CraftMyCVWorkflow(Workflow):
             raise
 
     @step
-    async def skill_customizer(self, event: Event) -> Event:
-        """Match and customize skills based on job requirements"""
-        try:
-            start_time = time()
-            ctx = event.data["context"]
-            ctx.workflow_state = "skill_customizer"
-            agent_config = self.agent_config['skill_customizer_agent']
-            
-            logger.info("Starting skill customization...")
-            
-            # Get resume analysis and job requirements from context
-            resume_data = ctx.resume_analysis.get('resume_analysis')
-            if not resume_data:
-                logger.error(f"Resume analysis structure: {json.dumps(ctx.resume_analysis, indent=2)}")
-                raise ValueError("Missing resume analysis data")
-            
-            resume_skills = resume_data.get('skills')
-            if not resume_skills:
-                logger.error(f"Resume data structure: {json.dumps(resume_data, indent=2)}")
-                raise ValueError("Skills section not found in resume data")
-            
-            # Build prompt with correct data structure
-            prompt = self._build_content_prompt(
-                agent_config,
-                resume_skills=json.dumps(resume_skills),
-                job_requirements=json.dumps(ctx.job_analysis)
-            )
-            
-            response = await self.openai_llm2_with_fallback.acomplete(prompt)
-            
-            # Validate and parse response
-            ctx.skill_customization = self._validate_llm_response(response.text)
-            
-            ctx.steps_completed += 1
-            
-            duration = time() - start_time
-            ctx.step_timings['skill_customizer'] = duration
-            
-            # Log step output
-            self._log_step_output(
-                "Skill Customization",
-                ctx.skill_customization,
-                duration=duration
-            )
-            
-            return Event(data={"context": ctx})
-            
-        except Exception as e:
-            error_msg = f"Skill customization failed: {str(e)}"
-            if hasattr(ctx, 'errors'):
-                ctx.errors.append(error_msg)
-            logger.error(error_msg)
-            logger.error(f"Stack trace:\n{traceback.format_exc()}")
-            
-            # Log the full context state when error occurs
-            logger.error("Context state at error:")
-            for attr in dir(ctx):
-                if not attr.startswith('_'):
-                    logger.error(f"{attr}: {getattr(ctx, attr, None)}")
-            
-            raise
-
-    @step
     async def resume_customizer(self, event: Event) -> Event:
         """Generate a customized resume content based on job requirements"""
         try:
@@ -540,7 +476,7 @@ class CraftMyCVWorkflow(Workflow):
             agent_config = self.agent_config['resume_customizer_agent']
             
             logger.info("Starting resume customization...")
-            if not all([ctx.resume_analysis, ctx.job_analysis, ctx.skill_customization]):
+            if not all([ctx.resume_analysis, ctx.job_analysis]):
                 raise ValueError("Missing required input data for resume customization")
             
             resume_data = ctx.resume_analysis
@@ -551,8 +487,7 @@ class CraftMyCVWorkflow(Workflow):
             prompt = self._build_content_prompt(
                 agent_config,
                 resume_data=json.dumps(resume_data),
-                job_analysis=json.dumps(ctx.job_analysis),
-                skill_customization=json.dumps(ctx.skill_customization)
+                job_analysis=json.dumps(ctx.job_analysis)
             )
             
             response = await self.openai_llm2_with_fallback.acomplete(prompt)
