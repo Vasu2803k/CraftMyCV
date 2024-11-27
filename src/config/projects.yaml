@@ -1,0 +1,50 @@
+projects:
+  e-commerce_website:
+    name: "E-commerce Website"
+    description: "An e-commerce website built using Django and React"
+    url: "https://www.example.com" # If applicable
+    duration: "3 months" # If applicable
+    description: |
+      - Implemented robust user authentication and authorization system using JWT tokens and role-based access control. Enhanced security by adding two-factor authentication and password policies to protect sensitive user data.
+      - Integrated multiple payment gateways including Stripe and PayPal to provide flexible payment options. Implemented secure payment processing with encryption and automated refund handling system.
+      - Optimized website performance by implementing Redis caching and database query optimization, reducing page load times by 60%. Configured CDN and implemented lazy loading of images to improve user experience.
+      - Developed comprehensive admin dashboard with real-time analytics and reporting features. Added inventory management system with automated low stock alerts and sales forecasting capabilities.
+    skills_used: ["Django", "React", "Python", "JavaScript"]
+
+  book_recommendation_system:
+    name: "Book Recommendation System"
+    description: "A book recommendation system built using Python and Flask"
+    url: "https://www.example.com" # If applicable
+    duration: "2 months" # If applicable
+    description: |
+      - Developed a book recommendation system using Python and Flask. Implemented collaborative filtering and content-based recommendation algorithms to provide personalized recommendations to users.
+      - Utilized Pandas and NumPy for data processing and analysis. Integrated with Goodreads API to fetch book data and user ratings.
+      - Optimized the system for scalability and performance by implementing caching and database query optimization techniques.
+      - Developed a user-friendly web interface using HTML, CSS, and JavaScript for easy navigation and interaction.
+    skills_used: ["Python", "Flask", "Pandas", "NumPy", "HTML", "CSS", "JavaScript"]
+
+  Chatbot_for_customer_support:
+    name: "Chatbot for Customer Support"
+    description: "A chatbot built using Python and Flask"
+    url: "https://www.example.com" # If applicable
+    duration: "2 months" # If applicable
+    description: |
+      - Developed a chatbot using Python, Flask and OpenAI's GPT-4 API. Implemented natural language processing and large language models to provide intelligent customer support responses.
+      - Integrated sentiment analysis and intent classification using LLMs to understand customer queries better. Built conversation history tracking and context management.
+      - Optimized response time and costs through caching, request batching, and fallback mechanisms between different LLM providers.
+      - Developed a responsive web interface with real-time chat capabilities using HTML, CSS, and JavaScript.
+    skills_used: ["Python", "Flask", "OpenAI API", "LLMs", "HTML", "CSS", "JavaScript"]
+  
+  chatbot_for_resume_analysis:
+    name: "Chatbot for Resume Analysis"
+    description: "A chatbot built using Python and Flask"
+    url: "https://www.example.com" # If applicable
+    duration: "2 months" # If applicable
+    description: |
+      - Built an AI-powered resume analysis chatbot using Python, Flask and Claude API. Leveraged large language models to provide detailed resume feedback and improvement suggestions.
+      - Implemented custom prompting techniques and chain-of-thought reasoning to extract key resume components and assess their effectiveness.
+      - Enhanced performance through response caching, API request optimization, and intelligent fallback to alternative LLM providers.
+      - Created an intuitive web interface with real-time chat and resume upload capabilities using modern web technologies.
+    skills_used: ["Python", "Flask", "Anthropic API", "LLMs", "HTML", "CSS", "JavaScript"]
+  
+  

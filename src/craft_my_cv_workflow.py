@@ -140,7 +140,15 @@ class CraftMyCVWorkflow(Workflow):
         except Exception as e:
             logger.error(f"Failed to initialize {llm_class.__name__}: {str(e)}")
             raise
+    
+    def _skill_suggestion_prompt(self, agent_config, **inputs):
+        """Build prompt for skill suggestion agent"""
+        pass
 
+    def _project_suggestion_prompt(self, agent_config, **inputs):
+        """Build prompt for project suggestion agent"""
+        pass
+    
     def _build_latex_prompt(self, agent_config, template_config, recommendations=None, **inputs):
         """Build prompt for generating raw LaTeX code"""
         prompt = f"""
@@ -161,7 +169,7 @@ class CraftMyCVWorkflow(Workflow):
 
         prompt += f"""
         **Expected Output Format**:
-
+        Strictly follow the formatting style of the template provided with a little flexibility when necessary to improve the output.
         - {template_config['content']}
 
         # Notes
@@ -615,7 +623,18 @@ class CraftMyCVWorkflow(Workflow):
             logger.error(error_msg)
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
             raise
+    @step
+    async def skill_suggestion(self, event: Event) -> Event:
+        """Suggest skills based on job requirements"""
+        # Run the skill suggestion agent after parsing the job description and resume analysis to ask for the input from the user to select the skills from the suggested skills
+        
 
+
+    @step
+    async def project_suggestion(self, event: Event) -> Event:
+        """Suggest projects based on job requirements"""
+        pass
+    
     @step
     async def resume_customizer(self, event: Event) -> Event:
         """Customize resume content based on job requirements"""
