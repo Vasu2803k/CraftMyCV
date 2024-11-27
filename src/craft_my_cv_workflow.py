@@ -175,6 +175,13 @@ class CraftMyCVWorkflow(Workflow):
         - Ensure proper LaTeX syntax and ATS compatibility
         - Structure content in logical sections
         - Handle special characters correctly
+
+        # Final Notes
+        - Ensure the final latex code contains only the sections specified in the expected output format
+        - The chronological order of experiences must be maintained
+        - The order of sections must be maintained as specified in the expected output format
+        - Strictly follow the formatting rules specified in the expected output format
+        - Adhere to the notes provided.
         """
         return prompt
     
