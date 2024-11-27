@@ -70,7 +70,10 @@ class CraftMyCVWorkflow(Workflow):
             # Load configurations
             with open('src/config/agents.yaml', 'r') as f:
                 agent_config_yaml = yaml.safe_load(f)
+            with open('src/config/templates.yaml', 'r') as f:
+                template_config_yaml = yaml.safe_load(f)
             self.agent_config = agent_config_yaml['agents']
+            self.template_config = template_config_yaml['templates']
             llm_config = agent_config_yaml['llm_config']
             fallback_config = agent_config_yaml['fallback_llm']
             
@@ -138,7 +141,7 @@ class CraftMyCVWorkflow(Workflow):
             logger.error(f"Failed to initialize {llm_class.__name__}: {str(e)}")
             raise
 
-    def _build_latex_prompt(self, agent_config, recommendations=None, **inputs):
+    def _build_latex_prompt(self, agent_config, template_config, recommendations=None, **inputs):
         """Build prompt for generating raw LaTeX code"""
         prompt = f"""
         Generate LaTeX code based on the input data according to the system instructions.
@@ -159,11 +162,14 @@ class CraftMyCVWorkflow(Workflow):
         prompt += f"""
         **Expected Output Format**:
 
-        - {agent_config['expected_output']}
+        - {template_config['content']}
 
         # Notes
 
-        - The output must be raw LaTeX code only
+        - The output must be LaTeX code only, including any additional formatting or styling
+        - Follow consistent indentation and spacing in the LaTeX code
+        - Use proper line breaks between sections and environments
+        - Apply consistent capitalization for LaTeX commands and environments
         - Include all necessary package imports and configurations
         - Follow professional formatting and layout standards
         - Ensure proper LaTeX syntax and ATS compatibility
@@ -207,9 +213,9 @@ class CraftMyCVWorkflow(Workflow):
         - {agent_config['expected_output']}
         
         # Notes
-
+        - Do not include any text, explanation, comments, or markdown before or after the JSON output.
+        - Do not include ```json or ```latex before the JSON output.
         - Ensure consistency with the formatting rules, as any deviation might cause errors in JSON parsing.
-        - No text, explanation, comments, or markdown should surround the JSON output.
         - Carefully check the structure of arrays and objects to prevent errors in JSON syntax.
         """
         return prompt
@@ -220,24 +226,37 @@ class CraftMyCVWorkflow(Workflow):
             # Remove any markdown code block formatting if present
             if response_text.startswith("```") and response_text.endswith("```"):
                 lines = response_text.split("\n")
-                response_text = "\n".join(lines[1:-1])
+                # Handle potential language identifier in code block
+                if lines[0].lower().startswith("```json"):
+                    lines = lines[1:-1]
+                elif lines[0].strip() == "```":
+                    lines = lines[1:-1]
+                response_text = "\n".join(lines)
+            
+            # Clean the response text
+            response_text = response_text.strip()
             
             # Try to parse as JSON first
             try:
-                parsed = json.loads(response_text)
+                # Handle potential multiple JSON objects by taking the first valid one
+                possible_json = response_text.split('\n\n')[0]
+                parsed = json.loads(possible_json)
                 self._validate_json_structure(parsed)
                 return parsed
             except json.JSONDecodeError:
                 # If not JSON, check if it's LaTeX
-                if response_text.strip().startswith("\\documentclass"):
-                    self._validate_latex_structure(response_text.strip())
-                    return response_text.strip()
+                if "\\documentclass" in response_text:
+                    self._validate_latex_structure(response_text)
+                    return response_text
                 else:
-                    raise ValueError("Response is neither valid JSON nor LaTeX")
+                    # Log the problematic response for debugging
+                    logger.error(f"Invalid response format. Response text:\n{response_text[:500]}...")
+                    logger.error("Response is neither valid JSON nor LaTeX")
+                    raise ValueError(f"Response validation failed. Expected JSON or LaTeX, got:\n{response_text[:100]}...")
                 
         except Exception as e:
             logger.error(f"Failed to validate LLM response: {str(e)}")
-            logger.error(f"Response text:\n{response_text}")
+            logger.error(f"Response text preview:\n{response_text[:500]}...")
             raise ValueError(f"Invalid response format: {str(e)}")
 
     def _validate_json_structure(self, data: dict):
@@ -381,15 +400,6 @@ class CraftMyCVWorkflow(Workflow):
                         for issue in format_data.get('issues', []):
                             critical_issues.append(f"Formatting ({format_type}): {issue}")
                             ctx.quality_issues['formatting'].append(f"Formatting ({format_type}): {issue}")
-                
-                # Check required fields
-                fields = formatting_validation.get('fields', {}).get('required', {})
-                if fields.get('missing'):
-                    has_formatting_issues = True
-                    for field in fields.get('missing', []):
-                        issue = f"Missing required field: {field}"
-                        critical_issues.append(issue)
-                        ctx.quality_issues['formatting'].append(issue)
             
             # Store retry context
             ctx.retry_context = {
@@ -792,6 +802,7 @@ class CraftMyCVWorkflow(Workflow):
             ctx = event.data["context"]
             ctx.workflow_state = "latex_formatter"
             agent_config = self.agent_config['latex_formatting_agent']
+            template_config = self.template_config['resume_template_1']
             
             logger.info("Starting LaTeX conversion...")
             
@@ -815,6 +826,7 @@ class CraftMyCVWorkflow(Workflow):
             
             prompt = self._build_latex_prompt(
                 agent_config,
+                template_config,
                 resume_data=json.dumps(resume_data),
                 recommendations=recommendations
             )

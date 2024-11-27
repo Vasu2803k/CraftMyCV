@@ -18,46 +18,21 @@ agents:
       - Do not infer or add information not present.
       - Flag any ambiguous or unclear content.
       - Ensure proper chronological order of experiences where applicable.
+
+      While following the above 4 steps, ensure that it adheres to all the 4 notes provided.
     expected_output: |
       {
         "resume_analysis": {
           "personal_info": {
             "name": "Full name",
-            "contact": {
-              "email": "Email address", 
-              "phone": "Phone number",
-              "location": {
-                "city": "City",
-                "state": "State",
-                "country": "Country",
-                "postal_code": "Postal/ZIP code",
-                "...": "..."
-              },
-              "social_profiles": {
-                "linkedin": "LinkedIn URL",
-                "github": "GitHub URL",
-                "...": "..."
-              },
-              "...": "..."
-            }
-          },
-          "professional_summary": {
-            "overview": "Complete professional summary",
-            "years_of_experience": "Total years",
-            "key_expertise": [
-              "Domain 1",
-              "Domain 2",
-              "..."
-            ],
-            "career_highlights": [
-              "Highlight 1",
-              "Highlight 2",
-              "..."
-            ],
+            "contact": "Include all contact information",
+            "social_profiles": "Include all social profiles",
             "...": "..."
           },
+          "professional_summary": "Include professional summary in a paragraph",
           "work_experience": [
             {
+              "Include work experience in bullet points or a paragraph",
               "company": {
                 "name": "Company name",
                 "industry": "Industry type",
@@ -69,51 +44,18 @@ agents:
                 "start_date": "YYYY-MM",
                 "end_date": "YYYY-MM or Present",
                 "total_duration": "Duration in years/months"
-              },
-              "responsibilities": [
-                "Detailed responsibility 1",
-                "Detailed responsibility 2",
-                "..."
-              ],
-              "achievements": [
-                {
-                  "description": "Achievement description",
-                  "metrics": "Quantifiable results",
-                  "impact": "Business impact",
-                  "...": "..."
-                },
-                "..."
-              ],
-              "technologies_used": [
-                "Tech 1",
-                "Tech 2",
-                "..."
-              ],
-              "...": "..."
+              }
             },
             "..."
           ],
-          "skills": {
-            "technical_skills": {
-              "programming_languages": ["Language 1", "Language 2", "..."],
-              "frameworks": ["Framework 1", "Framework 2", "..."],
-              "tools": ["Tool 1", "Tool 2", "..."],
-              "platforms": ["Platform 1", "Platform 2", "..."],
-              "methodologies": ["Methodology 1", "Methodology 2", "..."],
-              "...": "..."
+          "skills": "Skills including technical skills, soft skills, tools, etc.",
+          "languages": [
+            {
+              "language": "Language name",
+              "proficiency": "Proficiency level",
             },
-            "soft_skills": ["Soft skill 1", "Soft skill 2", "..."],
-            "domain_knowledge": ["Domain 1", "Domain 2", "..."],
-            "languages": [
-              {
-                "language": "Language name",
-                "proficiency": "Proficiency level",
-                "...": "..."
-              },
-              "..."
-            ],
-            "...": "..."
-          },
+            "..."
+          ],
           "education": [
             {
               "degree": "Degree name",
@@ -125,17 +67,11 @@ agents:
                 "end_date": "YYYY-MM",
                 "graduation_status": "Completed/Ongoing"
               },
-              "academic_achievements": [
-                "Achievement 1",
-                "Achievement 2",
-                "..."
-              ],
               "gpa": {
                 "score": "GPA value",
                 "scale": "GPA scale (e.g. 4.0, 10.0)",
                 "percentage": "Percentage equivalent (optional)"
-              },
-              "...": "..."
+              }
             },
             "..."
           ],
@@ -146,7 +82,6 @@ agents:
               "date_obtained": "YYYY-MM",
               "expiry_date": "YYYY-MM or Never",
               "credential_id": "Certification ID",
-              "...": "..."
             },
             "..."
           ],
@@ -158,22 +93,45 @@ agents:
                 "end_date": "YYYY-MM",
                 "total_duration": "Duration in months"
               },
-              "description": "Project description",
-              "technologies": ["Tech 1", "Tech 2", "..."],
-              "outcomes": ["Outcome 1", "Outcome 2", "..."],
-              "...": "..."
+              "description": "Project description in bullet points or a paragraph",
             },
             "..."
           ],
-          "publications_and_research": [...],
-          "awards_and_achievements": [...],
-          "volunteer_work": [...],
+          "research_and_publications": [
+            {
+              "title": "Publication/Research title",
+              "description": "Publication/Research description in bullet points or a paragraph",
+            },
+            "..."
+          ],
+          "awards_and_achievements": [
+            {
+              "title": "Award/Achievement title",
+              "description": "Award/Achievement description in bullet points or a paragraph",
+            },
+            "..."
+          ],
+          "volunteer_work": [
+            {
+              "organization": "Organization name",
+              "role": "Role description",
+              "duration": "Duration in months"
+            },
+            "..."
+          ],
+          "positions_of_responsibility": [
+            {
+              "title": "Position title",
+              "organization": "Organization name",
+              "duration": "Duration in months"
+            },
+            "..."
+          ],
           "ambiguous_content": [
             {
               "section": "Section name",
               "content": "Unclear content",
               "issue": "Brief description of ambiguity",
-              "...": "..."
             },
             "..."
           ],
@@ -198,6 +156,8 @@ agents:
       - Only categorize existing information without modification or inference
       - Maintain objectivity and flag any ambiguous or unclear requirements
       - Preserve original terminology and document requirements exactly as stated
+
+      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       {
         "job_analysis": {
@@ -210,53 +170,26 @@ agents:
               "location": "Location details",
               "...": "..."
             },
-            "employment_type": "Full-time/Contract/Part-time",
+            "employment_type": "Full-time/Contract/Part-time"
+          },
+          "minimum_qualifications": {
+            "education": "Required education",
+            "experience": "Years of experience",
+            "certifications": "Required certifications",
+            "licenses": "Required licenses",
             "...": "..."
           },
-          "core_requirements": {
-            "minimum_qualifications": {
-              "education": ["Required education", "..."],
-              "experience": "Years of experience",
-              "certifications": ["Required certifications", "..."],
-              "licenses": ["Required licenses", "..."],
-              "...": "..."
-            },
-            "technical_requirements": {
-              "must_have": ["Critical technical skills", "..."],
-              "nice_to_have": ["Preferred technical skills", "..."],
-              "tools_and_technologies": ["Required tools", "..."],
-              "methodologies": ["Required methodologies", "..."],
-              "...": "..."
-            },
-            "soft_skills": {
-              "critical": ["Essential soft skills", "..."],
-              "preferred": ["Desired soft skills", "..."],
-              "...": "..."
-            },
-            "...": "..."
-          },
-          "responsibilities": {
-            "primary_duties": ["Main responsibilities", "..."],
-            "secondary_duties": ["Additional duties", "..."],
-            "leadership_aspects": ["Leadership requirements", "..."],
-            "collaboration": ["Team interaction details", "..."],
-            "...": "..."
-          },
-          "company_culture": {
-            "values": ["Company values", "..."],
-            "work_environment": "Environment description",
-            "team_dynamics": "Team structure and dynamics",
-            "growth_opportunities": ["Career growth details", "..."],
-            "...": "..."
-          },
+          "critical_skills": "Critical skills",
+          "preferred_skills": "Preferred skills/nice to have skills/non-critical skills",
+          "responsibilities": "Responsibilities in bullet points",
+          "company_culture": "Include company values, environment, team dynamics and growth opportunities in bullet points",
           "keywords": {
-            "unique_requirements": ["Unique requirement 1", "Unique requirement 2", "..."],
-            "technical": ["Technical keyword 1", "Technical keyword 2", "..."],
-            "industry": ["Industry keyword 1", "Industry keyword 2", "..."],
-            "soft_skills": ["Soft skill keyword 1", "Soft skill keyword 2", "..."],
+            "unique_requirements": "Unique requirements",
+            "technical": "Technical keywords",
+            "industry": "Industry keywords",
+            "soft_skills": "Soft skill keywords",
             "...": "..."
-          },
-          "...": "..."
+          }
         }
       }
 
@@ -279,107 +212,63 @@ agents:
       - Preserve all metrics and factual accuracy while maintaining traceability
       - Flag any content requiring verification or clarification
       - Ensure proper chronological order of experiences where applicable
+      - Ensure that the work experience section is atleast has 4 bullet points.
+      - Ensure that the professional summary is atleast 4 sentences long written in a paragraph format.
+      - Ensure that the projects section is atleast has 3 bullet points or a two sentence paragraph.
+
+      While following the above 6 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       {
         "customized_resume": {
           "personal_info": {
             "name": "Full name",
-            "contact": {
-              "email": "Email address",
-              "phone": "Phone number",
-              "location": "City, State",
-              "linkedin": "LinkedIn URL",
-              "portfolio": "Portfolio URL (if applicable)",
-              "github": "GitHub profile (if applicable)",
-              "...": "..."
-            },
+            "contact": "Include all contact information",
+            "social_profiles": "Include all social profiles",
             "...": "..."
           },
-          "professional_summary": {
-            "customized": "Tailored summary",
-            "keywords_added": ["Keyword 1", "Keyword 2", "..."],
-            "focus_areas": ["Area 1", "Area 2", "..."],
-            "key_highlights": ["Highlight 1", "Highlight 2", "..."],
-            "...": "..."
-          },
+          "professional_summary": "Include professional summary in a paragraph",
           "work_experience": [
             {
-              "position": "Job title",
-              "company": "Company name",
-              "duration": "Start date - End date",
-              "location": "City, State",
-              "customized_bullets": [
-                {
-                  "content": "Enhanced bullet point",
-                  "added_keywords": ["Keyword 1", "Keyword 2", "..."],
-                  "quantified_metrics": "Metrics added",
-                  "impact_focus": "Impact statement",
-                  "...": "..."
-                },
-                "..."
-              ],
-              "...": "..."
-            },
-            "..."
-          ],
-          "projects": [
-            {
-              "project_name": "Project title",
-              "duration": "Timeline",
-              "technologies": ["Tech 1", "Tech 2", "..."],
-              "customized_bullets": [
-                {
-                  "content": ["Enhanced project bullet 1", "Enhanced project bullet 2", "..."],
-                  "added_keywords": ["Keyword 1", "Keyword 2", "..."],
-                  "technical_highlights": ["Highlight 1", "Highlight 2", "..."],
-                  "impact_metrics": "Project impact and results",
-                  "...": "..."
-                },
-                "..."
-              ],
-              "links": {
-                "github": "Repository URL",
-                "live": "Live project URL",
+              "Include work experience in bullet points or a paragraph",
+              "company": {
+                "name": "Company name",
+                "industry": "Industry type",
+                "location": "Company location",
                 "...": "..."
               },
-              "...": "..."
-            }
-          ],
-          "skills": {
-            "technical_skills": ["Skill 1", "Skill 2", "..."],
-            "soft_skills": ["Skill 1", "Skill 2", "..."],
-            "tools": ["Tool 1", "Tool 2", "..."],
-            "languages": ["Language 1", "Language 2", "..."],
-            "...": "..."
-          },
-          "positions_of_responsibility": [
-            {
-              "title": "Position title",
-              "organization": "Organization name",
-              "duration": "Timeline",
-              "customized_bullets": ["Enhanced 1", "Enhanced 2", "..."],
-              "...": "..."
+              "position": "Job title",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM or Present",
+                "total_duration": "Duration in years/months"
+              },
             },
             "..."
           ],
-          "awards_and_achievements": [
+          "skills": "Skills including technical skills, soft skills, tools, etc.",
+          "languages": [
             {
-              "title": "Award name",
-              "issuer": "Issuing organization",
-              "date": "Date received",
-              "description": "Award description and significance",
-              "...": "..."
+              "language": "Language name",
+              "proficiency": "Proficiency level",
             },
             "..."
           ],
-          "research_and_publications": [
+          "education": [
             {
-              "title": "Publication title",
-              "journal": "Journal/Conference name",
-              "date": "Publication date",
-              "doi": "DOI link",
-              "impact": "Publication impact and citations",
-              "...": "..."
+              "degree": "Degree name",
+              "field": "Field of study",
+              "institution": "Institution name",
+              "location": "Institution location",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM",
+                "graduation_status": "Completed/Ongoing"
+              },
+              "gpa": {
+                "score": "GPA value",
+                "scale": "GPA scale (e.g. 4.0, 10.0)",
+                "percentage": "Percentage equivalent (optional)"
+              }
             },
             "..."
           ],
@@ -387,22 +276,52 @@ agents:
             {
               "name": "Certification name",
               "issuer": "Issuing organization",
-              "date": "Date obtained",
-              "expiry": "Expiration date (if applicable)",
+              "date_obtained": "YYYY-MM",
+              "expiry_date": "YYYY-MM or Never",
               "credential_id": "Certification ID",
-              "...": "..."
             },
             "..."
           ],
-          "education": [
+          "projects": [
             {
-              "degree": "Degree name",
-              "institution": "Institution name",
-              "duration": "Start date - End date",
-              "location": "City, State",
-              "gpa": "GPA if applicable",
-              "relevant_coursework": ["Course 1", "Course 2", "..."],
-              "...": "..."
+              "name": "Project name",
+              "duration": {
+                "start_date": "YYYY-MM",
+                "end_date": "YYYY-MM",
+                "total_duration": "Duration in months"
+              },
+              "description": "Project description in bullet points or a paragraph",
+            },
+            "..."
+          ],
+          "research_and_publications": [
+            {
+              "title": "Publication/Research title",
+              "description": "Publication/Research description in a paragraph",
+            },
+            "..."
+          ],
+          "awards_and_achievements": [
+            {
+              "title": "Award/Achievement title",
+              "description": "Award/Achievement description in a paragraph",
+            },
+            "..."
+          ],
+          "volunteer_work": [
+            {
+              "organization": "Organization name",
+              "role": "Role description in a paragraph",
+              "duration": "Duration in months"
+            },
+            "..."
+          ],
+          "positions_of_responsibility": [
+            {
+              "title": "Position title",
+              "organization": "Organization name",
+              "description": "Position description in a paragraph",
+              "duration": "Duration in months"
             },
             "..."
           ],
@@ -427,28 +346,13 @@ agents:
       - Use only verified information with traceable content from the resume
       - Maintain professional tone and factual accuracy without speculation
       - Focus on proven achievements and skills while preserving original metrics
-      - Ensure summary is atleast 3 sentences long. Do not make up any information.
+      - Ensure summary is atleast 4 sentences long written in a paragraph format. Do not make up any information.
 
+      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       {
         "summary_analysis": {
-          "customized_summary": "Enhanced text",
-          "key_components": {
-            "professional_identity": "Core professional description",
-            "years_experience": "Experience summary",
-            "key_achievements": [
-              "Achievement 1",
-              "Achievement 2",
-              "..."
-            ],
-            "unique_value_props": [
-              "Value 1",
-              "Value 2",
-              "..."
-            ],
-            "...": "..."
-          },
-          "...": "..."
+          "customized_summary": "Enhanced text in a paragraph"
         }
       }
 
@@ -456,11 +360,11 @@ agents:
     role: "Pre-LaTeX Content Quality Specialist"
     goal: "Ensure content quality and completeness before LaTeX conversion"
     system_prompt: |
-      You are a Resume Content Quality Validation Specialist focused on ensuring content readiness for resumes matching job requirements with the highest quality. Examine each resume meticulously to identify potential issues or deficiencies without making direct modifications to the content or structure.
+      You are a Resume Content Quality Validation Specialist focused on ensuring content readiness for resumes matching job requirements with the highest quality. Examine each resume meticulously to identify potential issues or deficiencies and provide a detailed report in the expected output format without making direct modifications to the content or structure.
 
       # Steps
 
-      1. **Verify All Required Sections Are Present:** Ensure the resume includes essential sections such as Contact Information, Objective/Summary, Work Experience, Education, Skills, and Certifications (if applicable).
+      1. **Verify All Required Sections Are Present:** Ensure the resume includes essential sections such as Contact Information, Objective/Summary, Work Experience/Projects, Education, Skills, and Certifications (if applicable).
       2. **Validate Content Structure and Completeness:** Check that each section is well-organized and complete with relevant and sufficient information.
       3. **Check Data Consistency Across Sections:** Make sure information is consistent, such as dates in the Work Experience and Education sections.
       4. **Validate Formatting Readiness:** Evaluate whether the formatting is uniform and professional, including font size, style, and spacing.
@@ -471,6 +375,8 @@ agents:
       - Focus on identifying and documenting issues only. Do not alter the content or structure of the resume.
       - Clearly specify any sections that are missing or require additional information.
       - Report any inconsistencies or formatting issues that could affect the readability or professional appearance of the resume.
+
+      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       {
         "pre_latex_quality_check": {
@@ -560,18 +466,7 @@ agents:
                 "issues": ["Issue description 1", "Issue description 2", "..."]
               },
               "...": "..."
-            },
-            "fields": {
-              "required": {
-                "missing": ["Field name 1", "Field name 2", "..."],
-                "incomplete": ["Field name 1", "Field name 2", "..."]
-              },
-              "optional": {
-                "recommended": ["Field name 1", "Field name 2", "..."]
-              },
-              "...": "..."
-            },
-            "...": "..."
+            }
           },
           "latex_readiness": {
             "structure": {
@@ -580,7 +475,6 @@ agents:
                 {
                   "section": "Section name",
                   "description": "Issue description",
-                  "severity": "High/Medium/Low",
                   "requires_fix": true
                 },
                 "..."
@@ -608,10 +502,8 @@ agents:
                 "issues": ["Issue description 1", "Issue description 2", "..."]
               },
               "...": "..."
-            },
-            "...": "..."
-          },
-          "...": "..."
+            }
+          }
         }
       }
 
@@ -639,6 +531,8 @@ agents:
       - Optimize for both print and digital formats
       - Ensure the document is ATS compatible and readable
       - Do not fabricate any information. Use only the provided information.
+
+      While following the above 6 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       """
       \documentclass[10pt, letterpaper]{article}
@@ -670,7 +564,7 @@ agents:
     role: "Post-LaTeX Document Quality Specialist"
     goal: "Ensure LaTeX output meets professional standards and maintains content integrity"
     system_prompt: |
-      You are a LaTeX Document Quality Validation Specialist focused on validating the final LaTeX output to ensure it meets professional standards. Examine the output meticulously to identify any issues or discrepancies without making direct modifications to the content or structure.
+      You are a LaTeX Document Quality Validation Specialist focused on validating the final LaTeX output to ensure it meets professional standards. Examine the output meticulously to identify any issues or discrepancies and provide a detailed report in the expected output format without making direct modifications to the content or structure.
       
       # Steps
       1. Verify LaTeX compilation success
@@ -683,6 +577,8 @@ agents:
       - Do not make any direct modifications to the content or structure.
       - Flag issues without direct code modification
       - Verify formatting and ATS compatibility while documenting any concerns
+
+      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
     expected_output: |
       {
         "post_latex_quality_check": {
@@ -704,10 +600,6 @@ agents:
             "...": "..."
           },
           "content_integrity": {
-            "content_preservation": {
-              "missing_content": ["Missing item 1", "Missing item 2", "..."],
-              "modified_content": ["Modified item 1", "Modified item 2", "..."]
-            },
             "section_validation": {
               "all_sections_present": "Yes/No",
               "section_order": "Pass/Fail",
@@ -742,7 +634,6 @@ agents:
               "compatibility_score": "0-100",
               "platform_issues": ["Issue 1", "Issue 2", "..."]
             },
-            "...": "..."
           },
           "ats_compatibility": {
             "text_extraction": {
@@ -758,8 +649,7 @@ agents:
               "non_compliant_elements": ["Element 1", "Element 2", "..."]
             },
             "...": "..."
-          },
-          "...": "..."
+          }
         }
       }
 
