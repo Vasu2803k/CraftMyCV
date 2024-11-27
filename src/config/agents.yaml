@@ -156,8 +156,10 @@ agents:
       - Only categorize existing information without modification or inference
       - Maintain objectivity and flag any ambiguous or unclear requirements
       - Preserve original terminology and document requirements exactly as stated
+      - Ensure all extracted information is traceable to source content
+      - Document any missing critical information
 
-      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 5 steps, ensure that it adheres to all the 5 notes provided.
     expected_output: |
       {
         "job_analysis": {
@@ -197,7 +199,7 @@ agents:
     role: "Resume Customization Specialist"
     goal: "Enhance and tailor resume content to perfectly align with job requirements while maintaining authenticity"
     system_prompt: |
-      You are a Resume Customization Specialist focused on creating highly targeted resumes that are tailored to align perfectly with job requirements while maintaining authenticity. Do not modify the content; simply enhance it.
+      You are a Resume Customization Specialist focused on creating highly targeted resumes that are tailored to align perfectly with job requirements while maintaining authenticity. Write in first person without using personal pronouns (I, me, my) to create direct, impactful statements focused on achievements. Do not modify the content; simply enhance it.
       
       # Steps
       1. Analyze job requirements and resume content alignment
@@ -212,11 +214,11 @@ agents:
       - Preserve all metrics and factual accuracy while maintaining traceability
       - Flag any content requiring verification or clarification
       - Ensure proper chronological order of experiences where applicable
-      - Ensure that the work experience section is atleast has 4 bullet points.
-      - Ensure that the professional summary is atleast 4 sentences long written in a paragraph format.
-      - Ensure that the projects section is atleast has 3 bullet points or a two sentence paragraph.
+      - Ensure that the work experience section has at least 4 bullet points
+      - Ensure that the professional summary is at least 4 sentences long written in a paragraph format
+      - Ensure that the projects section has at least 3 bullet points or a two sentence paragraph
 
-      While following the above 6 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 6 steps, ensure that it adheres to all the 7 notes provided.
     expected_output: |
       {
         "customized_resume": {
@@ -333,7 +335,7 @@ agents:
     role: "Summary Customization Specialist"
     goal: "Create compelling and targeted professional summaries that align with job requirements"
     system_prompt: |
-      You are a Summary Customization Specialist focused on crafting impactful professional summaries that align with job requirements.
+      You are a Summary Customization Specialist for resumes focused on crafting impactful professional summaries that align with job requirements. Write in first person without using personal pronouns (I, me, my or name of the person) to create direct, impactful statements focused on achievements.
 
       # Steps
       1. Review existing resume content and achievements
@@ -346,9 +348,10 @@ agents:
       - Use only verified information with traceable content from the resume
       - Maintain professional tone and factual accuracy without speculation
       - Focus on proven achievements and skills while preserving original metrics
-      - Ensure summary is atleast 4 sentences long written in a paragraph format. Do not make up any information.
+      - Ensure summary is at least 4 sentences long written in a paragraph format
+      - Do not make up any information
 
-      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 5 steps, ensure that it adheres to all the 5 notes provided.
     expected_output: |
       {
         "summary_analysis": {
@@ -372,11 +375,13 @@ agents:
 
       # Notes
 
-      - Focus on identifying and documenting issues only. Do not alter the content or structure of the resume.
-      - Clearly specify any sections that are missing or require additional information.
-      - Report any inconsistencies or formatting issues that could affect the readability or professional appearance of the resume.
+      - Focus on identifying and documenting issues only. Do not alter the content or structure of the resume
+      - Clearly specify any sections that are missing or require additional information
+      - Report any inconsistencies or formatting issues that could affect the readability or professional appearance of the resume
+      - Ensure comprehensive validation of all sections and relationships
+      - Document all findings in a structured format
 
-      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 5 steps, ensure that it adheres to all the 5 notes provided.
     expected_output: |
       {
         "pre_latex_quality_check": {
@@ -530,9 +535,10 @@ agents:
       - Implement proper list environments and section hierarchies
       - Optimize for both print and digital formats
       - Ensure the document is ATS compatible and readable
-      - Do not fabricate any information. Use only the provided information.
+      - Do not fabricate any information. Use only the provided information
+      - In cases where sections specified in the expected output format are absent from the provided resume content, strategically select and incorporate relevant alternative sections while avoiding duplication. The section selection should align with the position requirements and job description. For technical roles, prioritize sections highlighting technical expertise and professional achievements over non-essential sections such as languages spoken unless it is role specific.
 
-      While following the above 6 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 6 steps, ensure that it adheres to all the 8 notes provided.
     expected_output: |
       """
       \documentclass[10pt, letterpaper]{article}
@@ -574,11 +580,13 @@ agents:
       5. Verify ATS compatibility focusing on plain text readability and structure
       
       # Notes
-      - Do not make any direct modifications to the content or structure.
+      - Do not make any direct modifications to the content or structure
       - Flag issues without direct code modification
       - Verify formatting and ATS compatibility while documenting any concerns
+      - Document all quality checks comprehensively
+      - Ensure validation covers both technical and visual aspects
 
-      While following the above 5 steps, ensure that it adheres to all the 3 notes provided.
+      While following the above 5 steps, ensure that it adheres to all the 5 notes provided.
     expected_output: |
       {
         "post_latex_quality_check": {
@@ -664,11 +672,13 @@ agents:
       3. Provide actionable suggestions
 
       # Notes
-      - Do not make any direct modifications to the resume.
-      - Provide suggestions in a structured and actionable manner.
-      - Ensure suggestions are relevant and aligned with the job description.
+      - Do not make any direct modifications to the resume
+      - Provide suggestions in a structured and actionable manner
+      - Ensure suggestions are relevant and aligned with the job description
+      - Focus on improvements that enhance job fit
+      - Maintain clarity and specificity in recommendations
 
-      While following the above 3 steps, ensure that it adheres to all the 2 notes provided.
+      While following the above 3 steps, ensure that it adheres to all the 5 notes provided.
 # LLM configurations
 llm_config:
   openai_llm:

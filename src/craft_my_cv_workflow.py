@@ -171,6 +171,7 @@ class CraftMyCVWorkflow(Workflow):
         - Use proper line breaks between sections and environments
         - Apply consistent capitalization for LaTeX commands and environments
         - Include all necessary package imports and configurations
+        - Do not include ```latex before the LaTeX code
         - Follow professional formatting and layout standards
         - Ensure proper LaTeX syntax and ATS compatibility
         - Structure content in logical sections
@@ -224,6 +225,7 @@ class CraftMyCVWorkflow(Workflow):
         - Do not include ```json or ```latex before the JSON output.
         - Ensure consistency with the formatting rules, as any deviation might cause errors in JSON parsing.
         - Carefully check the structure of arrays and objects to prevent errors in JSON syntax.
+        - Ensure that the keys and values are properly quoted and escaped.
         """
         return prompt
 
@@ -379,7 +381,7 @@ class CraftMyCVWorkflow(Workflow):
                     if section_data.get('status') == 'Fail':
                         has_quality_issues = True
                         completeness = float(str(section_data.get('completeness', '0')).replace('%', ''))
-                        if completeness < 85:
+                        if completeness < 95:
                             issue = f"{section_name} section is incomplete ({completeness}%)"
                             critical_issues.append(issue)
                             ctx.quality_issues['content'].append(issue)
