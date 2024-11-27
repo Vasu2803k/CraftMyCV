@@ -58,6 +58,7 @@ class CraftMyCVWorkflow(Workflow):
             self.setup_workflow_context,
             self.resume_analyzer,
             self.job_description_analyzer,
+            self.suggestion_agent,
             self.resume_customizer,
             self.summary_customizer,
             self.pre_latex_quality_controller,
@@ -72,8 +73,13 @@ class CraftMyCVWorkflow(Workflow):
                 agent_config_yaml = yaml.safe_load(f)
             with open('src/config/templates.yaml', 'r') as f:
                 template_config_yaml = yaml.safe_load(f)
+            with open('src/config/projects.yaml', 'r') as f:
+                projects_config_yaml = yaml.safe_load(f)
+            
             self.agent_config = agent_config_yaml['agents']
             self.template_config = template_config_yaml['templates']
+            self.projects_config = projects_config_yaml['projects']
+
             llm_config = agent_config_yaml['llm_config']
             fallback_config = agent_config_yaml['fallback_llm']
             
@@ -140,14 +146,44 @@ class CraftMyCVWorkflow(Workflow):
         except Exception as e:
             logger.error(f"Failed to initialize {llm_class.__name__}: {str(e)}")
             raise
-    
-    def _skill_suggestion_prompt(self, agent_config, **inputs):
-        """Build prompt for skill suggestion agent"""
-        pass
 
-    def _project_suggestion_prompt(self, agent_config, **inputs):
-        """Build prompt for project suggestion agent"""
-        pass
+    def _suggestion_prompt(self, agent_config, **inputs):
+        """Build prompt for suggestion agent"""
+        prompt = f"""
+        Generate a valid JSON object based on the input data according to the system instructions.
+
+        **System Instructions**: {agent_config['system_prompt']}
+
+        **Input Data**:
+        """
+        for key, value in inputs.items():
+            prompt += f"\n{key}: {value}"
+
+        prompt += """
+        # Expected Output Format
+        Return exactly one JSON object with the following structure:
+
+        {
+            "suggestions": {
+                "missing_skills": "Include the skills that are missing from the resume as a list",
+                "suggested_projects": "Include the projects that are relevant to the job requirements espcially for the missing skills from the provided projects list as a list"
+            }
+        }
+        """
+        prompt += f"""
+        **Projects List**:
+        The projects list is given in yaml format as follows:
+        {self.projects_config}
+        """
+
+        prompt += """
+        # Notes
+        - Do not include any text before or after the JSON output
+        - Ensure proper JSON formatting with double quotes
+        - Do not include ```json before the JSON output
+        - Return exactly one JSON object
+        """
+        return prompt
     
     def _build_latex_prompt(self, agent_config, template_config, recommendations=None, **inputs):
         """Build prompt for generating raw LaTeX code"""
@@ -206,10 +242,26 @@ class CraftMyCVWorkflow(Workflow):
         for key, value in inputs.items():
             prompt += f"\n{key}: {value}"
 
+        # Add specific instructions for resume customizer if skill/project suggestions exist
+        if 'suggestions' in inputs:
+            prompt += """
+            # Skill and Project Integration Instructions
+            
+            1. Review the suggested skills and projects carefully
+            2. Add skills and relevant projects from the suggestions to the resume
+            3. Maintain authenticity while incorporating new elements
+            4. Add new skills to the skills section and add the projects to the projects section
+            5. Ensure project descriptions demonstrate the suggested skills
+            6. Maintain balance between existing and new content
+            7. Keep focus on job-relevant skills and projects
+            """
+
         if recommendations:
-            prompt += f"""Ensure that all recommendations provided, which might be added during a retry mechanism, are applied to improve the output.
+            prompt += f"""
+            Ensure that all recommendations provided, which might be added during a retry mechanism, are applied to improve the output.
             **Quality Improvement Recommendations**: {recommendations}
             """
+
         prompt += f"""
         # Steps
 
@@ -512,7 +564,8 @@ class CraftMyCVWorkflow(Workflow):
         ctx.resume_customization = None
         ctx.summary_customization = None
         ctx.latex_resume = None
-        
+        ctx.suggestions = None
+
         # Quality check containers
         ctx.pre_latex_quality_check = None
         ctx.post_latex_quality_check = None
@@ -521,6 +574,7 @@ class CraftMyCVWorkflow(Workflow):
         ctx.validation_status = {
             "resume_analyzer": False,
             "job_description_analyzer": False,
+            "suggestion_agent": False,
             "resume_customizer": False,
             "summary_customizer": False,
             "latex_formatter": False,
@@ -624,17 +678,55 @@ class CraftMyCVWorkflow(Workflow):
             logger.error(f"Stack trace:\n{traceback.format_exc()}")
             raise
     @step
-    async def skill_suggestion(self, event: Event) -> Event:
-        """Suggest skills based on job requirements"""
-        # Run the skill suggestion agent after parsing the job description and resume analysis to ask for the input from the user to select the skills from the suggested skills
-        
+    async def suggestion_agent(self, event: Event) -> Event:
+        """Suggest skills and projects based on job requirements"""
+        try:
+            start_time = time()
+            ctx = event.data["context"]
+            ctx.workflow_state = "suggestion_agent"
+            agent_config = self.agent_config['suggestion_agent']
+            
+            if not ctx.resume_analysis or not ctx.job_analysis:
+                raise ValueError("Missing required analysis data for suggestions")
+            
+            resume_data = ctx.resume_analysis.get('resume_analysis', {})
+            job_data = ctx.job_analysis.get('job_analysis', {})
+            
+            logger.info("Starting suggestion analysis...")
+            
+            prompt = self._suggestion_prompt(
+                agent_config,
+                resume_data=json.dumps(resume_data),
+                job_analysis=json.dumps(job_data)
+            )
+            
+            response = await self.llm_with_fallback['openai_llm2'].acomplete(prompt)
+            parsed_response = self._validate_llm_response(response.text)
+            
+            if 'suggestions' not in parsed_response:
+                raise ValueError("Missing 'suggestions' in response")
+            
+            ctx.suggestions = parsed_response
+            ctx.steps_completed += 1
+            
+            duration = time() - start_time
+            ctx.step_timings['suggestion_agent'] = duration
+            
+            self._log_step_output(
+                "Suggestions",
+                ctx.suggestions,
+                duration=duration
+            )
+            
+            return Event(data={"context": ctx})
+            
+        except Exception as e:
+            error_msg = f"Suggestion analysis failed: {str(e)}"
+            ctx.errors.append(error_msg)
+            logger.error(error_msg)
+            logger.error(f"Stack trace:\n{traceback.format_exc()}")
+            raise
 
-
-    @step
-    async def project_suggestion(self, event: Event) -> Event:
-        """Suggest projects based on job requirements"""
-        pass
-    
     @step
     async def resume_customizer(self, event: Event) -> Event:
         """Customize resume content based on job requirements"""
@@ -644,12 +736,17 @@ class CraftMyCVWorkflow(Workflow):
             ctx.workflow_state = "resume_customizer"
             agent_config = self.agent_config['resume_customizer_agent']
             
-            if not all([ctx.resume_analysis, ctx.job_analysis]):
+            if not all([ctx.resume_analysis, ctx.job_analysis, ctx.suggestions]):
                 raise ValueError("Missing required input data for resume customization")
             
             resume_data = ctx.resume_analysis.get('resume_analysis', {})
             job_data = ctx.job_analysis.get('job_analysis', {})
+            suggestions = ctx.suggestions.get('suggestions', None)
             
+            # Get suggestion list from the user 
+            if not suggestions:
+                raise ValueError("Missing suggestions data")
+
             recommendations = None
             if hasattr(ctx, 'pre_latex_quality_check'):
                 recommendations = json.dumps(ctx.pre_latex_quality_check)
@@ -658,6 +755,7 @@ class CraftMyCVWorkflow(Workflow):
                 agent_config,
                 resume_data=json.dumps(resume_data),
                 job_analysis=json.dumps(job_data),
+                suggestions=json.dumps(suggestions),
                 recommendations=recommendations
             )
             
@@ -800,6 +898,9 @@ class CraftMyCVWorkflow(Workflow):
                 logger.info(f"Quality check indicates improvements needed. Attempt {ctx.retry_count}/{ctx.max_retries}")
                 ctx.workflow_state = "resume_customizer_retry"
                 return await self.resume_customizer(Event(data={"context": ctx}))
+            
+            # Make sure retry count is reset to 0
+            ctx.retry_count = 0
             
             # Store quality check results
             ctx.pre_latex_quality_check = parsed_response

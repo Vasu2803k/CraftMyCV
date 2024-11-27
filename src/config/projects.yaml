@@ -2,7 +2,7 @@ projects:
   e-commerce_website:
     name: "E-commerce Website"
     description: "An e-commerce website built using Django and React"
-    url: "https://www.example.com" # If applicable
+    github_url: "https://www.example.com" # If applicable
     duration: "3 months" # If applicable
     description: |
       - Implemented robust user authentication and authorization system using JWT tokens and role-based access control. Enhanced security by adding two-factor authentication and password policies to protect sensitive user data.
@@ -14,7 +14,7 @@ projects:
   book_recommendation_system:
     name: "Book Recommendation System"
     description: "A book recommendation system built using Python and Flask"
-    url: "https://www.example.com" # If applicable
+    github_url: "https://www.example.com" # If applicable
     duration: "2 months" # If applicable
     description: |
       - Developed a book recommendation system using Python and Flask. Implemented collaborative filtering and content-based recommendation algorithms to provide personalized recommendations to users.
@@ -26,7 +26,7 @@ projects:
   Chatbot_for_customer_support:
     name: "Chatbot for Customer Support"
     description: "A chatbot built using Python and Flask"
-    url: "https://www.example.com" # If applicable
+    github_url: "https://www.example.com" # If applicable
     duration: "2 months" # If applicable
     description: |
       - Developed a chatbot using Python, Flask and OpenAI's GPT-4 API. Implemented natural language processing and large language models to provide intelligent customer support responses.
@@ -38,7 +38,7 @@ projects:
   chatbot_for_resume_analysis:
     name: "Chatbot for Resume Analysis"
     description: "A chatbot built using Python and Flask"
-    url: "https://www.example.com" # If applicable
+    github_url: "https://www.example.com" # If applicable
     duration: "2 months" # If applicable
     description: |
       - Built an AI-powered resume analysis chatbot using Python, Flask and Claude API. Leveraged large language models to provide detailed resume feedback and improvement suggestions.
