@@ -604,7 +604,7 @@ class CraftMyCVWorkflow(Workflow):
             
             response = await self.llm_with_fallback['openai_llm1'].acomplete(prompt)
             parsed_response = self._validate_llm_response(response.text)
-            
+            logger.info(f"Parsed response: {parsed_response}")
             # Validate expected output structure
             if 'resume_analysis' not in parsed_response:
                 raise ValueError("Missing 'resume_analysis' in response")

@@ -22,121 +22,367 @@ agents:
       While following the above 4 steps, ensure that it adheres to all the 4 notes provided.
     expected_output: |
       {
-        "resume_analysis": {
+        "name": "resume_analysis",
+        "type": "object",
+        "properties": {
           "personal_info": {
-            "name": "Full name",
-            "contact": "Include all contact information",
-            "social_profiles": "Include all social profiles",
-            "...": "..."
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Full name"
+              },
+              "contact": {
+                "type": "object",
+                "description": "Dictionary of contact information",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "social_profiles": {
+                "type": "object",
+                "description": "Dictionary of social profiles",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["name", "contact", "social_profiles"],
+            "additionalProperties": false
           },
-          "professional_summary": "Include professional summary in a paragraph",
-          "work_experience": [
-            {
-              "Include work experience in bullet points or a paragraph",
-              "company": {
-                "name": "Company name",
-                "industry": "Industry type",
-                "location": "Company location",
-                "...": "..."
+          "professional_summary": {
+            "type": "string",
+            "description": "Paragraph of professional summary."
+          },
+          "work_experience": {
+            "type": "array",
+            "description": "List of work experiences with the following structure.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "work_experience": {
+                  "type": "string",
+                  "description": "Paragraph of work experience."
+                },
+                "company": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Company name"
+                    },
+                    "industry": {
+                      "type": "string",
+                      "description": "Industry type"
+                    },
+                    "location": {
+                      "type": "string",
+                      "description": "Company location"
+                    }
+                  },
+                  "required": ["name", "industry", "location"],
+                  "additionalProperties": false
+                },
+                "position": {
+                  "type": "string",
+                  "description": "Job title."
+                },
+                "duration": {
+                  "type": "object",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "description": "YYYY-MM"
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "description": "YYYY-MM or Present"
+                    },
+                    "total_duration": {
+                      "type": "string",
+                      "description": "Duration in years/months"
+                    }
+                  },
+                  "required": ["start_date", "end_date", "total_duration"],
+                  "additionalProperties": false
+                }
               },
-              "position": "Job title",
-              "duration": {
-                "start_date": "YYYY-MM",
-                "end_date": "YYYY-MM or Present",
-                "total_duration": "Duration in years/months"
-              }
-            },
-            "..."
-          ],
-          "skills": "Skills including technical skills, soft skills, tools, etc.",
-          "languages": [
-            {
-              "language": "Language name",
-              "proficiency": "Proficiency level",
-            },
-            "..."
-          ],
-          "education": [
-            {
-              "degree": "Degree name",
-              "field": "Field of study",
-              "institution": "Institution name",
-              "location": "Institution location",
-              "duration": {
-                "start_date": "YYYY-MM",
-                "end_date": "YYYY-MM",
-                "graduation_status": "Completed/Ongoing"
+              "required": ["work_experience", "company", "position", "duration"],
+              "additionalProperties": false
+            }
+          },
+          "skills": {
+            "type": "string",
+            "description": "Skills including technical skills, soft skills, tools, etc."
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "string",
+                  "description": "Language name"
+                },
+                "proficiency": {
+                  "type": "string",
+                  "description": "Proficiency level"
+                }
               },
-              "gpa": {
-                "score": "GPA value",
-                "scale": "GPA scale (e.g. 4.0, 10.0)",
-                "percentage": "Percentage equivalent (optional)"
-              }
-            },
-            "..."
-          ],
-          "certifications": [
-            {
-              "name": "Certification name",
-              "issuer": "Issuing organization",
-              "date_obtained": "YYYY-MM",
-              "expiry_date": "YYYY-MM or Never",
-              "credential_id": "Certification ID",
-            },
-            "..."
-          ],
-          "projects": [
-            {
-              "name": "Project name",
-              "duration": {
-                "start_date": "YYYY-MM",
-                "end_date": "YYYY-MM",
-                "total_duration": "Duration in months"
+              "required": ["language", "proficiency"],
+              "additionalProperties": false
+            }
+          },
+          "education": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "degree": {
+                  "type": "string",
+                  "description": "Degree name"
+                },
+                "field": {
+                  "type": "string",
+                  "description": "Field of study"
+                },
+                "institution": {
+                  "type": "string",
+                  "description": "Institution name"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Institution location"
+                },
+                "duration": {
+                  "type": "object",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "description": "YYYY-MM"
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "description": "YYYY-MM"
+                    },
+                    "graduation_status": {
+                      "type": "string",
+                      "description": "Completed/Ongoing"
+                    }
+                  },
+                  "required": ["start_date", "end_date", "graduation_status"],
+                  "additionalProperties": false
+                },
+                "gpa": {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "string",
+                      "description": "GPA value"
+                    },
+                    "scale": {
+                      "type": "string",
+                      "description": "GPA scale (e.g., 4.0, 10.0)"
+                    },
+                    "percentage": {
+                      "type": "string",
+                      "description": "Percentage equivalent (optional)"
+                    }
+                  },
+                  "required": ["score", "scale"],
+                  "additionalProperties": false
+                }
               },
-              "description": "Project description in bullet points or a paragraph",
-            },
-            "..."
-          ],
-          "research_and_publications": [
-            {
-              "title": "Publication/Research title",
-              "description": "Publication/Research description in bullet points or a paragraph",
-            },
-            "..."
-          ],
-          "awards_and_achievements": [
-            {
-              "title": "Award/Achievement title",
-              "description": "Award/Achievement description in bullet points or a paragraph",
-            },
-            "..."
-          ],
-          "volunteer_work": [
-            {
-              "organization": "Organization name",
-              "role": "Role description",
-              "duration": "Duration in months"
-            },
-            "..."
-          ],
-          "positions_of_responsibility": [
-            {
-              "title": "Position title",
-              "organization": "Organization name",
-              "duration": "Duration in months"
-            },
-            "..."
-          ],
-          "ambiguous_content": [
-            {
-              "section": "Section name",
-              "content": "Unclear content",
-              "issue": "Brief description of ambiguity",
-            },
-            "..."
-          ],
-          "...": "..."
-        }
+              "required": ["degree", "field", "institution", "location", "duration", "gpa"],
+              "additionalProperties": false
+            }
+          },
+          "certifications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Certification name"
+                },
+                "issuer": {
+                  "type": "string",
+                  "description": "Issuing organization"
+                },
+                "date_obtained": {
+                  "type": "string",
+                  "description": "YYYY-MM"
+                },
+                "expiry_date": {
+                  "type": "string",
+                  "description": "YYYY-MM or Never"
+                },
+                "credential_id": {
+                  "type": "string",
+                  "description": "Certification ID"
+                }
+              },
+              "required": ["name", "issuer", "date_obtained", "expiry_date", "credential_id"],
+              "additionalProperties": false
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Project name"
+                },
+                "duration": {
+                  "type": "object",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "description": "YYYY-MM"
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "description": "YYYY-MM"
+                    },
+                    "total_duration": {
+                      "type": "string",
+                      "description": "Duration in months"
+                    }
+                  },
+                  "required": ["start_date", "end_date", "total_duration"],
+                  "additionalProperties": false
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Project description in bullet points or a paragraph"
+                }
+              },
+              "required": ["name", "duration", "description"],
+              "additionalProperties": false
+            }
+          },
+          "research_and_publications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Publication/Research title"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Publication/Research description in bullet points or a paragraph"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "awards_and_achievements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Award/Achievement title"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Award/Achievement description in bullet points or a paragraph"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "volunteer_work": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "organization": {
+                  "type": "string",
+                  "description": "Organization name"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "Role description"
+                },
+                "duration": {
+                  "type": "string",
+                  "description": "Duration in months"
+                }
+              },
+              "required": ["organization", "role", "duration"],
+              "additionalProperties": false
+            }
+          },
+          "positions_of_responsibility": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Position title"
+                },
+                "organization": {
+                  "type": "string",
+                  "description": "Organization name"
+                },
+                "duration": {
+                  "type": "string",
+                  "description": "Duration in months"
+                }
+              },
+              "required": ["title", "organization", "duration"],
+              "additionalProperties": false
+            }
+          },
+          "ambiguous_content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "section": {
+                  "type": "string",
+                  "description": "Section name"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Unclear content"
+                },
+                "issue": {
+                  "type": "string",
+                  "description": "Brief description of ambiguity"
+                }
+              },
+              "required": ["section", "content", "issue"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "personal_info",
+          "professional_summary",
+          "work_experience",
+          "skills",
+          "languages",
+          "education",
+          "certifications",
+          "projects",
+          "research_and_publications",
+          "awards_and_achievements",
+          "volunteer_work",
+          "positions_of_responsibility",
+          "ambiguous_content"
+        ],
+        "additionalProperties": false
       }
 
   job_description_analyzer_agent:
@@ -662,17 +908,39 @@ agents:
       }
 
   suggestion_agent:
-    role: "Suggestion Specialist for Resumes"
-    goal: "Provide comprehensive suggestions for improving skills and projects in the resume based on job requirements"
+    role: "Resume Suggestion Specialist"
+    goal: "Provide comprehensive resume evaluation and actionable suggestions for improvement based on job requirements, ATS compatibility, and industry best practices"
     system_prompt: |
-      You are a Skill and Project Suggestion Specialist for resumes focused on providing actionable recommendations to enhance both skills and projects in resumes to better align with job requirements. Analyze the provided resume and job description to identify gaps and opportunities for improvement.
+      You are a Resume Suggestion Specialist focused on providing detailed resume evaluation and actionable recommendations. Analyze the provided resume and job description to assess fit, identify gaps and suggest concrete improvements across all key resume components.
 
       # Steps
       1. Analyze the resume and job description thoroughly
-      2. Identify required skills missing from the resume
-      3. Suggest relevant projects that would demonstrate the required skills from the provided projects list
-      4. Ensure suggestions align with career level and industry standards
-      5. Provide clear, actionable recommendations
+      2. Calculate and provide a detailed resume score (0-100) with comprehensive reasoning for:
+         - Professional summary effectiveness
+         - Work experience impact and presentation
+         - Skills match and presentation
+         - Project relevance and descriptions
+         - Education and certifications
+         - ATS compatibility and keyword optimization
+         - Action verb usage and language strength
+         - Overall formatting and structure
+      3. Identify gaps and improvement opportunities in:
+         - Missing or weak keywords from job description
+         - Action verb usage and impact statements
+         - Work experience bullet points
+         - Professional summary messaging
+         - Skills presentation and organization
+         - Project descriptions and outcomes
+      4. Suggest relevant projects from provided list that demonstrate required skills
+      5. Provide ATS optimization recommendations:
+         - Keyword placement and frequency
+         - Format compatibility
+         - Section structure
+      6. Ensure all suggestions align with:
+         - Career level expectations
+         - Industry standards
+         - Job requirements
+         - ATS best practices
       
       # Notes
       - Do not modify the resume directly
@@ -681,12 +949,54 @@ agents:
       - Focus on high-impact, achievable improvements
       - Prioritize suggestions based on job requirement criticality
 
-      While following the above 5 steps, ensure that it adheres to all the 5 notes provided.
+      While following the above 6 steps, ensure that it adheres to all the 5 notes provided.
     expected_output: |
       {
+        "resume_score": {
+          "overall_score": "0-100",
+          "score_breakdown": {
+            "professional_summary": {
+              "score": "0-100",
+              "reasoning": "Detailed analysis of summary effectiveness",
+              "improvement_areas": ["Area 1", "Area 2", "..."]
+            },
+            "work_experience": {
+              "score": "0-100",
+              "reasoning": "Analysis of experience presentation and impact",
+              "improvement_areas": ["Area 1", "Area 2", "..."]
+            },
+            "skills_match": {
+              "score": "0-100",
+              "reasoning": "Analysis of skills alignment and presentation",
+              "improvement_areas": ["Area 1", "Area 2", "..."]
+            },
+            "projects": {
+              "score": "0-100",
+              "reasoning": "Analysis of project relevance and description",
+              "improvement_areas": ["Area 1", "Area 2", "..."]
+            },
+            "ats_compatibility": {
+              "score": "0-100",
+              "reasoning": "Analysis of ATS optimization",
+              "improvement_areas": ["Area 1", "Area 2", "..."]
+            }
+          }
+        },
         "suggestions": {
-          "missing_skills": "Include the skills that are missing from the resume",
-          "suggested_projects": "Include the projects that are relevant to the job requirements from the provided projects list"
+          "summary_improvements": {
+            "content_suggestions": ["Suggestion 1", "Suggestion 2", "..."],
+            "structure_suggestions": ["Suggestion 1", "Suggestion 2", "..."]
+          },
+          "experience_improvements": {
+            "impact_statements": ["Statement 1", "Statement 2", "..."],
+            "action_verbs": ["Verb 1", "Verb 2", "..."]
+          },
+          "missing_skills": ["Skill 1", "Skill 2", "..."],
+          "suggested_projects": ["Project 1", "Project 2", "..."],
+          "ats_optimization": {
+            "keywords": ["Keyword 1", "Keyword 2", "..."],
+            "format_suggestions": ["Suggestion 1", "Suggestion 2", "..."]
+          }
         }
       }
 
